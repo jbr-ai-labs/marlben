@@ -1,0 +1,2 @@
+nmmo[rllib]~=1.5.3.9
+numpy
