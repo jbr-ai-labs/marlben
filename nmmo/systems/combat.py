@@ -32,7 +32,7 @@ def attack(entity, targ, skillFn):
    if roll >= dc or crit:
       dmg = damage(entitySkill.__class__, entitySkill.level)
       
-   dmg = min(dmg, entity.resources.health.val)
+   dmg = min(dmg, entity.resources.health.val) # Note: damage can be negative!
    entity.applyDamage(dmg, entitySkill.__class__.__name__.lower())
    targ.receiveDamage(entity, dmg)
    return dmg
@@ -45,6 +45,8 @@ def damage(skill, level):
       return np.floor(3 + level * 32 / 99)
    if skill == Skill.Mage:
       return np.floor(1 + level * 24 / 99)
+   if skill == Skill.Heal:
+      return -np.floor(3 + level * 32 / 99)
 
 #Compute maximum attack or defense roll (same formula)
 #Max attack 198 - min def 1 = 197. Max 198 - max 198 = 0

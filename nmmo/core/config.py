@@ -341,6 +341,9 @@ class Combat:
     COMBAT_MAGE_REACH = 4
     '''Reach of attacks using the Mage skill'''
 
+    COMBAT_HEAL_REACH = 2
+    '''Reach of healing skill'''
+
     COMBAT_FREEZE_TIME = 3
     '''Number of ticks successful Mage attacks freeze a target'''
 

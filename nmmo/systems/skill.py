@@ -71,6 +71,7 @@ class Combat(SkillGroup):
       self.melee        = Melee(self)
       self.range        = Range(self)
       self.mage         = Mage(self)
+      self.heal         = Heal(self)
 
    def packet(self):
       data          = super().packet() 
@@ -87,13 +88,14 @@ class Combat(SkillGroup):
       combScale = config.PROGRESSION_COMBAT_XP_SCALE
       conScale  = config.PROGRESSION_CONSTITUTION_XP_SCALE
 
-      self.constitution.exp += dmg * baseScale * conScale
+      if dmg > 0.:
+         self.constitution.exp += dmg * baseScale * conScale
 
       skill      = self.__dict__[style]
-      skill.exp += dmg * baseScale * combScale
+      skill.exp += abs(dmg) * baseScale * combScale
 
    def receiveDamage(self, dmg):
-      if not self.config.game_system_enabled('Progression'):
+      if not self.config.game_system_enabled('Progression') or dmg < 0.:
          return
 
       config    = self.config
@@ -144,6 +146,7 @@ class Constitution(CombatSkill):
 class Melee(CombatSkill): pass
 class Range(CombatSkill): pass
 class Mage(CombatSkill): pass
+class Heal(CombatSkill): pass
 class Defense(CombatSkill): pass
 
 class Fishing(Skill):

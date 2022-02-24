@@ -44,8 +44,9 @@ class Player(entity.Entity):
       return self.pop
 
    def applyDamage(self, dmg, style):
-      self.resources.food.increment(dmg)
-      self.resources.water.increment(dmg)
+      if dmg > 0:
+         self.resources.food.increment(dmg)
+         self.resources.water.increment(dmg)
       self.skills.applyDamage(dmg, style)
       
    def receiveDamage(self, source, dmg):
