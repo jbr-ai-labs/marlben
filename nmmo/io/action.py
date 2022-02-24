@@ -153,7 +153,7 @@ class Attack(Node):
 
     @staticproperty
     def n():
-        return 3
+        return 4
 
     @staticproperty
     def edges():
