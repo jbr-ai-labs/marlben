@@ -293,6 +293,8 @@ class Env(ParallelEnv):
                atn  = atns[nmmo.action.Attack]
                targ = atn[nmmo.action.Target]
                atn[nmmo.action.Target] = self.realm.entity(targ)
+            if nmmo.action.Share in atns:
+               atns[nmmo.action.Share][nmmo.action.Target] = self.realm.entity(targ)
             self.actions[entID] = atns
          else:
             obs[entID]     = ob

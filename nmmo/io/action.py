@@ -241,8 +241,8 @@ class Target(Node):
         return config.N_AGENT_OBS
 
     def args(stim, entity, config):
-        # Should pass max range?
-        return list(range(max(entity.food.max, entity.water.max)))
+      #Should pass max range?
+        return Attack.inRange(entity, stim, config, None)
 
 
 class Melee(Node):
@@ -327,7 +327,7 @@ class Share(Node):
             return
 
         # Check sharing range
-        rng = 3
+        rng = env.config.SHARING_DISTANCE
         start = np.array(entity.base.pos)
         end = np.array(targ.base.pos)
         dif = np.max(np.abs(start - end))
@@ -360,7 +360,7 @@ class ResourceAmount(Node):
 
     def args(stim, entity, config):
         # Should pass max range?
-        return Attack.inRange(entity, stim, config, None)
+        return list(range(max(entity.food.max, entity.water.max)))
 
 
 class Resource(Node):
@@ -379,7 +379,7 @@ class Water(Node):
     index = 0
 
     def resource(entity):
-        return entity.water
+        return entity.resources.water
 
 
 class Food(Node):
@@ -387,7 +387,7 @@ class Food(Node):
     index = 1
 
     def resource(entity):
-        return entity.food
+        return entity.resources.food
 
 
 # TODO: Add communication

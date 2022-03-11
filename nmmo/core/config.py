@@ -397,7 +397,15 @@ class NPC(Combat):
     '''Level range for NPC spawns'''
 
 
-class AllGameSystems(Resource, Progression, NPC): pass
+class Sharing(Resource):
+    @property
+    def Sharing(self):
+        return True
+
+    SHARING_DISTANCE = 3
+
+
+class AllGameSystems(Sharing, Progression, NPC): pass
 
 
 ############################################################################
