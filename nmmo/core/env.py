@@ -289,10 +289,9 @@ class Env(ParallelEnv):
          self.obs[entID] = ob
          if ent.agent.scripted:
             atns = ent.agent(ob)
-            if nmmo.action.Attack in atns:
-               atn  = atns[nmmo.action.Attack]
-               targ = atn[nmmo.action.Target]
-               atn[nmmo.action.Target] = self.realm.entity(targ)
+            for key in atns:
+               if nmmo.action.Target in atns[key]:
+                  atns[key][nmmo.action.Target] = self.realm.entity(atns[key][nmmo.action.Target])
             self.actions[entID] = atns
          else:
             obs[entID]     = ob
