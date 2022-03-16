@@ -1,5 +1,3 @@
-from nmmo.core import Realm
-from nmmo import core, infrastructure
 from nmmo.core.realm import PlayerManager, NPCManager
 from .spawn_system import spawn_factory
 
