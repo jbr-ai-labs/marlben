@@ -11,12 +11,12 @@ from .overlay import Overlay, OverlayRegistry
 from .io import action
 from .io.stimulus import Serialized
 from .io.action import Action
-from .core import config, agent
+from .core import agent
 from .core.agent import Agent
 from .core.env import Env
 from .systems.achievement import Task
 from .core.terrain import MapGenerator, Terrain
 
-__all__ = ['Env', 'config', 'scripting', 'agent', 'Agent', 'MapGenerator', 'Terrain',
+__all__ = ['Env', 'scripting', 'agent', 'Agent', 'MapGenerator', 'Terrain',
            'Serialized', 'action', 'Action', 'scripting', 'material',
            'Task', 'Overlay', 'OverlayRegistry']
