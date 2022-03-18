@@ -55,8 +55,9 @@ class Player(entity.Entity):
             source.history.playerKills += 1
          return 
 
-      self.resources.food.decrement(dmg)
-      self.resources.water.decrement(dmg)
+      if dmg > 0:
+         self.resources.food.decrement(dmg)
+         self.resources.water.decrement(dmg)
       self.skills.receiveDamage(dmg)
 
    def receiveLoot(self, loadout):
