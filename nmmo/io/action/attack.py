@@ -46,6 +46,8 @@ class Attack(Node):
         if entity.entID == targ.entID:
             return
 
+        stealing_enabled = env.config.STEALING_ENABLED
+
         # ADDED: POPULATION IMMUNITY
         # if entity.population == targ.population:
         #   return
@@ -68,7 +70,7 @@ class Attack(Node):
         targ.attackerID.update(entity.entID)
 
         from nmmo.systems import combat
-        dmg = combat.attack(entity, targ, style.skill)
+        dmg = combat.attack(entity, targ, style.skill, stealing_enabled)
 
         if style.freeze and dmg > 0:
             targ.status.freeze.update(env.config.COMBAT_FREEZE_TIME)

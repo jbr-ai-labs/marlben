@@ -16,7 +16,7 @@ def level(skills):
    final = np.floor(base + 0.5*max(melee, ranged, mage))
    return final
 
-def attack(entity, targ, skillFn):
+def attack(entity, targ, skillFn, stealing_enabled=True):
    config      = entity.config
    entitySkill = skillFn(entity)
    targetSkill = skillFn(targ)
@@ -33,8 +33,8 @@ def attack(entity, targ, skillFn):
       dmg = damage(entitySkill.__class__, entitySkill.level)
       
    dmg = min(dmg, entity.resources.health.val) # Note: damage can be negative!
-   entity.applyDamage(dmg, entitySkill.__class__.__name__.lower())
-   targ.receiveDamage(entity, dmg)
+   entity.applyDamage(dmg, entitySkill.__class__.__name__.lower(), stealing_enabled)
+   targ.receiveDamage(entity, dmg, stealing_enabled)
    return dmg
 
 #Compute maximum damage roll

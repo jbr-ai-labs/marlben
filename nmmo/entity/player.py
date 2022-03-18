@@ -43,20 +43,20 @@ class Player(entity.Entity):
    def population(self):
       return self.pop
 
-   def applyDamage(self, dmg, style):
-      if dmg > 0:
+   def applyDamage(self, dmg, style, stealing_enabled=True):
+      if dmg > 0 and stealing_enabled:
          self.resources.food.increment(dmg)
          self.resources.water.increment(dmg)
       self.skills.applyDamage(dmg, style)
       
-   def receiveDamage(self, source, dmg):
+   def receiveDamage(self, source, dmg, stealing_enabled=True):
       if not super().receiveDamage(source, dmg):
          if source:
             source.history.playerKills += 1
          return 
-
-      self.resources.food.decrement(dmg)
-      self.resources.water.decrement(dmg)
+      if dmg > 0 and stealing_enabled:
+         self.resources.food.decrement(dmg)
+         self.resources.water.decrement(dmg)
       self.skills.receiveDamage(dmg)
 
    def receiveLoot(self, loadout):
