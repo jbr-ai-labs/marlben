@@ -27,4 +27,3 @@ class CorridorMapGenerator(MapGenerator):
         for idx in tqdm(range(self.config.NMAPS)):
             path = osp.join(self.config.PATH_MAPS, 'map{}'.format(idx+1), 'map.npy')
             np.save(path, MAPS[idx])
-        # return super().generate_all_maps()

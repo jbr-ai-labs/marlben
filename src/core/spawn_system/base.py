@@ -66,14 +66,3 @@ def spawn_in_range(player_manager, config, realm):
         c = random.randint(*c_range)
         assert not realm.map.tiles[r, c].occupied
         player_manager.spawnIndividual(r, c)
-
-
-def spawn_factory(spawn_type):
-    if spawn_type == 'concurrent':
-        return spawn_concurrent
-    if spawn_type == 'continuous':
-        return spawn_continuous
-    if spawn_type == 'in_range':
-        return spawn_in_range
-    else:
-        raise NotImplementedError

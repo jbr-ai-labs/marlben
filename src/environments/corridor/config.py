@@ -37,6 +37,3 @@ class Config(nmmo.config.Small, nmmo.config.AllGameSystems):
     MAP_GENERATOR = CorridorMapGenerator
     PLAYER_MANAGER = CustomPlayerManager
     NPC_MANAGER = CustomNPCManager
-
-    # def SPAWN(self):
-    #     return [(3, 3)]
