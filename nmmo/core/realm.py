@@ -160,11 +160,11 @@ class PlayerManager(EntityGroup):
       for _ in range(self.config.PLAYER_SPAWN_ATTEMPTS):
          if len(self.entities) >= self.config.NENT:
             break
-
+         
          r, c   = self.config.SPAWN()
+         
          if self.realm.map.tiles[r, c].occupied:
             continue
-
          self.spawnIndividual(r, c)
 
       while len(self.entities) == 0:
@@ -183,8 +183,8 @@ class Realm:
       self.map       = core.Map(config, self)
 
       #Entity handlers
-      self.players  = PlayerManager(config, self)
-      self.npcs     = NPCManager(config, self)
+      self.players  = config.PLAYER_MANAGER(config, self)
+      self.npcs     = config.NPC_MANAGER(config, self)
 
    def reset(self, idx):
       '''Reset the environment and load the specified map
@@ -227,7 +227,6 @@ class Realm:
       merged     = defaultdict(list)
       prioritized(actions, merged)
       prioritized(npcActions, merged)
-
       #Update entities and perform actions
       self.players.update(actions)
       self.npcs.update(npcActions)
