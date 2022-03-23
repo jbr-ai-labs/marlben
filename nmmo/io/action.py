@@ -55,7 +55,7 @@ class Action(Node):
     @staticproperty
     def edges():
         '''List of valid actions'''
-        return [Move, Attack]
+        return [Move, Attack, Share]
 
     @staticproperty
     def n():
