@@ -33,7 +33,6 @@ class Config(Template):
     ############################################################################
     ### Meta-Parameters
     RENDER = False
-    '''Flag used by render mode'''
 
     def game_system_enabled(self, name) -> bool:
         return hasattr(self, name)
@@ -87,55 +86,6 @@ class Config(Template):
     '''Initial Constitution level and agent health'''
 
     PLAYER_SPAWN_ATTEMPTS = None
-    '''Number of player spawn attempts per tick
-
-   Note that the env will attempt to spawn agents until success
-   if the current population size is zero.'''
-
-    def SPAWN_CONTINUOUS(self):
-        '''Generates spawn positions for new agents
-
-      Default behavior randomly selects a tile position
-      along the borders of the square game map
-
-      Returns:
-         tuple(int, int):
-
-         position:
-            The position (row, col) to spawn the given agent
-      '''
-        # Spawn at edges
-        mmax = self.TERRAIN_CENTER + self.TERRAIN_BORDER
-        mmin = self.TERRAIN_BORDER
-
-        var = np.random.randint(mmin, mmax)
-        fixed = np.random.choice([mmin, mmax])
-        r, c = int(var), int(fixed)
-        if np.random.rand() > 0.5:
-            r, c = c, r
-        return (r, c)
-
-    def SPAWN_CONCURRENT(self):
-        left = self.TERRAIN_BORDER
-        right = self.TERRAIN_CENTER + self.TERRAIN_BORDER
-        rrange = np.arange(left + 2, right, 4).tolist()
-
-        assert not self.TERRAIN_CENTER % 4
-        per_side = self.TERRAIN_CENTER // 4
-
-        lows = (left + np.zeros(per_side, dtype=np.int)).tolist()
-        highs = (right + np.zeros(per_side, dtype=np.int)).tolist()
-
-        s1 = list(zip(rrange, lows))
-        s2 = list(zip(lows, rrange))
-        s3 = list(zip(rrange, highs))
-        s4 = list(zip(highs, rrange))
-
-        return s1 + s2 + s3 + s4
-
-    @property
-    def SPAWN(self):
-        return self.SPAWN_CONTINUOUS
 
     ############################################################################
     ### Terrain Generation Parameters
