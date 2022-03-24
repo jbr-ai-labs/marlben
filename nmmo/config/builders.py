@@ -9,7 +9,6 @@ def build_from_dict(config_dict):
 
     config = CustomClass()
     for key, value in config_dict["parameters"].items():
-        print(key, value)
         setattr(config, key, value)
 
     return config
