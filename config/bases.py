@@ -25,14 +25,6 @@ class RLlib:
         return self.__class__.__name__
 
     @property
-    def PATH_MAPS(self):
-        maps = super().PATH_MAPS
-        if self.EVALUATE:
-            self.TERRAIN_FLIP_SEED = True
-            return os.path.join(maps, 'evaluation')
-        return os.path.join(maps, 'training')
-
-    @property
     def NMAPS(self):
         if not self.EVALUATE:
             return self.N_TRAIN_MAPS
