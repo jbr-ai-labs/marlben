@@ -233,8 +233,6 @@ class Style(Node):
 class Target(Node):
     argType = None
 
-    # argType = int
-
     @classmethod
     def N(cls, config):
         # return config.WINDOW ** 2
@@ -318,7 +316,7 @@ class Share(Node):
         rets = list(rets)
         return rets
 
-    def call(env, entity, resource, targ, amount):
+    def call(env, entity, resource, amount, targ):
         if not env.config.game_system_enabled('Sharing') or not env.config.game_system_enabled('Resource'):
             return
 
@@ -349,9 +347,7 @@ class Share(Node):
 
 
 class ResourceAmount(Node):
-    argType = None
-
-    # argType = Player
+    argType = int
 
     @classmethod
     def N(cls, config):
@@ -359,7 +355,6 @@ class ResourceAmount(Node):
         return config.N_AGENT_OBS
 
     def args(stim, entity, config):
-        # Should pass max range?
         return list(range(max(entity.food.max, entity.water.max)))
 
 
