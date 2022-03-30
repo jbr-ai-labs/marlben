@@ -17,19 +17,6 @@ class Share(Node):
     def leaf():
         return True
 
-    def inRange(entity, stim, config, N):
-        R, C = stim.shape
-        R, C = R // 2, C // 2
-
-        rets = set([entity])
-        for r in range(R - N, R + N + 1):
-            for c in range(C - N, C + N + 1):
-                for e in stim[r, c].ents.values():
-                    rets.add(e)
-
-        rets = list(rets)
-        return rets
-
     def call(env, entity, resource, targ, amount):
         if not env.config.game_system_enabled('Sharing') or not env.config.game_system_enabled('Resource'):
             return
@@ -72,7 +59,7 @@ class ResourceAmount(Node):
 
     def args(stim, entity, config):
         # Should pass max range?
-        return list(range(max(entity.food.max, entity.water.max)))
+        return list(range(max(entity.resources.food.val, entity.resources.water.val)))
 
 
 class Resource(Node):

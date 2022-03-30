@@ -2,6 +2,7 @@ import numpy as np
 
 from nmmo.io.action.common import NodeType, Node, Fixed
 from nmmo.lib.utils import staticproperty
+from nmmo.lib.distance import inRange
 
 
 class Attack(Node):
@@ -19,24 +20,6 @@ class Attack(Node):
     @staticproperty
     def leaf():
         return True
-
-    def inRange(entity, stim, config, N):
-        R, C = stim.shape
-        R, C = R // 2, C // 2
-
-        rets = set([entity])
-        for r in range(R - N, R + N + 1):
-            for c in range(C - N, C + N + 1):
-                for e in stim[r, c].ents.values():
-                    rets.add(e)
-
-        rets = list(rets)
-        return rets
-
-    def l1(pos, cent):
-        r, c = pos
-        rCent, cCent = cent
-        return abs(r - rCent) + abs(c - cCent)
 
     def call(env, entity, style, targ):
         if entity.isPlayer and not env.config.game_system_enabled('Combat'):
@@ -100,8 +83,8 @@ class Target(Node):
         return config.N_AGENT_OBS
 
     def args(stim, entity, config):
-      #Should pass max range?
-        return Attack.inRange(entity, stim, config, None)
+        #Should pass max range?
+        return inRange(entity, stim, config, None)
 
 
 class Melee(Node):
