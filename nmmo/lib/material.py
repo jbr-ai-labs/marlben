@@ -40,9 +40,25 @@ class Forest(Material):
          self.capacity = config.RESOURCE_FOREST_CAPACITY
          self.respawn  = config.RESOURCE_FOREST_RESPAWN
 
+
 class Stone(Material):
    tex   = 'stone'
    index = 5
+
+
+class ScrubImpassible(Scrub):
+   index = 6
+
+
+class BalancedWater(Forest):
+   tex = 'water'
+   index = 7
+
+
+class BalancedForest(Forest):
+   tex = 'forest'
+   index = 8
+
 
 class Meta(type):
    def __init__(self, name, bases, dict):
@@ -60,11 +76,11 @@ class Meta(type):
 
 class All(metaclass=Meta):
    '''List of all materials'''
-   materials = {Lava, Water, Grass, Scrub, Forest, Stone}
+   materials = {Lava, Water, Grass, Scrub, Forest, Stone, ScrubImpassible, BalancedForest, BalancedWater}
 
 class Impassible(metaclass=Meta):
    '''Materials that agents cannot walk through'''
-   materials = {Lava, Stone}
+   materials = {Lava, Stone, ScrubImpassible, BalancedForest, BalancedWater}
 
 class Habitable(metaclass=Meta):
    '''Materials that agents cannot walk on'''

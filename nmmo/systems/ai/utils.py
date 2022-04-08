@@ -229,6 +229,11 @@ def adjacentMats(tiles, pos):
            if inBounds(*p, tiles.shape)]
 
 
+def adjacentPosWithMat(tiles, pos, mat):
+   return [p for p in adjacentPos(pos)
+            if inBounds(*p, tiles.shape) and type(tiles[p].state) is mat]
+
+
 def adjacencyDelMatPairs(env, pos):
    return zip(adjacentDeltas(), adjacentMats(env.tiles, pos))
 ###End###

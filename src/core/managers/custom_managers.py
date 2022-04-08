@@ -1,5 +1,5 @@
 from nmmo.core.realm import PlayerManager, NPCManager
-from .spawn_system import SpawnFactory
+from ..spawn_system import SpawnFactory
 
 
 

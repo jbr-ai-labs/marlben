@@ -1,6 +1,7 @@
 from enum import Enum
 
 from .environments import Corridor
+from src.core.config import get_config
 
 
 
@@ -20,5 +21,6 @@ class EnvFactory:
             return Corridor
 
 
-def make(env_name, config):
+def make(env_name, config_path):
+    config = get_config(config_path)
     return EnvFactory.get_env(env_name)(config)

@@ -20,8 +20,8 @@ class SkillGroup:
    def packet(self):
       data = {}
       for skill in self.skills:
-         data[skill.__class__.__name__.lower()] = skill.packet()
-
+         name = skill.name  
+         data[name] = skill.packet()
       return data
 
 class Skill:
@@ -33,6 +33,10 @@ class Skill:
       self.exp     = 0
 
       skillGroup.skills.add(self)
+   
+   @property
+   def name(self):
+      return self.__class__.__name__.lower()
 
    def packet(self):
       data = {}
@@ -61,6 +65,15 @@ class Harvesting(SkillGroup):
 
       self.fishing      = Fishing(self)
       self.hunting      = Hunting(self)
+   
+
+class HarvestingBalanced(SkillGroup):
+   def __init__(self, realm):
+      super().__init__(realm)
+
+      self.fishing = CollectResource(self, "water")
+      self.hunting = CollectResource(self, "food")
+
 
 class Combat(SkillGroup):
    def __init__(self, realm):
@@ -106,8 +119,14 @@ class Combat(SkillGroup):
       self.constitution.exp += dmg * baseScale * conScale
       self.defense.exp      += dmg * baseScale * combScale
 
+
 class Skills(Harvesting, Combat):
    pass
+
+
+class SkillsBalanced(HarvestingBalanced, Combat):
+   pass
+
 
 ### Individual Skills ###
 class CombatSkill(Skill): pass
@@ -132,7 +151,7 @@ class Constitution(CombatSkill):
       foodThresh  = food > regen * entity.skills.hunting.level
       waterThresh = water > regen * entity.skills.fishing.level
 
-      if foodThresh and waterThresh:
+      if foodThresh and waterThresh and config.REGEN_HEALTH:
          restore = config.RESOURCE_HEALTH_RESTORE_FRACTION
          restore = np.floor(restore * self.level)
          health.increment(restore)
@@ -170,7 +189,7 @@ class Fishing(Skill):
       if material.Water not in ai.utils.adjacentMats(
             realm.map.tiles, entity.pos):
          return
-
+   
       restore = self.config.RESOURCE_HARVEST_RESTORE_FRACTION
       restore = np.floor(restore * self.level)
       water.increment(restore)
@@ -204,6 +223,57 @@ class Hunting(Skill):
       restore = self.config.RESOURCE_HARVEST_RESTORE_FRACTION
       restore = np.floor(restore * self.level)
       food.increment(restore)
+
+      if self.config.game_system_enabled('Progression'):
+         self.exp += self.config.PROGRESSION_BASE_XP_SCALE * restore
+
+
+
+class CollectResource(Skill):
+
+   TYPE2MAT = {
+      'food': material.BalancedForest,
+      'water': material.BalancedWater
+   }
+   TYPE2NAME = {
+      'food': 'hunting',
+      'water': 'fishing'
+   }
+
+   def __init__(self, skillGroup, resource_type):
+      super().__init__(skillGroup)
+      config, level = self.config, 1
+      if config.game_system_enabled('Progression'):
+         level = config.PROGRESSION_BASE_RESOURCE
+      elif config.game_system_enabled('Resource'):
+         level = config.RESOURCE_BASE_RESOURCE
+
+      self.setExpByLevel(level)
+      self.resource_type = resource_type
+      self.material_type = self.TYPE2MAT[resource_type]
+   
+   @property
+   def name(self):
+      return self.TYPE2NAME[self.resource_type]
+   
+   def update(self, realm, entity):
+      if not self.config.game_system_enabled('Resource'):
+         return
+      resource = getattr(entity.resources, self.resource_type)
+      resource.decrement(1)
+
+      resource_positions = ai.utils.adjacentPosWithMat(
+         realm.map.tiles, entity.pos, self.material_type
+      )
+      if not len(resource_positions):
+         return
+      
+      r, c = resource_positions[0]
+      realm.map.harvest(r, c)
+      
+      restore = self.config.RESOURCE_HARVEST_RESTORE_FRACTION
+      restore = np.floor(restore * self.level)
+      resource.increment(restore)
 
       if self.config.game_system_enabled('Progression'):
          self.exp += self.config.PROGRESSION_BASE_XP_SCALE * restore

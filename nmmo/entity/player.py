@@ -5,7 +5,7 @@ import nmmo
 from nmmo.systems import ai, equipment
 from nmmo.lib import material
 
-from nmmo.systems.skill import Skills
+from nmmo.systems.skill import Skills, SkillsBalanced
 from nmmo.systems.achievement import Diary
 from nmmo.entity import entity
 
@@ -23,7 +23,7 @@ class Player(entity.Entity):
       self.vision = 7
 
       #Submodules
-      self.skills = Skills(self)
+      self.skills = SkillsBalanced(self) # TODO: make configurable?
 
       self.diary  = None
       if tasks := realm.config.TASKS:
