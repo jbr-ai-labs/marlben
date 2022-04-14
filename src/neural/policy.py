@@ -3,7 +3,7 @@ from torch import nn
 from torch.nn.utils import rnn
 
 from src.neural import io
-from src.neural.utils import subnets
+from src.neural.utils import nn_blocks
 
 
 class Base(nn.Module):
@@ -19,7 +19,7 @@ class Base(nn.Module):
 
         self.input = io.Input(config,
                               embeddings=io.MixedEmbedding,
-                              attributes=subnets.SelfAttention)
+                              attributes=nn_blocks.SelfAttention)
         self.output = io.Output(config)
 
         self.valueF = nn.Linear(config.HIDDEN, 1)
@@ -58,7 +58,7 @@ class Simple(Base):
         self.fc = nn.Linear(h, h)
 
         self.proj = nn.Linear(2 * h, h)
-        self.attend = subnets.SelfAttention(self.embed, h)
+        self.attend = nn_blocks.SelfAttention(self.embed, h)
 
     def hidden(self, obs, state=None, lens=None):
         # Attentional agent embedding
@@ -79,7 +79,7 @@ class Simple(Base):
         # Dims correct?
         tiles = tiles.reshape(batch, w, w, hidden).permute(0, 3, 1, 2)
         tiles = self.conv(tiles)
-        #tiles = self.pool(tiles)
+        # tiles = self.pool(tiles)
         tiles = tiles.reshape(batch, -1)
         tiles = self.fc(tiles)
 
@@ -92,9 +92,8 @@ class Recurrent(Simple):
     def __init__(self, config):
         '''Recurrent baseline model'''
         super().__init__(config)
-        self.lstm = subnets.BatchFirstLSTM(
-            input_size=config.HIDDEN,
-            hidden_size=config.HIDDEN)
+        self.lstm = nn_blocks.BatchFirstLSTM(input_size=config.HIDDEN,
+                                             hidden_size=config.HIDDEN)
 
     # Note: seemingly redundant transposes are required to convert between
     # Pytorch (seq_len, batch, hidden) <-> RLlib (batch, seq_len, hidden)
@@ -125,26 +124,3 @@ class Recurrent(Simple):
                                             total_length=TT)
 
         return hidden.reshape(TB, H), state
-
-
-class Attentional(Base):
-    def __init__(self, config):
-        '''Transformer-based baseline model'''
-        super().__init__(config)
-        self.agents = nn.TransformerEncoderLayer(d_model=config.HIDDEN, nhead=4)
-        self.tiles = nn.TransformerEncoderLayer(d_model=config.HIDDEN, nhead=4)
-        self.proj = nn.Linear(2 * config.HIDDEN, config.HIDDEN)
-
-    def hidden(self, obs, state=None, lens=None):
-        # Attentional agent embedding
-        agents = self.agents(obs[Stimulus.Entity])
-        agents, _ = torch.max(agents, dim=-2)
-
-        # Attentional tile embedding
-        tiles = self.tiles(obs[Stimulus.Tile])
-        self.attn = torch.norm(tiles, p=2, dim=-1)
-        tiles, _ = torch.max(tiles, dim=-2)
-
-        hidden = torch.cat((tiles, agents), dim=-1)
-        hidden = self.proj(hidden)
-        return hidden, state

@@ -4,7 +4,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from src.neural import utils
+from src.neural.utils.utils import ModuleList
 
 
 def Conv2d(fIn, fOut, k, stride=1):
@@ -20,11 +20,9 @@ def Pool(k, stride=1, pad=0):
 
 
 class ConvReluPool(nn.Module):
-    def __init__(self, fIn, fOut,
-                 k, stride=1, pool=2):
+    def __init__(self, fIn, fOut, k, stride=1, pool=2):
         super().__init__()
-        self.conv = Conv2d(
-            fIn, fOut, k, stride)
+        self.conv = Conv2d(fIn, fOut, k, stride)
         self.pool = Pool(k)
 
     def forward(self, x):
@@ -38,9 +36,7 @@ class ReluBlock(nn.Module):
     def __init__(self, h, layers=2, postRelu=True):
         super().__init__()
         self.postRelu = postRelu
-
-        self.layers = utils.ModuleList(
-            nn.Linear, h, h, n=layers)
+        self.layers = ModuleList(nn.Linear, h, h, n=layers)
 
     def forward(self, x):
         for idx, fc in enumerate(self.layers):
@@ -57,11 +53,8 @@ class ReluBlock(nn.Module):
 class DotReluBlock(nn.Module):
     def __init__(self, h, layers=2):
         super().__init__()
-        self.key = ReluBlock(
-            h, layers, postRelu=False)
-
-        self.val = ReluBlock(
-            h, layers, postRelu=False)
+        self.key = ReluBlock(h, layers, postRelu=False)
+        self.val = ReluBlock(h, layers, postRelu=False)
 
     def forward(self, k, v):
         k = self.key(k).unsqueeze(-2)

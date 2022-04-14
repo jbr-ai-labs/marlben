@@ -5,7 +5,7 @@ import torch
 from torch import nn
 
 import nmmo
-from src.neural.utils import subnets
+from src.neural.utils import nn_blocks
 
 
 class MixedEmbedding(nn.Module):
@@ -139,7 +139,7 @@ class DiscreteAction(Action):
 
     def __init__(self, config, xdim, h):
         super().__init__()
-        self.net = subnets.DotReluBlock(h)
+        self.net = nn_blocks.DotReluBlock(h)
 
     def forward(self, stim, args, lens):
         x = self.net(stim, args)
