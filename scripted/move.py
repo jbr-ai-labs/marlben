@@ -3,6 +3,8 @@ from queue import PriorityQueue, Queue
 
 import nmmo
 import numpy as np
+
+import nmmo.lib.distance
 from nmmo.lib import material
 
 from scripted import utils
@@ -201,7 +203,7 @@ def aStar(config, ob, actions, rr, cc, cutoff=100):
     cost = {start: 0}
 
     closestPos = start
-    closestHeuristic = utils.l1(start, goal)
+    closestHeuristic = nmmo.lib.distance.l1(start, goal)
     closestCost = closestHeuristic
 
     while not pq.empty():

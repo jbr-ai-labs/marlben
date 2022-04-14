@@ -55,6 +55,9 @@ class Combat:
 
     COMBAT_FREEZE_TIME = 3
     '''Number of ticks successful Mage attacks freeze a target'''
+    
+    STEALING_ENABLED = True
+    '''Is attack allows to steal resources'''
 
 
 class Progression:
