@@ -2,10 +2,9 @@ import random
 import numpy as np
 
 
-
 def spawn_concurrent(player_manager, config, realm):
     if player_manager.spawned:
-        return 
+        return
 
     player_manager.spawned = True
     idx = 0
@@ -24,7 +23,7 @@ def spawn_concurrent(player_manager, config, realm):
     s2 = list(zip(lows, rrange))
     s3 = list(zip(rrange, highs))
     s4 = list(zip(highs, rrange))
-    
+
     for r, c in s1 + s2 + s3 + s4:
         idx += 1
         assert not realm.map.tiles[r, c].occupied
@@ -32,7 +31,7 @@ def spawn_concurrent(player_manager, config, realm):
 
 
 def spawn_continuous(player_manager, config, realm):
-    #MMO-style spawning
+    # MMO-style spawning
     for _ in range(config.PLAYER_SPAWN_ATTEMPTS):
         if len(player_manager.entities) >= config.NENT:
             break
@@ -43,7 +42,7 @@ def spawn_continuous(player_manager, config, realm):
         r, c = int(var), int(fixed)
         if np.random.rand() > 0.5:
             r, c = c, r
-        
+
         if realm.map.tiles[r, c].occupied:
             continue
         print('spawning individual')
@@ -55,10 +54,10 @@ def spawn_continuous(player_manager, config, realm):
 
 def spawn_in_range(player_manager, config, realm):
     if player_manager.spawned:
-        return 
+        return
 
     player_manager.spawned = True
-    for _ in range(len(config.AGENTS)):
+    for _ in range(config.NENT):
         agent_idx = player_manager.idx - 1
         r_range = config.SPAWN_PARAMS['r_ranges'][agent_idx]
         c_range = config.SPAWN_PARAMS['c_ranges'][agent_idx]
