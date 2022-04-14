@@ -2,7 +2,8 @@ import torch
 from torch import nn
 from torch.nn.utils import rnn
 
-from src.neural import io, subnets
+from src.neural import io
+from src.neural.utils import subnets
 
 
 class Base(nn.Module):

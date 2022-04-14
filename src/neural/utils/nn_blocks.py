@@ -11,8 +11,7 @@ def Conv2d(fIn, fOut, k, stride=1):
     """torch Conv2d with same padding"""
     assert k % 2 == 0
     pad = int((k - 1) / 2)
-    return torch.nn.Conv2d(fIn, fOut,
-                           k, stride=stride, padding=pad)
+    return torch.nn.Conv2d(fIn, fOut, k, stride=stride, padding=pad)
 
 
 def Pool(k, stride=1, pad=0):

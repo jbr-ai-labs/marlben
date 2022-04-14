@@ -5,7 +5,7 @@ import torch
 from torch import nn
 
 import nmmo
-from src.neural import subnets
+from src.neural.utils import subnets
 
 
 class MixedEmbedding(nn.Module):
