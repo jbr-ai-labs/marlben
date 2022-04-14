@@ -5,8 +5,8 @@ from nmmo.config import build_from_dict
 from nmmo.core.spawn.custom_managers import CustomNPCManager, CustomPlayerManager
 from .map_generator import CorridorMapGenerator
 
-config_dict = {"presets_list": [nmmo.config.AllGameSystems, Small, scale.Debug],
-               "parameters": {"AGENTS": [nmmo.Agent, nmmo.Agent],
+config_dict = {"presets_list": [nmmo.config.Sharing, Small, scale.Debug],
+               "parameters": {"AGENTS": [nmmo.Agent],
                               "TERRAIN_CENTER": 5,
                               "NENT": 2,
                               "NMOB": 0,
