@@ -1,2 +1,4 @@
 benvenv
 env_test.py
+*.pyc
+*.npy
