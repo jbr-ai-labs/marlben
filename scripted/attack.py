@@ -1,6 +1,7 @@
 import nmmo
 import numpy as np
 
+import nmmo.lib.distance
 from scripted import utils
 
 
@@ -24,7 +25,7 @@ def closestTarget(config, ob):
         tc = nmmo.scripting.Observation.attribute(target, Entity.C)
 
         goal = (tr, tc)
-        dist = utils.l1(start, goal)
+        dist = nmmo.lib.distance.l1(start, goal)
 
         if dist < shortestDist and dist != 0:
             shortestDist = dist
@@ -52,7 +53,7 @@ def attacker(config, ob):
         if identity == attackerID:
             tr = nmmo.scripting.Observation.attribute(target, Entity.R)
             tc = nmmo.scripting.Observation.attribute(target, Entity.C)
-            dist = utils.l1((sr, sc), (tr, tc))
+            dist = nmmo.lib.distance.l1((sr, sc), (tr, tc))
             return target, dist
     return None, None
 

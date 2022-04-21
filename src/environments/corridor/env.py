@@ -6,4 +6,4 @@ class Corridor(nmmo.Env):
         super().__init__(config)
     
     def step(self, actions):
-        return super().step(actions=actions)
+        return super().step(actions)
