@@ -20,8 +20,7 @@ class SkillGroup:
    def packet(self):
       data = {}
       for skill in self.skills:
-         name = skill.name  
-         data[name] = skill.packet()
+         data[skill.name] = skill.packet()
       return data
 
 class Skill:

@@ -54,7 +54,6 @@ def spawn_continuous(player_manager, config, realm):
 
 
 def spawn_in_range(player_manager, config, realm):
-    print("SPAWN ATTEMPT")
     if player_manager.spawned:
         return 
     player_manager.spawned = True

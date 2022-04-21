@@ -6,19 +6,6 @@ import os
 from os import path as osp
 import matplotlib.pyplot as plt
 
-FIRST_MAP = np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 5, 5, 5, 5, 5, 0, 0],
-                      [0, 0, 7, 2, 2, 2, 8, 0, 0],
-                      [0, 0, 7, 2, 2, 2, 8, 0, 0],
-                      [0, 0, 7, 2, 2, 2, 8, 0, 0],
-                      [0, 0, 5, 5, 5, 5, 5, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0]])
-
-
-MAPS = [FIRST_MAP]
-
 
 class CustomMapGenerator(MapGenerator):
     def __init__(self, config):

@@ -10,6 +10,8 @@ from nmmo import core, infrastructure
 from nmmo.entity.npc import NPC
 from nmmo.entity import Player
 from nmmo.lib import colors
+from nmmo.spawn_system import SpawnFactory
+
 
 def prioritized(entities: Dict, merged: Dict):
    '''Sort actions into merged according to priority'''
@@ -129,7 +131,12 @@ class PlayerManager(EntityGroup):
 
       self.loader  = config.AGENT_LOADER
       self.palette = colors.Palette()
-      self.realm   = realm
+      self.realm   = realm        
+      spawn_type = config.SPAWN_PARAMS['type']
+      self.spawn_func = SpawnFactory.get_spawn_system(spawn_type)
+
+   def spawn(self):
+      self.spawn_func(self, self.config, self.realm)
 
    def reset(self):
       super().reset()
@@ -143,32 +150,6 @@ class PlayerManager(EntityGroup):
       super().spawn(player)
       self.idx   += 1
 
-   def spawn(self):
-      if self.config.SPAWN == self.config.SPAWN_CONCURRENT:
-         if self.spawned:
-            return 
-
-         self.spawned = True
-         idx = 0
-         for r, c in self.config.SPAWN():
-            idx += 1
-            assert not self.realm.map.tiles[r, c].occupied
-            self.spawnIndividual(r, c)
-         return
-          
-      #MMO-style spawning
-      for _ in range(self.config.PLAYER_SPAWN_ATTEMPTS):
-         if len(self.entities) >= self.config.NENT:
-            break
-         
-         r, c   = self.config.SPAWN()
-         
-         if self.realm.map.tiles[r, c].occupied:
-            continue
-         self.spawnIndividual(r, c)
-
-      while len(self.entities) == 0:
-         self.spawn()
 
 class Realm:
    '''Top-level world object'''
@@ -183,8 +164,8 @@ class Realm:
       self.map       = core.Map(config, self)
 
       #Entity handlers
-      self.players  = config.PLAYER_MANAGER(config, self)
-      self.npcs     = config.NPC_MANAGER(config, self)
+      self.players  = PlayerManager(config, self)
+      self.npcs     = NPCManager(config, self)
 
    def reset(self, idx):
       '''Reset the environment and load the specified map
