@@ -15,7 +15,7 @@ def prioritized(entities: Dict, merged: Dict):
    '''Sort actions into merged according to priority'''
    for idx, actions in entities.items():
       for atn, args in actions.items():
-         merged[atn.priority].append((idx, (atn, args.values())))
+         merged[atn.priority].append((idx, (atn, dict([(k.arg_name(), v) for k, v in args.items()]))))
    return merged
 
 class EntityGroup(Mapping):
@@ -235,7 +235,7 @@ class Realm:
       for priority in sorted(merged):
          for entID, (atn, args) in merged[priority]:
             ent = self.entity(entID)
-            atn.call(self, ent, *args)
+            atn.call(self, ent, **args)
 
       #Spawn new agent and cull dead ones
       #TODO: Place cull before spawn once PettingZoo API fixes respawn on same tick as death bug
