@@ -1,9 +1,9 @@
-from nmmo.core.terrain import MapGenerator
-import numpy as np
-from tqdm import tqdm
-import os
 from os import path as osp
 
+import numpy as np
+from tqdm import tqdm
+
+from nmmo.core.terrain import MapGenerator
 
 FIRST_MAP = np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0, 0, 0, 0, 0],
