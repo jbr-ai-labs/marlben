@@ -2,6 +2,7 @@ from collections import defaultdict
 from collections.abc import Mapping
 from typing import Dict
 
+from nmmo import Serialized
 from nmmo import core, infrastructure
 from nmmo.entity.npc import NPC
 from nmmo.entity import Player
@@ -50,7 +51,7 @@ class EntityGroup(Mapping):
 
     def reset(self):
         for entID, ent in self.entities.items():
-            self.dataframe.remove(nmmo.Serialized.Entity, entID, ent.pos)
+            self.dataframe.remove(Serialized.Entity, entID, ent.pos)
 
         self.spawned = False
         self.entities = {}
@@ -81,7 +82,7 @@ class EntityGroup(Mapping):
                 self.realm.map.tiles[r, c].delEnt(entID)
                 del self.entities[entID]
                 self.realm.dataframe.remove(
-                    nmmo.Serialized.Entity, entID, player.pos)
+                    Serialized.Entity, entID, player.pos)
 
         return self.dead
 
@@ -169,16 +170,14 @@ class Realm:
         # Generate maps if they do not exist
         config.MAP_GENERATOR(config).generate_all_maps()
 
-        # Entity handlers
-        self.players = PlayerManager(config, self)
-        self.npcs = NPCManager(config, self)
         # Load the world file
         self.dataframe = infrastructure.Dataframe(config)
         self.map = core.Map(config, self)
 
         # Entity handlers
-        self.players = config.PLAYER_MANAGER(config, self)
-        self.npcs = config.NPC_MANAGER(config, self)
+        self.players = PlayerManager(config, self)
+        self.npcs = NPCManager(config, self)
+
 
     def reset(self, idx):
         '''Reset the environment and load the specified map

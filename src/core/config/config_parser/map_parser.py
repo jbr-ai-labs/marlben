@@ -1,3 +1,7 @@
+from src.core.map_generator import CustomMapGenerator
+
+
+
 def parse_map_configuration(map_cfg):
     parameters = {}
     
@@ -32,4 +36,7 @@ def parse_map_configuration(map_cfg):
     parameters["MAP_HEIGHT"] = height
     parameters["MAP_WIDTH"] = width
     parameters["TOP_LEFT_CORNER"] = top_left_corner
+    parameters["MAP_GENERATOR"] = CustomMapGenerator
+    parameters["GENERATE_MAP_PREVIEWS"] = False
+
     return parameters

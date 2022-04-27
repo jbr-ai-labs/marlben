@@ -19,5 +19,13 @@
         "resource_capacity": 14,
         "restore_fraction": 1.0,
         "cooldown": 7
+    },
+
+    "environment": {
+        "horizon": 70,
+        "individual_survival_reward": 1,
+        "individual_death_penalty": -1,
+        "common_survival_reward": 2,
+        "common_death_penalty": -2
     }
 }

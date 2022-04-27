@@ -17,4 +17,5 @@ def parse_agent_configuration(agent_cfg):
     parameters["AGENTS"] = agents
     parameters["BASE_HEALTH"] = base_health
     parameters["REGEN_HEALTH"] = regen_health
+    
     return parameters
