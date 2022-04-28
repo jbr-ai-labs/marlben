@@ -5,7 +5,7 @@ class Corridor(nmmo.Env):
     def __init__(self, config):
         super().__init__(config)
     
-    def reward(self, agent):
+    def reward(self, player):
         info = {"population": player.pop}
 
         if player.entID not in self.realm.players:

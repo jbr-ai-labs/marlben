@@ -1,3 +1,4 @@
+from nmmo import Agent
 from nmmo.core import agent
 from scripted.baselines import Meander
 
@@ -8,7 +9,7 @@ def parse_agent_configuration(agent_cfg):
 
     nent = agent_cfg["count"]
     spawn_params = agent_cfg["spawn_params"]
-    agents = [Meander for _ in range(nent)] # TODO: change to neural network agents
+    agents = [Agent] # TODO: change to neural network agents
     base_health = agent_cfg["health"]
     regen_health = agent_cfg["regen"]
 

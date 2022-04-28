@@ -59,7 +59,7 @@ def spawn_in_range(player_manager, config, realm):
     map_height = config.MAP_HEIGHT
     map_width = config.MAP_WIDTH
     top, left = config.TOP_LEFT_CORNER
-    for _ in range(len(config.AGENTS)):
+    for _ in range(config.NENT):
         agent_idx = player_manager.idx - 1
 
         r_range = config.SPAWN_PARAMS['r_ranges'][agent_idx]
