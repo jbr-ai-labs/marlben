@@ -61,6 +61,10 @@ class ResourceAmount(Node):
         # Should pass max range?
         return list(range(max(entity.resources.food.val, entity.resources.water.val)))
 
+    @staticproperty
+    def arg_name():
+        return "amount"
+
 
 class Resource(Node):
     argType = Fixed
@@ -71,6 +75,10 @@ class Resource(Node):
 
     def args(stim, entity, config):
         return Style.edges
+
+    @staticproperty
+    def arg_name():
+        return "resource"
 
 
 class Water(Node):

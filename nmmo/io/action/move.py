@@ -51,6 +51,10 @@ class Direction(Node):
     def args(stim, entity, config):
         return Direction.edges
 
+    @staticproperty
+    def arg_name():
+        return "direction"
+
 
 class North(Node):
     delta = (-1, 0)

@@ -71,6 +71,10 @@ class Style(Node):
     def args(stim, entity, config):
         return Style.edges
 
+    @staticproperty
+    def arg_name():
+        return "style"
+
 
 class Target(Node):
     argType = None
@@ -85,6 +89,10 @@ class Target(Node):
     def args(stim, entity, config):
         #Should pass max range?
         return inRange(entity, stim, config, None)
+
+    @staticproperty
+    def arg_name():
+        return "targ"
 
 
 class Melee(Node):
