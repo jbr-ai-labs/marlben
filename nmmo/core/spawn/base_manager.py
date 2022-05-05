@@ -2,7 +2,7 @@ from collections.abc import Mapping
 
 import numpy as np
 
-import nmmo
+from nmmo import Serialized
 from nmmo.core.spawn.spawn_system import SpawnFactory
 from nmmo.entity import Player
 from nmmo.entity.npc import NPC

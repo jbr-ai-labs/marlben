@@ -18,7 +18,7 @@ class Lava(Material):
 
 class Water(Material):
    tex   = 'water'
-   index = 1
+   index = 7
 
 class Grass(Material):
    tex   = 'grass'
@@ -30,7 +30,7 @@ class Scrub(Material):
 
 class Forest(Material):
    tex   = 'forest'
-   index = 4
+   index = 8
 
    harvestable = True
    degen       = Scrub
@@ -52,12 +52,12 @@ class ScrubImpassible(Scrub):
 
 class BalancedWater(Forest):
    tex = 'water'
-   index = 7
+   index = 1
 
 
 class BalancedForest(Forest):
    tex = 'forest'
-   index = 8
+   index = 4
 
 
 class Meta(type):
