@@ -26,7 +26,7 @@ class Grass(Material):
 
 class Scrub(Material):
    tex = 'scrub'
-   index = 3
+   index = 6
 
 class Forest(Material):
    tex   = 'forest'
@@ -47,15 +47,17 @@ class Stone(Material):
 
 
 class ScrubImpassible(Scrub):
-   index = 6
+   index = 3
 
 
 class BalancedWater(Forest):
+   degen = ScrubImpassible
    tex = 'water'
    index = 1
 
 
 class BalancedForest(Forest):
+   degen = ScrubImpassible
    tex = 'forest'
    index = 4
 

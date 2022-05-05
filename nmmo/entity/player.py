@@ -21,7 +21,7 @@ class Player(entity.Entity):
         self.vision = 7
 
         # Submodules
-        self.skills = Skills(self)
+        self.skills = SkillsBalanced(self)
 
         self.diary = None
         if tasks := realm.config.TASKS:
