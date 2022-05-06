@@ -3,13 +3,17 @@ from collections import defaultdict
 import numpy as np
 from ray import rllib
 from ray.rllib.agents.callbacks import DefaultCallbacks
+from ray.rllib import MultiAgentEnv
+from ray.rllib.agents.ppo.ppo import PPOTrainer
+from ray.rllib.agents.ppo.appo import APPOTrainer
+from ray.rllib.agents.impala.impala import ImpalaTrainer
 from tqdm import tqdm
 
 import nmmo
 from scripted import baselines
 
 
-class RLlibEnv(nmmo.Env, rllib.MultiAgentEnv):
+class RLlibEnv(nmmo.Env, MultiAgentEnv):
     """Wrapper class for using Neural MMO with RLlib"""
 
     def __init__(self, config):
@@ -236,20 +240,20 @@ class Trainer:
 
 
 def PPO(config):
-    class PPO(Trainer, rllib.agents.ppo.ppo.PPOTrainer): pass
+    class PPO(Trainer, PPOTrainer): pass
 
     extra_config = {'sgd_minibatch_size': config.SGD_MINIBATCH_SIZE}
     return PPO, extra_config
 
 
 def APPO(config):
-    class APPO(Trainer, rllib.agents.ppo.appo.APPOTrainer): pass
+    class APPO(Trainer, APPOTrainer): pass
 
     return APPO, {}
 
 
 def Impala(config):
-    class Impala(Trainer, rllib.agents.impala.impala.ImpalaTrainer): pass
+    class Impala(Trainer, ImpalaTrainer): pass
 
     return Impala, {}
 
