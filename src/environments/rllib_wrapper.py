@@ -211,28 +211,7 @@ class Trainer:
         return stats
 
     def evaluate(self):
-        stat_dict = super().evaluate()
-        stats = stat_dict['evaluation']['custom_metrics']
-
-        if __debug__:
-            err = 'Missing evaluation key. Patch RLlib as per the installation guide'
-            assert 'Raw_Policy_IDs' in stats, err
-
-        policy_ids = stats.pop('Raw_Policy_IDs')
-        task_rewards = stats.pop('Raw_Task_Rewards')
-
-        for ids, scores in zip(policy_ids, task_rewards):
-            ratings = self.sr.update(policy_ids=ids, scores=scores)
-
-            for pop, (agent, rating) in enumerate(ratings.items()):
-                key = f'SR_{agent.__name__}_{pop}'
-
-                if key not in stats:
-                    stats[key] = []
-
-                stats[key] = rating.mu
-
-        return stat_dict
+        return super().evaluate()
 
 
 def PPO(config):
