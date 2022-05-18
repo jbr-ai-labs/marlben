@@ -9,6 +9,4 @@ def get_config(cfg_path):
     cfg_dict = {}
     cfg_dict["presets_list"] = [Sharing, Small, Debug]
     cfg_dict["parameters"] = parse_configuration(cfg_path)
-    Composed = build_from_dict(cfg_dict)
-    
-    return Composed
+    return build_from_dict(cfg_dict)

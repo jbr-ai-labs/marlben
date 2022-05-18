@@ -72,8 +72,7 @@ class EntityGroup(Mapping):
 
                 self.realm.map.tiles[r, c].delEnt(entID)
                 del self.entities[entID]
-                self.realm.dataframe.remove(
-                    Serialized.Entity, entID, player.pos)
+                self.realm.dataframe.remove(Serialized.Entity, entID, player.pos)
 
         return self.dead
 
@@ -101,7 +100,7 @@ class NPCManager(EntityGroup):
 
             center = self.config.TERRAIN_CENTER
             border = self.config.TERRAIN_BORDER
-            r, c = np.random.randint(border, center+border, 2).tolist()
+            r, c = np.random.randint(border, center + border, 2).tolist()
             if self.realm.map.tiles[r, c].occupied:
                 continue
 
@@ -138,7 +137,6 @@ class PlayerManager(EntityGroup):
     def spawnIndividual(self, r, c):
         pop, agent = next(self.agents)
         agent = agent(self.config, self.idx)
-        player = Player(self.realm, (r, c), agent,
-                        self.palette.color(pop), pop)
+        player = Player(self.realm, (r, c), agent, self.palette.color(pop), pop)
         super().spawn(player)
         self.idx += 1
