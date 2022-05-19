@@ -54,7 +54,7 @@ class ResourceAmount(Node):
 
     def args(stim, entity, config):
         # Should pass max range?
-        return list(range(max(entity.resources.food.val, entity.resources.water.val)))
+        return list(range(config.SHARE_MIN, config.SHARE_MAX + 1))
 
     @staticproperty
     def arg_name():

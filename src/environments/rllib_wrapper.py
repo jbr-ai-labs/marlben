@@ -190,12 +190,6 @@ class Trainer:
         super().__init__(config, env, logger_creator)
         self.env_config = config['env_config']['config']
 
-        agents = self.env_config.EVAL_AGENTS
-
-        err = 'Meander not in EVAL_AGENTS. Specify another agent to anchor to SR=0'
-        assert baselines.Meander in agents, err
-        self.sr = nmmo.OpenSkillRating(agents, baselines.Combat)
-
     @classmethod
     def name(cls):
         return cls.__bases__[0].__name__
