@@ -44,7 +44,7 @@ class RLlib:
     RESTORE_CHECKPOINT = 1000
 
     # Policy specification
-    EVAL_AGENTS = [baselines.Meander, baselines.Forage, baselines.Combat, nmmo.Agent]
+    EVAL_AGENTS = [nmmo.Agent]
     AGENTS = [nmmo.Agent]
     TASKS = []
 
