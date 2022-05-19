@@ -2,6 +2,9 @@ from enum import Enum
 import ray
 
 from .environments import Corridor
+from src.core.config import get_config
+
+
 from .environments.rllib_wrapper import RLlibEnv
 from .neural import rllib_policy
 
@@ -21,7 +24,8 @@ class EnvFactory:
             return Corridor
 
 
-def make(env_name, config):
+def make(env_name, config_path):
+    config = get_config(config_path)
     return EnvFactory.get_env(env_name)(config)
 
 

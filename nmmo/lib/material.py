@@ -18,7 +18,7 @@ class Lava(Material):
 
 class Water(Material):
    tex   = 'water'
-   index = 1
+   index = 7
 
 class Grass(Material):
    tex   = 'grass'
@@ -26,11 +26,11 @@ class Grass(Material):
 
 class Scrub(Material):
    tex = 'scrub'
-   index = 3
+   index = 6
 
 class Forest(Material):
    tex   = 'forest'
-   index = 4
+   index = 8
 
    harvestable = True
    degen       = Scrub
@@ -40,9 +40,27 @@ class Forest(Material):
          self.capacity = config.RESOURCE_FOREST_CAPACITY
          self.respawn  = config.RESOURCE_FOREST_RESPAWN
 
+
 class Stone(Material):
    tex   = 'stone'
    index = 5
+
+
+class ScrubImpassible(Scrub):
+   index = 3
+
+
+class BalancedWater(Forest):
+   degen = ScrubImpassible
+   tex = 'water'
+   index = 1
+
+
+class BalancedForest(Forest):
+   degen = ScrubImpassible
+   tex = 'forest'
+   index = 4
+
 
 class Meta(type):
    def __init__(self, name, bases, dict):
@@ -60,11 +78,11 @@ class Meta(type):
 
 class All(metaclass=Meta):
    '''List of all materials'''
-   materials = {Lava, Water, Grass, Scrub, Forest, Stone}
+   materials = {Lava, Water, Grass, Scrub, Forest, Stone, ScrubImpassible, BalancedForest, BalancedWater}
 
 class Impassible(metaclass=Meta):
    '''Materials that agents cannot walk through'''
-   materials = {Lava, Stone}
+   materials = {Lava, Stone, ScrubImpassible, BalancedForest, BalancedWater}
 
 class Habitable(metaclass=Meta):
    '''Materials that agents cannot walk on'''

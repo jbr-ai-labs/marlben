@@ -1,6 +1,6 @@
 from collections import defaultdict
 from typing import Dict
-
+from nmmo.core.spawn.base_manager import NPCManager, PlayerManager
 from nmmo import core, infrastructure
 
 
@@ -26,12 +26,11 @@ class Realm:
         self.map = core.Map(config, self)
 
         # Entity handlers
-        self.players = config.PLAYER_MANAGER(config, self)
-        self.npcs = config.NPC_MANAGER(config, self)
+        self.players = PlayerManager(config, self)
+        self.npcs = NPCManager(config, self)
 
     def reset(self, idx):
         '''Reset the environment and load the specified map
-
       Args:
          idx: Map index to load
       '''

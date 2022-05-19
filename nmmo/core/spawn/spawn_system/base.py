@@ -54,13 +54,20 @@ def spawn_continuous(player_manager, config, realm):
 
 def spawn_in_range(player_manager, config, realm):
     if player_manager.spawned:
-        return
-
+        return 
     player_manager.spawned = True
+    map_height = config.MAP_HEIGHT
+    map_width = config.MAP_WIDTH
+    top, left = config.TOP_LEFT_CORNER
     for _ in range(config.NENT):
         agent_idx = player_manager.idx - 1
+
         r_range = config.SPAWN_PARAMS['r_ranges'][agent_idx]
+        r_range = [r + top for r in r_range]
+            
         c_range = config.SPAWN_PARAMS['c_ranges'][agent_idx]
+        c_range = [c + left for c in c_range]
+
         r = random.randint(*r_range)
         c = random.randint(*c_range)
         assert not realm.map.tiles[r, c].occupied

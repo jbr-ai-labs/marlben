@@ -2,7 +2,8 @@ from collections.abc import Mapping
 
 import numpy as np
 
-import nmmo
+from nmmo import Serialized
+from nmmo.core.spawn.spawn_system import SpawnFactory
 from nmmo.entity import Player
 from nmmo.entity.npc import NPC
 from nmmo.lib import colors
@@ -41,11 +42,19 @@ class EntityGroup(Mapping):
 
     def reset(self):
         for entID, ent in self.entities.items():
-            self.dataframe.remove(nmmo.Serialized.Entity, entID, ent.pos)
+            self.dataframe.remove(Serialized.Entity, entID, ent.pos)
 
         self.spawned = False
         self.entities = {}
         self.dead = {}
+
+    def add(iden, entity):
+        assert iden not in self.entities
+        self.entities[iden] = entity
+
+    def remove(iden):
+        assert iden in self.entities
+        del self.entities[iden]
 
     def spawn(self, entity):
         pos, entID = entity.pos, entity.entID
@@ -63,7 +72,7 @@ class EntityGroup(Mapping):
 
                 self.realm.map.tiles[r, c].delEnt(entID)
                 del self.entities[entID]
-                self.realm.dataframe.remove(nmmo.Serialized.Entity, entID, player.pos)
+                self.realm.dataframe.remove(Serialized.Entity, entID, player.pos)
 
         return self.dead
 
@@ -114,6 +123,11 @@ class PlayerManager(EntityGroup):
         self.loader = config.AGENT_LOADER
         self.palette = colors.Palette()
         self.realm = realm
+        spawn_type = config.SPAWN_PARAMS['type']
+        self.spawn_func = SpawnFactory.get_spawn_system(spawn_type)
+
+    def spawn(self):
+        self.spawn_func(self, self.config, self.realm)
 
     def reset(self):
         super().reset()
@@ -126,6 +140,3 @@ class PlayerManager(EntityGroup):
         player = Player(self.realm, (r, c), agent, self.palette.color(pop), pop)
         super().spawn(player)
         self.idx += 1
-
-    def spawn(self):
-        pass

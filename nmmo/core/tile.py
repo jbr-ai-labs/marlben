@@ -61,6 +61,7 @@ class Tile:
       self.mat    = mat(config)
 
       self.capacity = self.mat.capacity
+      self.current_cooldown = 0
       self.tex      = mat.tex
       self.ents     = {}
 
@@ -78,9 +79,18 @@ class Tile:
       del self.ents[entID]
 
    def step(self):
-      if (not self.static and 
-            np.random.rand() < self.mat.respawn):
-         self.capacity += 1
+      if not self.static:
+         if self.config.RESOURCE_COOLDOWN > -1: # if cooldown system is enabled
+            if self.current_cooldown == 0: # if enough time passed capacity must be restored
+               self.capacity = 1
+            else:
+               self.current_cooldown -= 1 
+         elif np.random.rand() < self.mat.respawn:
+            self.capacity += 1
+
+      # if (not self.static and 
+      #       np.random.rand() < self.mat.respawn):
+      #    self.capacity += 1
 
       if self.static:
          self.state = self.mat
@@ -90,6 +100,7 @@ class Tile:
       if self.capacity == 0:
          return False
       elif self.capacity <= 1:
+         self.current_cooldown = self.config.RESOURCE_COOLDOWN # if harvesting, cooldown must be set to max
          self.state = self.mat.degen(self.config)
          self.index.update(self.state.index)
       self.capacity -= 1
