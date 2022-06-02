@@ -18,7 +18,7 @@
     "resources": {
         "resource_capacity": 14,
         "restore_fraction": 1.0,
-        "cooldown": 7
+        "cooldown": 5
     },
 
     "environment": {

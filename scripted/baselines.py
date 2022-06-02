@@ -183,26 +183,33 @@ class CorridorAgent(Scripted):
     
     def _share(self):
         self.scan_agents()
-        tartetID = self.closestID
-        return {
-            nmmo.action.Resource: self._resource_to_share,
-            nmmo.action.Target: tartetID,
-            nmmo.action.ResourceAmount: self._resource_amount
-        }
+        targetID = self.closestID
+        if targetID is None:
+            return None
+        else:
+            return {
+                nmmo.action.Resource: self._resource_to_share,
+                nmmo.action.Target: targetID,
+                nmmo.action.ResourceAmount: self._resource_amount
+            }
 
     def __call__(self, obs):
         super().__call__(obs)
-        direction = move.towards(self._direction)
+        
         agent = self.ob.agent
         Entity = nmmo.Serialized.Entity
         Tile = nmmo.Serialized.Tile
 
         r = nmmo.scripting.Observation.attribute(agent, Entity.R)
         c = nmmo.scripting.Observation.attribute(agent, Entity.C)
+        self._manage_direction(r, c)
+        direction = move.towards(self._direction)
         self.actions[nmmo.action.Move] = {nmmo.action.Direction: direction}
         if (r, c) == self._mid_pos:
-            self.actions[nmmo.action.Share] = self._share()
-        self._manage_direction(r, c)
+            share_action = self._share()
+            if share_action is not None:
+                self.actions[nmmo.action.Share] = share_action
+        
         return self.actions
 
 

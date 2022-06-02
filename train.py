@@ -6,5 +6,5 @@ from src.core.config import get_config
 
 if __name__ == '__main__':
     corridor_config = get_config("./src/environments/corridor/config.json")
-    corridor_config.RENDER = True
+    corridor_config.RENDER = False
     run_tune_experiment(corridor_config, 'Corridor', rllib_wrapper.PPO)

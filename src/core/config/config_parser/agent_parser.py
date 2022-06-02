@@ -8,7 +8,7 @@ def parse_agent_configuration(agent_cfg):
 
     parameters["NENT"] = agent_cfg["count"]
     parameters["SPAWN_PARAMS"] = agent_cfg["spawn_params"]
-    parameters["AGENTS"] = [CorridorAgent]
+    parameters["AGENTS"] = [CorridorAgent, Agent]
     parameters["BASE_HEALTH"] = agent_cfg["health"]
     parameters["REGEN_HEALTH"] = agent_cfg["regen"]
 
