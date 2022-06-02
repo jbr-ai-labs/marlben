@@ -5,6 +5,7 @@ from nmmo.lib import colors
 from scripted import move, attack
 
 
+
 class Scripted(nmmo.Agent):
     '''Template class for scripted models.
 
@@ -148,6 +149,62 @@ class Random(Scripted):
 
         move.random(self.config, self.ob, self.actions)
         return self.actions
+
+
+class CorridorAgent(Scripted):
+    name = 'CorridorAgent_'
+    '''Walks along the corridor and shares resources with another agent'''
+
+    def __init__(self, config, idx):
+        super().__init__(config, idx)
+        self._current_target = "resource"
+        self._resource_amount = 7
+        if (self.iden + 1) % 2 == 0:
+            self._direction = (0, -1)
+            self._resource_pos = (18, 13)
+            self._mid_pos = (18, 16)
+            self._resource_to_share = nmmo.action.Water
+        else:
+            self._direction = (0, 1)
+            self._resource_pos = (18, 20)
+            self._mid_pos = (18, 17)
+            self._resource_to_share = nmmo.action.Food
+
+    def _switch_direction(self, direction):
+        return tuple([-1 * d for d in direction])
+
+    def _manage_direction(self, r, c):
+        if self._current_target == "resource" and (r, c) == self._resource_pos:
+            self._direction = self._switch_direction(self._direction)
+            self._current_target = "mid"
+        elif self._current_target == "mid" and (r, c) == self._mid_pos:
+            self._direction = self._switch_direction(self._direction)
+            self._current_target = "resource"
+    
+    def _share(self):
+        self.scan_agents()
+        tartetID = self.closestID
+        return {
+            nmmo.action.Resource: self._resource_to_share,
+            nmmo.action.Target: tartetID,
+            nmmo.action.ResourceAmount: self._resource_amount
+        }
+
+    def __call__(self, obs):
+        super().__call__(obs)
+        direction = move.towards(self._direction)
+        agent = self.ob.agent
+        Entity = nmmo.Serialized.Entity
+        Tile = nmmo.Serialized.Tile
+
+        r = nmmo.scripting.Observation.attribute(agent, Entity.R)
+        c = nmmo.scripting.Observation.attribute(agent, Entity.C)
+        self.actions[nmmo.action.Move] = {nmmo.action.Direction: direction}
+        if (r, c) == self._mid_pos:
+            self.actions[nmmo.action.Share] = self._share()
+        self._manage_direction(r, c)
+        return self.actions
+
 
 
 class Meander(Scripted):
