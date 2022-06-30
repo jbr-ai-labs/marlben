@@ -8,9 +8,9 @@ from nmmo.lib import material
 
 ### Infrastructure ###
 class SkillGroup:
-   def __init__(self, realm):
+   def __init__(self, config):
       self.expCalc = experience.ExperienceCalculator()
-      self.config  = realm.dataframe.config
+      self.config  = config
       self.skills  = set()
 
    def update(self, realm, entity, actions):
@@ -59,24 +59,24 @@ class Skill:
 
 ### Skill Subsets ###
 class Harvesting(SkillGroup):
-   def __init__(self, realm):
-      super().__init__(realm)
+   def __init__(self, config):
+      super().__init__(config)
 
       self.fishing      = Fishing(self)
       self.hunting      = Hunting(self)
    
 
 class HarvestingBalanced(SkillGroup):
-   def __init__(self, realm):
-      super().__init__(realm)
+   def __init__(self, config):
+      super().__init__(config)
 
       self.fishing = CollectResource(self, "water")
       self.hunting = CollectResource(self, "food")
 
 
 class Combat(SkillGroup):
-   def __init__(self, realm):
-      super().__init__(realm)
+   def __init__(self, config):
+      super().__init__(config)
 
       self.constitution = Constitution(self)
       self.defense      = Defense(self)

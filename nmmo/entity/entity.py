@@ -1,6 +1,7 @@
 import nmmo
 from nmmo.lib import utils
 from nmmo.systems import combat, equipment
+import copy
 
 
 class Resources:
@@ -100,10 +101,11 @@ class Base:
 
 
 class Entity:
-    def __init__(self, realm, pos, iden, name, color, pop):
+    def __init__(self, realm, pos, iden, name, color, pop, skills):
         self.dataframe = realm.dataframe
         self.config = realm.config
         self.entID = iden
+        self.skills = copy.deepcopy(skills)
 
         self.repr = None
         self.vision = 5

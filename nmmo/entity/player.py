@@ -8,8 +8,8 @@ from nmmo.entity import entity
 
 
 class Player(entity.Entity):
-    def __init__(self, realm, pos, agent, color, pop):
-        super().__init__(realm, pos, agent.iden, agent.name, color, pop)
+    def __init__(self, realm, pos, agent, color, pop, skills):
+        super().__init__(realm, pos, agent.iden, agent.name, color, pop, skills)
 
         self.agent = agent
         self.pop = pop
@@ -21,8 +21,6 @@ class Player(entity.Entity):
         self.vision = 7
 
         # Submodules
-        self.skills = SkillsBalanced(self)
-
         self.diary = None
         if tasks := realm.config.TASKS:
             self.diary = Diary(tasks)

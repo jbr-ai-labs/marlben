@@ -9,6 +9,93 @@ from nmmo.entity.npc import NPC
 from nmmo.lib import colors
 
 
+class _IdCounter:
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self.npc_id = 0
+        self.player_id = 0
+
+    def next_npc_id(self):
+        self.npc_id -= 1
+        return self.npc_id
+
+    def next_player_id(self):
+        self.player_id += 1
+        return self.player_id
+
+
+class GroupsManager:
+    def __init__(self, config, realm):
+        self.realm = realm
+        self.config = config
+        self.id_counter = _IdCounter()
+
+        self.npc_groups = [
+            NPCGroup(config, realm, npc_group_config, self.id_counter)
+            for npc_group_config in self.config.NPC_GROUPS
+        ]
+        self.player_groups = [
+            PlayerGroup(config, realm, player_group_config, self.id_counter)
+            for player_group_config in self.config.PLAYER_GROUPS
+        ]
+
+    def spawn(self):
+        for npc_group in self.npc_groups:
+            npc_group.spawn()
+        for player_group in self.player_groups:
+            player_group.spawn()
+
+    def reset(self):
+        self.id_counter.reset()
+        for npc_group in self.npc_groups:
+            npc_group.reset()
+        for player_group in self.player_groups:
+            player_group.reset()
+
+    def get_npc_actions(self):
+        actions = {}
+        for npc_group in self.npc_groups:
+            actions.update(npc_group.actions())
+        return actions
+
+    def get_entity_by_id(self, id):
+        if id < 0:
+            for npc_group in self.npc_groups:
+                if id in npc_group.entities:
+                    return npc_group[id]
+        else:
+            for player_group in self.player_groups:
+                if id in player_group.entities:
+                    return player_group[id]
+        return None
+
+    @property
+    def packet(self):
+        return [npc_group.packet for npc_group in self.npc_groups] + [player_group.packet for player_group in self.player_groups]
+
+    def update(self, actions):
+        for npc_group in self.npc_groups:
+            npc_group.update(actions)
+        for player_group in self.player_groups:
+            player_group.update(actions)
+
+    def players_count(self):
+        count = 0
+        for player_group in self.player_groups:
+            count += len(player_group.entities)
+        return count
+
+    def cull(self):
+        dead = {}
+        for npc_group in self.npc_groups:
+            npc_group.cull()
+        for player_group in self.player_groups:
+            dead.update(player_group.cull())
+        return dead
+
+
 class EntityGroup(Mapping):
     def __init__(self, config, realm):
         self.dataframe = realm.dataframe
@@ -81,62 +168,72 @@ class EntityGroup(Mapping):
             entity.update(self.realm, actions)
 
 
-class NPCManager(EntityGroup):
-    def __init__(self, config, realm):
+class NPCGroup(EntityGroup):
+    def __init__(self, config, realm, group_config, id_counter):
         super().__init__(config, realm)
         self.realm = realm
-
-    def reset(self):
-        super().reset()
-        self.idx = -1
+        self.group_config = group_config
+        self.coordinate_sampler = self.group_config.SPAWN_COORDINATES_SAMPLER
+        self.skills_sampler = self.group_config.SPAWN_SKILLS_SAMPLER
+        self.id_counter = id_counter
 
     def spawn(self):
         if not self.config.game_system_enabled('NPC'):
-            return
+            return  # TODO: Move to global manager
 
-        for _ in range(self.config.NPC_SPAWN_ATTEMPTS):
-            if len(self.entities) >= self.config.NMOB:
-                break
+        for _ in range(self.group_config.NENT - len(self.entities)):
+            for _ in range(self.group_config.SPAWN_ATTEMPTS_PER_ENT):
+                r, c = self.coordinate_sampler.get_next()
+                if self.realm.map.tiles[r, c].occupied:
+                    continue
 
-            center = self.config.TERRAIN_CENTER
-            border = self.config.TERRAIN_BORDER
-            r, c = np.random.randint(border, center + border, 2).tolist()
-            if self.realm.map.tiles[r, c].occupied:
-                continue
-
-            npc = NPC.spawn(self.realm, (r, c), self.idx)
-            if npc:
-                super().spawn(npc)
-                self.idx -= 1
-
-    def actions(self, realm):
-        actions = {}
-        for idx, entity in self.entities.items():
-            actions[idx] = entity.decide(realm)
-        return actions
-
-
-class PlayerManager(EntityGroup):
-    def __init__(self, config, realm):
-        super().__init__(config, realm)
-
-        self.loader = config.AGENT_LOADER
-        self.palette = colors.Palette()
-        self.realm = realm
-        spawn_type = config.SPAWN_PARAMS['type']
-        self.spawn_func = SpawnFactory.get_spawn_system(spawn_type)
-
-    def spawn(self):
-        self.spawn_func(self, self.config, self.realm)
+                skills = self.skills_sampler.get_next((r, c))
+                npc = NPC.spawn(self.realm, (r, c), self.id_counter.next_npc_id(), skills)  # TODO: Check & change
+                if npc:
+                    super().spawn(npc)
+                    break
 
     def reset(self):
         super().reset()
-        self.agents = self.loader(self.config)
-        self.idx = 1
+        self.coordinate_sampler.reset(self.config)
 
-    def spawnIndividual(self, r, c):
-        pop, agent = next(self.agents)
-        agent = agent(self.config, self.idx)
-        player = Player(self.realm, (r, c), agent, self.palette.color(pop), pop)
-        super().spawn(player)
-        self.idx += 1
+    def actions(self):
+        actions = {}
+        for idx, entity in self.entities.items():
+            actions[idx] = entity.decide(self.realm)
+        return actions
+
+
+class PlayerGroup(EntityGroup):
+    def __init__(self, config, realm, group_config, id_counter):
+        super().__init__(config, realm)
+
+        self.group_config = group_config
+        self.loader = group_config.AGENT_LOADER
+        self.palette = colors.Palette()
+        self.coordinate_sampler = self.group_config.SPAWN_COORDINATES_SAMPLER
+        self.skills_sampler = self.group_config.SPAWN_SKILLS_SAMPLER
+        self.realm = realm
+        self.id_counter = id_counter
+
+    def spawn(self):
+        for _ in range(self.group_config.NENT - len(self.entities)):
+            r_f, c_f = None, None
+            for _ in range(self.group_config.SPAWN_ATTEMPTS_PER_ENT):
+                r, c = self.coordinate_sampler.get_next()
+                if not self.realm.map.tiles[r, c].occupied:
+                    r_f, c_f = r, c
+                    break
+
+            if r_f is not None:
+                pop_id, agent = next(self.agents)
+                agent = agent(self.config, self.id_counter.next_player_id())
+                skills = self.skills_sampler.get_next((r_f, c_f))
+                player = Player(self.realm, (r_f, c_f), agent, self.palette.color(pop_id), pop_id, skills)
+                super().spawn(player)
+
+    def reset(self):
+        super().reset()
+        self.agents = self.loader(self.group_config)
+        self.coordinate_sampler.reset(self.config)
+        self.skills_sampler.reset(self.config)
