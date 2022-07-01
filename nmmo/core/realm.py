@@ -71,6 +71,8 @@ class Realm:
         Args:
             actions: Dict of agent actions
         '''
+
+        actions = self.entity_group_manager.mask_player_actions(actions)
         # Prioritize actions
         npcActions = self.entity_group_manager.get_npc_actions()
         merged = defaultdict(list)

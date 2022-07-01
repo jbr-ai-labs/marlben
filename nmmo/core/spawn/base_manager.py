@@ -7,6 +7,8 @@ from nmmo.core.spawn.spawn_system import SpawnFactory
 from nmmo.entity import Player
 from nmmo.entity.npc import NPC
 from nmmo.lib import colors
+from nmmo.io.action import Attack, Style, Melee, Range, Mage, Heal
+import copy
 
 
 class _IdCounter:
@@ -86,6 +88,15 @@ class GroupsManager:
         for player_group in self.player_groups:
             count += len(player_group.entities)
         return count
+
+    def mask_player_actions(self, actions: dict):
+        result = {}
+        for i, action in actions.items():
+            for player_group in self.player_groups:
+                if i in player_group.entities:
+                    result[i] = player_group.mask_action(action)
+                    break
+        return result
 
     def cull(self):
         dead = {}
@@ -214,6 +225,7 @@ class PlayerGroup(EntityGroup):
         self.palette = colors.Palette()
         self.coordinate_sampler = self.group_config.SPAWN_COORDINATES_SAMPLER
         self.skills_sampler = self.group_config.SPAWN_SKILLS_SAMPLER
+        self.banned_attack_styles = self.group_config.BANNED_ATTACK_STYLES
         self.realm = realm
         self.id_counter = id_counter
         self.group_id = group_id
@@ -239,3 +251,10 @@ class PlayerGroup(EntityGroup):
         self.agents = self.loader(self.group_config)
         self.coordinate_sampler.reset(self.config)
         self.skills_sampler.reset(self.config)
+
+    def mask_action(self, action: dict):
+        action = copy.deepcopy(action)
+        if Attack in action:
+            if action[Attack][Style] in self.banned_attack_styles:
+                action.pop(Attack)
+        return action

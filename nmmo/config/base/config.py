@@ -19,6 +19,7 @@ class PlayerGroupConfig(Template):
     SPAWN_COORDINATES_SAMPLER = position_samplers.ConcurrentPositionSampler()
     SPAWN_SKILLS_SAMPLER = skill_samplers.DefaultSkillSampler()
     SPAWN_ATTEMPTS_PER_ENT = 5
+    BANNED_ATTACK_STYLES = []
     NENT = 16
 
 
