@@ -70,6 +70,20 @@ class ContinuousPositionSampler(PositionSampler):
             self.y_range_sampler = UniformSampler(top, top + map_height)
 
 
+class UniformPositionSampler(PositionSampler):
+    def __init__(self):
+        super().__init__()
+        self.x_sampler = None
+        self.y_sampler = None
+
+    def reset(self, config):
+        map_height = config.MAP_HEIGHT
+        map_width = config.MAP_WIDTH
+        top, left = config.TOP_LEFT_CORNER
+        self.x_sampler = UniformSampler(left, left + map_width)
+        self.y_sampler = UniformSampler(top, top + map_height)
+
+
 class RangePositionSampler(PositionSampler):
     def __init__(self, r_range, c_range):
         super().__init__()
@@ -79,7 +93,7 @@ class RangePositionSampler(PositionSampler):
         self.c_range = c_range
 
     def get_next(self):
-        return self.x_sampler, self.y_sampler
+        return self.x_sampler.get_next(), self.y_sampler.get_next()
 
     def reset(self, config):
         if self.x_sampler is None:

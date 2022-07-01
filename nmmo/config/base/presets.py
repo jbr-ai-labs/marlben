@@ -1,4 +1,15 @@
 from nmmo.config.base.config import Config
+from nmmo.core.spawn.spawn_system import skill_samplers
+from .config import NPCGroupConfig, PlayerGroupConfig
+
+
+class SmallNPCGroupConfig(NPCGroupConfig):
+    NENT = 32
+    SPAWN_SKILLS_SAMPLER = skill_samplers.DefaultNPCSkillSampler(1, 10, 1)
+
+
+class SmallPlayerGroupConfig(PlayerGroupConfig):
+    NENT = 64
 
 
 class Small(Config):
@@ -10,13 +21,17 @@ class Small(Config):
     TERRAIN_LOG_INTERPOLATE_MIN = 0
 
     TERRAIN_CENTER = 32
-    NENT = 64
-    NMOB = 32
+    PLAYER_GROUPS = [SmallPlayerGroupConfig()]
+    NPC_GROUPS = [SmallNPCGroupConfig()]
 
-    PLAYER_SPAWN_ATTEMPTS = 1
 
-    NPC_LEVEL_MAX = 10
-    NPC_LEVEL_SPREAD = 1
+class MediumNPCGroupConfig(NPCGroupConfig):
+    NENT = 128
+    SPAWN_SKILLS_SAMPLER = skill_samplers.DefaultNPCSkillSampler(1, 30, 5)
+
+
+class MediumPlayerGroupConfig(PlayerGroupConfig):
+    NENT = 256
 
 
 class Medium(Config):
@@ -26,13 +41,18 @@ class Medium(Config):
     MAP_PREVIEW_DOWNSCALE = 16
 
     TERRAIN_CENTER = 128
-    NENT = 256
-    NMOB = 128
 
-    PLAYER_SPAWN_ATTEMPTS = 2
+    PLAYER_GROUPS = [MediumPlayerGroupConfig()]
+    NPC_GROUPS = [MediumNPCGroupConfig()]
 
-    NPC_LEVEL_MAX = 30
-    NPC_LEVEL_SPREAD = 5
+
+class LargeNPCGroupConfig(NPCGroupConfig):
+    NENT = 1024
+    SPAWN_SKILLS_SAMPLER = skill_samplers.DefaultNPCSkillSampler(1, 99, 10)
+
+
+class LargePlayerGroupConfig(PlayerGroupConfig):
+    NENT = 2048
 
 
 class Large(Config):
@@ -42,10 +62,5 @@ class Large(Config):
     MAP_PREVIEW_DOWNSCALE = 64
 
     TERRAIN_CENTER = 1024
-    NENT = 2048
-    NMOB = 1024
-
-    PLAYER_SPAWN_ATTEMPTS = 16
-
-    NPC_LEVEL_MAX = 99
-    NPC_LEVEL_SPREAD = 10
+    PLAYER_GROUPS = [LargePlayerGroupConfig()]
+    NPC_GROUPS = [LargeNPCGroupConfig()]

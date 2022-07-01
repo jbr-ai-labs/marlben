@@ -20,28 +20,6 @@ class SequentialLoader:
         return self.idx, self.items[self.idx]
 
 
-class TeamLoader:
-    '''config.AGENT_LOADER that loads agent populations adjacent'''
-
-    def __init__(self, config):
-        items = config.AGENTS
-        self.team_size = config.NENT // config.NPOP
-
-        for idx, itm in enumerate(items):
-            itm.policyID = idx
-
-        self.items = items
-        self.idx = -1
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        self.idx += 1
-        team_idx = self.idx // self.team_size
-        return team_idx, self.items[team_idx]
-
-
 class Template(metaclass=utils.StaticIterable):
     def __init__(self):
         self.data = {}
