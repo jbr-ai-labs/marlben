@@ -109,11 +109,20 @@ class Config(Template):
     '''Size of each map (number of tiles along each side)'''
 
     TERRAIN_BORDER = 16
+    TOP_LEFT_CORNER = (16, 16)
     '''Number of lava border tiles surrounding each side of the map'''
 
     @property
     def TERRAIN_SIZE(self):
         return int(self.TERRAIN_CENTER + 2 * self.TERRAIN_BORDER)
+
+    @property
+    def NENT(self):
+        return sum([cfg.NENT for cfg in self.PLAYER_GROUPS])
+
+    @property
+    def NPOP(self):
+        return len(self.PLAYER_GROUPS)
 
     TERRAIN_FLIP_SEED = False
     '''Whether to negate the seed used for generation (useful for unique heldout maps)'''

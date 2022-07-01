@@ -37,8 +37,8 @@ class GroupsManager:
             for npc_group_config in self.config.NPC_GROUPS
         ]
         self.player_groups = [
-            PlayerGroup(config, realm, player_group_config, self.id_counter)
-            for player_group_config in self.config.PLAYER_GROUPS
+            PlayerGroup(config, realm, player_group_config, self.id_counter, i)
+            for i, player_group_config in enumerate(self.config.PLAYER_GROUPS)
         ]
 
     def spawn(self):
@@ -196,6 +196,7 @@ class NPCGroup(EntityGroup):
     def reset(self):
         super().reset()
         self.coordinate_sampler.reset(self.config)
+        self.skills_sampler.reset(self.config)
 
     def actions(self):
         actions = {}
@@ -205,7 +206,7 @@ class NPCGroup(EntityGroup):
 
 
 class PlayerGroup(EntityGroup):
-    def __init__(self, config, realm, group_config, id_counter):
+    def __init__(self, config, realm, group_config, id_counter, group_id):
         super().__init__(config, realm)
 
         self.group_config = group_config
@@ -215,6 +216,7 @@ class PlayerGroup(EntityGroup):
         self.skills_sampler = self.group_config.SPAWN_SKILLS_SAMPLER
         self.realm = realm
         self.id_counter = id_counter
+        self.group_id = group_id
 
     def spawn(self):
         for _ in range(self.group_config.NENT - len(self.entities)):
@@ -229,7 +231,7 @@ class PlayerGroup(EntityGroup):
                 pop_id, agent = next(self.agents)
                 agent = agent(self.config, self.id_counter.next_player_id())
                 skills = self.skills_sampler.get_next((r_f, c_f))
-                player = Player(self.realm, (r_f, c_f), agent, self.palette.color(pop_id), pop_id, skills)
+                player = Player(self.realm, (r_f, c_f), agent, self.palette.color(self.group_id), self.group_id, skills)
                 super().spawn(player)
 
     def reset(self):

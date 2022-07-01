@@ -287,7 +287,7 @@ class Env(ParallelEnv):
         infos = {}
 
         obs, rewards, dones, self.raw = {}, {}, {}, {}
-        for entID, ent in self.realm.players.items():
+        for entID, ent in self.realm.players():
             ob = self.realm.dataframe.get(ent)
             self.obs[entID] = ob
             if ent.agent.scripted:
@@ -314,7 +314,7 @@ class Env(ParallelEnv):
             obs[ent.entID] = self.dummy_ob
 
         # Pettingzoo API
-        self.agents = list(self.realm.players.keys())
+        self.agents = list(self.realm.agents())
 
         self.obs = obs
         return obs, rewards, dones, infos

@@ -21,6 +21,8 @@ class Small(Config):
     TERRAIN_LOG_INTERPOLATE_MIN = 0
 
     TERRAIN_CENTER = 32
+    MAP_HEIGHT = 32
+    MAP_WIDTH = 32
     PLAYER_GROUPS = [SmallPlayerGroupConfig()]
     NPC_GROUPS = [SmallNPCGroupConfig()]
 
@@ -41,6 +43,8 @@ class Medium(Config):
     MAP_PREVIEW_DOWNSCALE = 16
 
     TERRAIN_CENTER = 128
+    MAP_HEIGHT = 128
+    MAP_WIDTH = 128
 
     PLAYER_GROUPS = [MediumPlayerGroupConfig()]
     NPC_GROUPS = [MediumNPCGroupConfig()]
@@ -62,5 +66,7 @@ class Large(Config):
     MAP_PREVIEW_DOWNSCALE = 64
 
     TERRAIN_CENTER = 1024
+    MAP_HEIGHT = 1024
+    MAP_WIDTH = 1024
     PLAYER_GROUPS = [LargePlayerGroupConfig()]
     NPC_GROUPS = [LargeNPCGroupConfig()]

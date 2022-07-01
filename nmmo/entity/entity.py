@@ -140,7 +140,7 @@ class Entity:
         self.status.update(realm, self, actions)
         self.history.update(realm, self, actions)
 
-    def receiveDamage(self, source, dmg):
+    def receiveDamage(self, source, dmg, stealing_enabled):
         self.history.damage.update(dmg)
         self.resources.health.decrement(dmg)
 
@@ -153,7 +153,7 @@ class Entity:
     def receiveLoot(self, loadout):
         pass
 
-    def applyDamage(self, dmg, style):
+    def applyDamage(self, dmg, style, stealing_enabled):
         pass
 
     @property

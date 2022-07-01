@@ -77,3 +77,5 @@ class DefaultNPCSkillSampler(SkillsSampler):
         skills.melee.setExpByLevel(melee)
         skills.range.setExpByLevel(ranged)
         skills.mage.setExpByLevel(mage)
+
+        return skills

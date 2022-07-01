@@ -83,6 +83,9 @@ class UniformPositionSampler(PositionSampler):
         self.x_sampler = UniformSampler(left, left + map_width)
         self.y_sampler = UniformSampler(top, top + map_height)
 
+    def get_next(self):
+        return self.x_sampler.get_next(), self.y_sampler.get_next()
+
 
 class RangePositionSampler(PositionSampler):
     def __init__(self, r_range, c_range):

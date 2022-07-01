@@ -53,6 +53,18 @@ class Realm:
         '''Get entity by ID'''
         return self.entity_group_manager.get_entity_by_id(entID)
 
+    def players(self):
+        players = []
+        for player_group in self.entity_group_manager.player_groups:
+            players.extend(player_group.entities.items())
+        return players
+
+    def agents(self):
+        agents = []
+        for player_group in self.entity_group_manager.player_groups:
+            agents.extend(player_group.entities.keys())
+        return agents
+
     def step(self, actions):
         '''Run game logic for one tick
       
@@ -60,7 +72,7 @@ class Realm:
             actions: Dict of agent actions
         '''
         # Prioritize actions
-        npcActions = self.npcs.actions(self)
+        npcActions = self.entity_group_manager.get_npc_actions()
         merged = defaultdict(list)
         prioritized(actions, merged)
         prioritized(npcActions, merged)

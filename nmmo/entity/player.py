@@ -46,14 +46,14 @@ class Player(entity.Entity):
         self.skills.applyDamage(dmg, style)
 
     def receiveDamage(self, source, dmg, stealing_enabled=True):
-        if not super().receiveDamage(source, dmg):
+        if not super().receiveDamage(source, dmg, stealing_enabled):
             if source:
                 source.history.playerKills += 1
             return
         if dmg > 0 and stealing_enabled:
             self.resources.food.decrement(dmg)
             self.resources.water.decrement(dmg)
-        self.skills.receiveDamage(dmg)
+        self.skills.receiveDamage(dmg, stealing_enabled)
 
     def receiveLoot(self, loadout):
         if loadout.chestplate.level > self.loadout.chestplate.level:

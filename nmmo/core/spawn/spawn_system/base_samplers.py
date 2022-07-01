@@ -48,7 +48,7 @@ class ListSampler(Sampler):
 
     def get_next(self):
         x = self.list[self.i]
-        self.i += len(self.list)
+        self.i = (self.i + 1) % len(self.list)
         return x
 
     def reset(self):

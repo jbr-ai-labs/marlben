@@ -38,8 +38,8 @@ class NPC(entity.Entity):
          return
 
       #Set equipment levels
-      ent.loadout.chestplate.level = NPC.gearLevel(skills.defense.level())
-      ent.loadout.platelegs.level  = NPC.gearLevel(skills.defense.level())
+      ent.loadout.chestplate.level = NPC.gearLevel(skills.defense.level)
+      ent.loadout.platelegs.level  = NPC.gearLevel(skills.defense.level)
       ent.skills.style = random.choice((nmmo.action.Melee, nmmo.action.Range, nmmo.action.Mage))
 
       return ent

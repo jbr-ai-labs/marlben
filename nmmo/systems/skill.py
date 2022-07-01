@@ -91,7 +91,7 @@ class Combat(SkillGroup):
 
       return data
 
-   def applyDamage(self, dmg, style):
+   def applyDamage(self, dmg, style, stealing_enabled):
       if not self.config.game_system_enabled('Progression'):
          return
 
@@ -106,7 +106,7 @@ class Combat(SkillGroup):
       skill      = self.__dict__[style]
       skill.exp += abs(dmg) * baseScale * combScale
 
-   def receiveDamage(self, dmg):
+   def receiveDamage(self, dmg, stealing_enabled):
       if not self.config.game_system_enabled('Progression') or dmg < 0.:
          return
 
