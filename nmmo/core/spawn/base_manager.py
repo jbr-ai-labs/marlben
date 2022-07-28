@@ -84,6 +84,10 @@ class GroupsManager:
         for player_group in self.player_groups:
             player_group.update(actions)
 
+    def update_diary(self):
+        for player_group in self.player_groups:
+            player_group.update_diary()
+
     def players_count(self):
         count = 0
         for player_group in self.player_groups:
@@ -188,7 +192,7 @@ class NPCGroup(EntityGroup):
         self.coordinate_sampler = self.group_config.SPAWN_COORDINATES_SAMPLER
         self.skills_sampler = self.group_config.SPAWN_SKILLS_SAMPLER
         self.id_counter = id_counter
-        self.available_styles = {Melee, Range, Mage} - set(group_config.BANNED_ATTACK_STYLES)
+        self.available_styles = list({Melee, Range, Mage}.difference(set(group_config.BANNED_ATTACK_STYLES)))
 
     def spawn(self):
         if not self.config.game_system_enabled('NPC'):
@@ -248,6 +252,10 @@ class PlayerGroup(EntityGroup):
                 skills = self.skills_sampler.get_next((r_f, c_f))
                 player = Player(self.realm, (r_f, c_f), agent, self.palette.color(self.group_id), self.group_id, skills)
                 super().spawn(player)
+
+    def update_diary(self):
+        for entID, entity in self.entities.items():
+            entity.update_diary(self.realm)
 
     def reset(self):
         super().reset()

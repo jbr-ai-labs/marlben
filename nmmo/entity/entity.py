@@ -140,6 +140,9 @@ class Entity:
         self.status.update(realm, self, actions)
         self.history.update(realm, self, actions)
 
+    def update_diary(self, realm):
+        pass
+
     def receiveDamage(self, source, dmg, stealing_enabled):
         self.history.damage.update(dmg)
         self.resources.health.decrement(dmg)
