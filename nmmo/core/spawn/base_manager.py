@@ -1,3 +1,4 @@
+import random
 from collections.abc import Mapping
 
 import numpy as np
@@ -187,6 +188,7 @@ class NPCGroup(EntityGroup):
         self.coordinate_sampler = self.group_config.SPAWN_COORDINATES_SAMPLER
         self.skills_sampler = self.group_config.SPAWN_SKILLS_SAMPLER
         self.id_counter = id_counter
+        self.available_styles = {Melee, Range, Mage} - set(group_config.BANNED_ATTACK_STYLES)
 
     def spawn(self):
         if not self.config.game_system_enabled('NPC'):
@@ -200,6 +202,7 @@ class NPCGroup(EntityGroup):
 
                 skills = self.skills_sampler.get_next((r, c))
                 npc = NPC.spawn(self.realm, (r, c), self.id_counter.next_npc_id(), skills)  # TODO: Check & change
+                npc.skills.style = random.choice(self.available_styles)
                 if npc:
                     super().spawn(npc)
                     break

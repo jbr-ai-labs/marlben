@@ -59,9 +59,6 @@ class Config(Template):
     AGENT_LOADER = SequentialLoader
     '''Agent loader class specifying spawn sampling'''
 
-    AGENTS = []
-    '''Agent classes from which to spawn'''
-
     TASKS = []
     '''Tasks for which to compute rewards'''
 
