@@ -34,9 +34,10 @@ class Env(ParallelEnv):
             err = 'Config {} is not a config instance (did you pass the class?)'
             assert isinstance(config, nmmo.config.Config), err.format(config)
 
-        if not config.AGENTS:
-            from nmmo import agent
-            config.AGENTS = [agent.Random]
+        for entity_group in config.PLAYER_GROUPS:
+            if not entity_group.AGENTS:
+                from nmmo import agent
+                config.AGENTS = [agent.Random]
 
         if not config.MAP_GENERATOR:
             config.MAP_GENERATOR = terrain.MapGenerator
