@@ -8,10 +8,10 @@ from nmmo.entity import entity
 from nmmo.systems import combat, equipment, ai, combat, skill
 from nmmo.lib.colors import Neon
 
+
 class NPC(entity.Entity):
-   def __init__(self, realm, pos, iden, name, color, pop):
-      super().__init__(realm, pos, iden, name, color, pop)
-      self.skills = skill.Combat(self)
+   def __init__(self, realm, pos, iden, name, color, pop, skills):
+      super().__init__(realm, pos, iden, name, color, pop, skills)
 
    def update(self, realm, actions):
       super().update(realm, actions)
@@ -23,39 +23,24 @@ class NPC(entity.Entity):
       self.lastAction = actions
 
    @staticmethod
-   def spawn(realm, pos, iden):
+   def spawn(realm, pos, iden, skills):
       config = realm.config
 
       #Select AI Policy
       danger = combat.danger(config, pos)
       if danger >= config.NPC_SPAWN_AGGRESSIVE:
-         ent = Aggressive(realm, pos, iden)
+         ent = Aggressive(realm, pos, iden, skills)
       elif danger >= config.NPC_SPAWN_NEUTRAL:
-         ent = PassiveAggressive(realm, pos, iden)
+         ent = PassiveAggressive(realm, pos, iden, skills)
       elif danger >= config.NPC_SPAWN_PASSIVE:
-         ent = Passive(realm, pos, iden)
+         ent = Passive(realm, pos, iden, skills)
       else:
          return
 
-      #Set levels
-      levels = NPC.clippedLevels(config, danger, n=5)
-      constitution, defense, melee, ranged, mage = levels
-
-      ent.resources.health.max = constitution
-      ent.resources.health.update(constitution)
-
-      ent.skills.constitution.setExpByLevel(constitution)
-      ent.skills.defense.setExpByLevel(defense)
-      ent.skills.melee.setExpByLevel(melee)
-      ent.skills.range.setExpByLevel(ranged)
-      ent.skills.mage.setExpByLevel(mage)
-
-      ent.skills.style = random.choice(
-         (nmmo.action.Melee, nmmo.action.Range, nmmo.action.Mage))
-
       #Set equipment levels
-      ent.loadout.chestplate.level = NPC.gearLevel(defense)
-      ent.loadout.platelegs.level  = NPC.gearLevel(defense)
+      ent.loadout.chestplate.level = NPC.gearLevel(skills.defense.level)
+      ent.loadout.platelegs.level  = NPC.gearLevel(skills.defense.level)
+      ent.skills.style = random.choice((nmmo.action.Melee, nmmo.action.Range, nmmo.action.Mage))
 
       return ent
 
@@ -99,25 +84,28 @@ class NPC(entity.Entity):
    def isNPC(self) -> bool:
       return True
 
+
 class Passive(NPC):
-   def __init__(self, realm, pos, iden):
-      super().__init__(realm, pos, iden, 'Passive', Neon.GREEN, -1)
+   def __init__(self, realm, pos, iden, skills):
+      super().__init__(realm, pos, iden, 'Passive', Neon.GREEN, -1, skills)
       self.dataframe.init(nmmo.Serialized.Entity, iden, pos)
 
    def decide(self, realm):
       return ai.policy.passive(realm, self)
 
+
 class PassiveAggressive(NPC):
-   def __init__(self, realm, pos, iden):
-      super().__init__(realm, pos, iden, 'Neutral', Neon.ORANGE, -2)
+   def __init__(self, realm, pos, iden, skills):
+      super().__init__(realm, pos, iden, 'Neutral', Neon.ORANGE, -2, skills)
       self.dataframe.init(nmmo.Serialized.Entity, iden, pos)
 
    def decide(self, realm):
       return ai.policy.neutral(realm, self)
 
+
 class Aggressive(NPC):
-   def __init__(self, realm, pos, iden):
-      super().__init__(realm, pos, iden, 'Hostile', Neon.RED, -3)
+   def __init__(self, realm, pos, iden, skills):
+      super().__init__(realm, pos, iden, 'Hostile', Neon.RED, -3, skills)
       self.dataframe.init(nmmo.Serialized.Entity, iden, pos)
       self.vision = int(max(self.vision, 1 + combat.level(self.skills) // 10))
       self.dataframe.init(nmmo.Serialized.Entity, self.entID, self.pos)

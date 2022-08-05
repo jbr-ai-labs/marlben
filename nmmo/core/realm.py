@@ -1,6 +1,6 @@
 from collections import defaultdict
 from typing import Dict
-from nmmo.core.spawn.base_manager import NPCManager, PlayerManager
+from nmmo.core.spawn.base_manager import GroupsManager
 from nmmo import core, infrastructure
 
 
@@ -26,8 +26,7 @@ class Realm:
         self.map = core.Map(config, self)
 
         # Entity handlers
-        self.players = PlayerManager(config, self)
-        self.npcs = NPCManager(config, self)
+        self.entity_group_manager = GroupsManager(config, self)
 
     def reset(self, idx):
         '''Reset the environment and load the specified map
@@ -36,28 +35,35 @@ class Realm:
       '''
         print('----reset----')
         self.map.reset(self, idx)
-        self.players.reset()
-        self.npcs.reset()
+        self.entity_group_manager.reset()
         self.tick = 0
 
     def packet(self):
         '''Client packet'''
         return {'environment': self.map.repr,
                 'resource': self.map.packet,
-                'player': self.players.packet,
-                'npc': self.npcs.packet}
+                'groups': self.entity_group_manager.packet}
 
     @property
     def population(self):
         '''Number of player agents'''
-        return len(self.players.entities)
+        return self.entity_group_manager.players_count()
 
     def entity(self, entID):
         '''Get entity by ID'''
-        if entID < 0:
-            return self.npcs[entID]
-        else:
-            return self.players[entID]
+        return self.entity_group_manager.get_entity_by_id(entID)
+
+    def players(self):
+        players = []
+        for player_group in self.entity_group_manager.player_groups:
+            players.extend(player_group.entities.items())
+        return players
+
+    def agents(self):
+        agents = []
+        for player_group in self.entity_group_manager.player_groups:
+            agents.extend(player_group.entities.keys())
+        return agents
 
     def step(self, actions):
         '''Run game logic for one tick
@@ -65,14 +71,19 @@ class Realm:
         Args:
             actions: Dict of agent actions
         '''
+
+        actions = self.entity_group_manager.mask_player_actions(actions)
         # Prioritize actions
-        npcActions = self.npcs.actions(self)
+        npcActions = self.entity_group_manager.get_npc_actions()
         merged = defaultdict(list)
         prioritized(actions, merged)
         prioritized(npcActions, merged)
         # Update entities and perform actions
-        self.players.update(actions)
-        self.npcs.update(npcActions)
+
+        total_actions = dict()
+        total_actions.update(actions)
+        total_actions.update(npcActions)
+        self.entity_group_manager.update(total_actions)
 
         # Execute actions
         for priority in sorted(merged):
@@ -82,11 +93,9 @@ class Realm:
 
         # Spawn new agent and cull dead ones
         # TODO: Place cull before spawn once PettingZoo API fixes respawn on same tick as death bug
-        self.players.spawn()
-        self.npcs.spawn()
+        self.entity_group_manager.spawn()
 
-        dead = self.players.cull()
-        self.npcs.cull()
+        dead = self.entity_group_manager.cull()
 
         # Update map
         self.map.step()

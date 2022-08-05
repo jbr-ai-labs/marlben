@@ -89,7 +89,7 @@ class Skills(Overlay):
    def update(self, obs):
       '''Computes a count-based exploration map by painting
       tiles as agents walk over them'''
-      for entID, agent in self.realm.realm.players.items():
+      for entID, agent in self.realm.realm.players():
          r, c = agent.base.pos
 
          skillLvl  = (agent.skills.fishing.level + agent.skills.hunting.level)/2.0
@@ -132,7 +132,7 @@ class Counts(Overlay):
    def update(self, obs):
       '''Computes a count-based exploration map by painting
       tiles as agents walk over them'''
-      for entID, agent in self.realm.realm.players.items():
+      for entID, agent in self.realm.realm.players():
          pop  = agent.base.population.val
          r, c = agent.base.pos
          self.values[r, c][pop] += 1

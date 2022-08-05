@@ -8,8 +8,8 @@ from nmmo.entity import entity
 
 
 class Player(entity.Entity):
-    def __init__(self, realm, pos, agent, color, pop):
-        super().__init__(realm, pos, agent.iden, agent.name, color, pop)
+    def __init__(self, realm, pos, agent, color, pop, skills):
+        super().__init__(realm, pos, agent.iden, agent.name, color, pop, skills)
 
         self.agent = agent
         self.pop = pop
@@ -21,8 +21,6 @@ class Player(entity.Entity):
         self.vision = 7
 
         # Submodules
-        self.skills = SkillsBalanced(self)
-
         self.diary = None
         if tasks := realm.config.TASKS:
             self.diary = Diary(tasks)
@@ -48,14 +46,14 @@ class Player(entity.Entity):
         self.skills.applyDamage(dmg, style)
 
     def receiveDamage(self, source, dmg, stealing_enabled=True):
-        if not super().receiveDamage(source, dmg):
+        if not super().receiveDamage(source, dmg, stealing_enabled):
             if source:
                 source.history.playerKills += 1
             return
         if dmg > 0 and stealing_enabled:
             self.resources.food.decrement(dmg)
             self.resources.water.decrement(dmg)
-        self.skills.receiveDamage(dmg)
+        self.skills.receiveDamage(dmg, stealing_enabled)
 
     def receiveLoot(self, loadout):
         if loadout.chestplate.level > self.loadout.chestplate.level:

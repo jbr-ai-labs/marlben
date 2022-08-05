@@ -4,6 +4,25 @@ import numpy as np
 
 import nmmo
 from nmmo.config.common import Template, SequentialLoader
+from nmmo.core.spawn.spawn_system import position_samplers, skill_samplers
+
+
+class NPCGroupConfig(Template):
+    SPAWN_COORDINATES_SAMPLER = position_samplers.UniformPositionSampler()
+    SPAWN_SKILLS_SAMPLER = skill_samplers.DefaultNPCSkillSampler(1, None, None)
+    SPAWN_ATTEMPTS_PER_ENT = 5
+    BANNED_ATTACK_STYLES = []
+    NENT = 16
+
+
+class PlayerGroupConfig(Template):
+    AGENT_LOADER = SequentialLoader
+    SPAWN_COORDINATES_SAMPLER = position_samplers.ConcurrentPositionSampler()
+    SPAWN_SKILLS_SAMPLER = skill_samplers.DefaultSkillSampler()
+    SPAWN_ATTEMPTS_PER_ENT = 5
+    BANNED_ATTACK_STYLES = []
+    AGENTS = []
+    NENT = 16
 
 
 class Config(Template):
@@ -42,11 +61,12 @@ class Config(Template):
     AGENT_LOADER = SequentialLoader
     '''Agent loader class specifying spawn sampling'''
 
-    AGENTS = []
-    '''Agent classes from which to spawn'''
-
     TASKS = []
     '''Tasks for which to compute rewards'''
+
+    NPC_GROUPS = []
+    PLAYER_GROUPS = []
+    '''Groups of players and NPCs to spawn in the environment'''
 
     NMAPS = 1
     '''Number of maps to generate'''
@@ -58,22 +78,8 @@ class Config(Template):
     NSTIM = 7
     '''Number of tiles an agent can see in any direction'''
 
-    NMOB = None
-    '''Maximum number of NPCs spawnable in the environment'''
-
-    NENT = None
-    '''Maximum number of agents spawnable in the environment'''
-
-    NPOP = 1
-    '''Number of distinct populations spawnable in the environment'''
-
     N_AGENT_OBS = 100
     '''Number of distinct agent observations'''
-
-    @property
-    def TEAM_SIZE(self):
-        assert not self.NENT % self.NPOP
-        return self.NENT // self.NPOP
 
     @property
     def WINDOW(self):
@@ -84,8 +90,6 @@ class Config(Template):
     ### Agent Parameters
     BASE_HEALTH = 10
     '''Initial Constitution level and agent health'''
-
-    PLAYER_SPAWN_ATTEMPTS = None
 
     ############################################################################
     ### Terrain Generation Parameters
@@ -105,11 +109,20 @@ class Config(Template):
     '''Size of each map (number of tiles along each side)'''
 
     TERRAIN_BORDER = 16
+    TOP_LEFT_CORNER = (16, 16)
     '''Number of lava border tiles surrounding each side of the map'''
 
     @property
     def TERRAIN_SIZE(self):
         return int(self.TERRAIN_CENTER + 2 * self.TERRAIN_BORDER)
+
+    @property
+    def NENT(self):
+        return sum([cfg.NENT for cfg in self.PLAYER_GROUPS])
+
+    @property
+    def NPOP(self):
+        return len(self.PLAYER_GROUPS)
 
     TERRAIN_FLIP_SEED = False
     '''Whether to negate the seed used for generation (useful for unique heldout maps)'''
