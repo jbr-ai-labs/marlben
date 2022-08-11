@@ -109,3 +109,37 @@ class RangePositionSampler(PositionSampler):
 
             self.x_sampler = ChoiceSampler(r_range)
             self.y_sampler = ChoiceSampler(c_range)
+
+class MultiRangePositionSampler(PositionSampler):
+    def __init__(self, r_ranges, c_ranges):
+        super().__init__()
+        self.x_samplers = None
+        self.y_samplers = None
+        self.r_ranges = r_ranges
+        self.c_ranges = c_ranges
+        self.num_ents = len(self.r_ranges)
+        self.idx = 0
+
+    def get_next(self):
+        r = self.y_samplers[self.idx].get_next()
+        c = self.x_samplers[self.idx].get_next()
+        self.idx = (self.idx + 1) % self.num_ents
+        return r, c
+
+    def reset(self, config):
+        if self.x_samplers is None:
+            self.x_samplers = []
+            self.y_samplers = []
+            map_height = config.MAP_HEIGHT
+            map_width = config.MAP_WIDTH
+            top, left = config.TOP_LEFT_CORNER
+
+            for range_num in range(len(self.r_ranges)):
+                r_range = self.r_ranges[range_num]
+                c_range = self.c_ranges[range_num]
+
+                r_range = [r + top for r in r_range]
+                c_range = [c + left for c in c_range]
+
+                self.x_samplers.append(UniformSampler(*c_range))
+                self.y_samplers.append(UniformSampler(*r_range))

@@ -1,10 +1,15 @@
 from src.environments import rllib_wrapper
 from src.rllib_base import run_tune_experiment
-from src.core.config import get_config
+from nmmo import Agent
+from nmmo.config import get_config
 
+from config.bases import Small
+from config.scale import Debug
 
 
 if __name__ == '__main__':
-    corridor_config = get_config("./src/environments/corridor/config.json")
-    corridor_config.RENDER = True
-    run_tune_experiment(corridor_config, 'Corridor', rllib_wrapper.PPO)
+    EnvConfig = get_config("CorridorScripted")
+    class Cfg(EnvConfig, Small, Debug):
+        RENDER = True
+
+    run_tune_experiment(Cfg(), 'Corridor', rllib_wrapper.PPO)

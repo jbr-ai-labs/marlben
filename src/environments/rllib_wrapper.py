@@ -55,7 +55,7 @@ class RLlibEnv(nmmo.Env, MultiAgentEnv):
         else:
             horizon = config.TRAIN_HORIZON
 
-        population = len(self.realm.players) == 0
+        population = len(self.realm.players()) == 0
         hit_horizon = self.realm.tick >= horizon
 
         if (hit_horizon or population):
