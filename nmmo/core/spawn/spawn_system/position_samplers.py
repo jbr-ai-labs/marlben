@@ -71,17 +71,30 @@ class ContinuousPositionSampler(PositionSampler):
 
 
 class UniformPositionSampler(PositionSampler):
-    def __init__(self):
+    def __init__(self, r_range=None, c_range=None):
         super().__init__()
         self.x_sampler = None
         self.y_sampler = None
+        self.r_range = r_range
+        self.c_range = c_range
 
     def reset(self, config):
         map_height = config.MAP_HEIGHT
         map_width = config.MAP_WIDTH
         top, left = config.TOP_LEFT_CORNER
-        self.x_sampler = UniformSampler(left, left + map_width)
-        self.y_sampler = UniformSampler(top, top + map_height)
+
+        if self.r_range is None:
+            r_start, r_end = top, top + map_height
+        else:
+            r_start, r_end = [r + top for r in self.r_range]
+        
+        if self.c_range is None:
+            c_start, c_end = left, left + map_width
+        else:
+            c_start, c_end = [c + left for c in self.c_range]
+        
+        self.x_sampler = UniformSampler(r_start, r_end)
+        self.y_sampler = UniformSampler(c_start, c_end)
 
     def get_next(self):
         return self.x_sampler.get_next(), self.y_sampler.get_next()
@@ -109,37 +122,3 @@ class RangePositionSampler(PositionSampler):
 
             self.x_sampler = ChoiceSampler(r_range)
             self.y_sampler = ChoiceSampler(c_range)
-
-class MultiRangePositionSampler(PositionSampler):
-    def __init__(self, r_ranges, c_ranges):
-        super().__init__()
-        self.x_samplers = None
-        self.y_samplers = None
-        self.r_ranges = r_ranges
-        self.c_ranges = c_ranges
-        self.num_ents = len(self.r_ranges)
-        self.idx = 0
-
-    def get_next(self):
-        r = self.y_samplers[self.idx].get_next()
-        c = self.x_samplers[self.idx].get_next()
-        self.idx = (self.idx + 1) % self.num_ents
-        return r, c
-
-    def reset(self, config):
-        if self.x_samplers is None:
-            self.x_samplers = []
-            self.y_samplers = []
-            map_height = config.MAP_HEIGHT
-            map_width = config.MAP_WIDTH
-            top, left = config.TOP_LEFT_CORNER
-
-            for range_num in range(len(self.r_ranges)):
-                r_range = self.r_ranges[range_num]
-                c_range = self.c_ranges[range_num]
-
-                r_range = [r + top for r in r_range]
-                c_range = [c + left for c in c_range]
-
-                self.x_samplers.append(UniformSampler(*c_range))
-                self.y_samplers.append(UniformSampler(*r_range))

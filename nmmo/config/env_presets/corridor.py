@@ -3,7 +3,7 @@ from os import path as osp
 
 from nmmo.core.agent import Agent
 from scripted.baselines import CorridorAgent
-from nmmo.core.spawn.spawn_system.position_samplers import MultiRangePositionSampler
+from nmmo.core.spawn.spawn_system.position_samplers import UniformPositionSampler
 from nmmo.core.spawn.spawn_system.skill_samplers import CustomSkillSampler
 from nmmo.systems.achievement import Task
 from src.core.map_generator.custom_map_generator import CustomMapGenerator
@@ -37,8 +37,7 @@ class PlayerSurvivedTask(Callable):
 
 
 class TraderGroupConfig(PlayerGroupConfig):
-    def __init__(self, agents, n_ent=2, coordinates_sampler=MultiRangePositionSampler([[1, 1], [1, 1]], [[4, 4], [5, 5]]),
-                 skill_sampler=CustomSkillSampler({})):
+    def __init__(self, agents, n_ent, coordinates_sampler, skill_sampler=CustomSkillSampler({})):
         super().__init__()
         self.NENT = n_ent
         self.SPAWN_COORDINATES_SAMPLER = coordinates_sampler
@@ -50,7 +49,7 @@ class TraderGroupConfig(PlayerGroupConfig):
     REGEN_HEALTH = False
 
 
-class BaseCorridorConfig(Config, Sharing):
+class BaseCorridorConfig(Config, Sharing):       
     TASKS = [Task(PlayerDiedTask(), 1, -1.0),
              Task(PlayerSurvivedTask(horizon=HORIZON), 1, 1.0)]
 
@@ -74,13 +73,34 @@ class BaseCorridorConfig(Config, Sharing):
     EVAL_HORIZON = HORIZON
 
 
-class ScriptedCorridorConfig(BaseCorridorConfig):
-    PLAYER_GROUPS = [TraderGroupConfig(agents=[CorridorAgent])]
+def create_group_config(agents):
+    return [
+        TraderGroupConfig(
+            agents=[agents[0]], 
+            n_ent=1,
+            coordinates_sampler=UniformPositionSampler(r_range=[1, 1], c_range=[4, 4])
+        ),
+        TraderGroupConfig(
+            agents=[agents[1]], 
+            n_ent=1,
+            coordinates_sampler=UniformPositionSampler(r_range=[1, 1], c_range=[5, 5])
+        )
+    ]
 
+def process_agents(player_groups):
+    agents = []
+    for group in player_groups:
+        agents.extend(group.AGENTS)
+    return agents
+
+class ScriptedCorridorConfig(BaseCorridorConfig):
+    PLAYER_GROUPS = create_group_config(agents=[CorridorAgent, CorridorAgent])
+    AGENTS = process_agents(PLAYER_GROUPS)
 
 class OneNeuralCorridorConfig(BaseCorridorConfig):
-    PLAYER_GROUPS = [TraderGroupConfig(agents=[Agent, CorridorAgent])]
-
+    PLAYER_GROUPS = create_group_config(agents=[Agent, CorridorAgent])
+    AGENTS = process_agents(PLAYER_GROUPS)
 
 class CorridorConfig(BaseCorridorConfig):
-    PLAYER_GROUPS = [TraderGroupConfig(agents=[Agent])]
+    PLAYER_GROUPS = create_group_config(agents=[Agent, Agent])
+    AGENTS = process_agents(PLAYER_GROUPS)

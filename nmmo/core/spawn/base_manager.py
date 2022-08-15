@@ -76,7 +76,15 @@ class GroupsManager:
 
     @property
     def packet(self):
-        return [npc_group.packet for npc_group in self.npc_groups], [player_group.packet for player_group in self.player_groups]
+        npc_packet = [npc_group.packet for npc_group in self.npc_groups]
+        player_packet = [player_group.packet for player_group in self.player_groups]
+        return self.merge_packets(npc_packet), self.merge_packets(player_packet)
+    
+    def merge_packets(self, packets):
+        result = {}
+        for packet in packets:
+            result.update(packet)
+        return result
 
     def update(self, actions):
         for npc_group in self.npc_groups:
@@ -151,14 +159,6 @@ class EntityGroup(Mapping):
         self.entities = {}
         self.dead = {}
 
-    def add(iden, entity):
-        assert iden not in self.entities
-        self.entities[iden] = entity
-
-    def remove(iden):
-        assert iden in self.entities
-        del self.entities[iden]
-
     def spawn(self, entity):
         pos, entID = entity.pos, entity.entID
         self.realm.map.tiles[pos].addEnt(entity)
@@ -230,7 +230,7 @@ class NPCGroup(EntityGroup):
 class PlayerGroup(EntityGroup):
     def __init__(self, config, realm, group_config, id_counter, group_id):
         super().__init__(config, realm)
-
+        print("AGENTS", config.AGENTS)
         self.group_config = group_config
         self.loader = group_config.AGENT_LOADER
         self.palette = colors.Palette()

@@ -40,10 +40,11 @@ class Realm:
 
     def packet(self):
         '''Client packet'''
+        npc, player = self.entity_group_manager.packet
         return {'environment': self.map.repr,
                 'resource': self.map.packet,
-                'player': self.entity_group_manager.player_groups[0].packet,
-                'npc': self.entity_group_manager.npc_groups[0].packet}
+                'player': npc,
+                'npc': player}
 
     @property
     def population(self):
