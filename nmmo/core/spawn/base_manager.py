@@ -76,7 +76,15 @@ class GroupsManager:
 
     @property
     def packet(self):
-        return [npc_group.packet for npc_group in self.npc_groups] + [player_group.packet for player_group in self.player_groups]
+        npc_packet = [npc_group.packet for npc_group in self.npc_groups]
+        player_packet = [player_group.packet for player_group in self.player_groups]
+        return self.merge_packets(npc_packet), self.merge_packets(player_packet)
+
+    def merge_packets(self, packets):
+        result = {}
+        for packet in packets:
+            result.update(packet)
+        return result
 
     def update(self, actions):
         for npc_group in self.npc_groups:
@@ -151,14 +159,6 @@ class EntityGroup(Mapping):
         self.entities = {}
         self.dead = {}
 
-    def add(iden, entity):
-        assert iden not in self.entities
-        self.entities[iden] = entity
-
-    def remove(iden):
-        assert iden in self.entities
-        del self.entities[iden]
-
     def spawn(self, entity):
         pos, entID = entity.pos, entity.entID
         self.realm.map.tiles[pos].addEnt(entity)
@@ -175,7 +175,8 @@ class EntityGroup(Mapping):
 
                 self.realm.map.tiles[r, c].delEnt(entID)
                 del self.entities[entID]
-                self.realm.dataframe.remove(Serialized.Entity, entID, player.pos)
+                self.realm.dataframe.remove(
+                    Serialized.Entity, entID, player.pos)
 
         return self.dead
 
@@ -192,7 +193,8 @@ class NPCGroup(EntityGroup):
         self.coordinate_sampler = self.group_config.SPAWN_COORDINATES_SAMPLER
         self.skills_sampler = self.group_config.SPAWN_SKILLS_SAMPLER
         self.id_counter = id_counter
-        self.available_styles = list({Melee, Range, Mage}.difference(set(group_config.BANNED_ATTACK_STYLES)))
+        self.available_styles = list({Melee, Range, Mage}.difference(
+            set(group_config.BANNED_ATTACK_STYLES)))
 
     def spawn(self):
         if not self.config.game_system_enabled('NPC'):
@@ -205,7 +207,9 @@ class NPCGroup(EntityGroup):
                     continue
 
                 skills = self.skills_sampler.get_next((r, c))
-                npc = NPC.spawn(self.realm, (r, c), self.id_counter.next_npc_id(), skills)  # TODO: Check & change
+                # TODO: Check & change
+                npc = NPC.spawn(self.realm, (r, c),
+                                self.id_counter.next_npc_id(), skills)
                 npc.skills.style = random.choice(self.available_styles)
                 if npc:
                     super().spawn(npc)
@@ -226,7 +230,7 @@ class NPCGroup(EntityGroup):
 class PlayerGroup(EntityGroup):
     def __init__(self, config, realm, group_config, id_counter, group_id):
         super().__init__(config, realm)
-
+        print("AGENTS", config.AGENTS)
         self.group_config = group_config
         self.loader = group_config.AGENT_LOADER
         self.palette = colors.Palette()
@@ -238,6 +242,9 @@ class PlayerGroup(EntityGroup):
         self.group_id = group_id
 
     def spawn(self):
+        if self.spawned:
+            return
+        self.spawned = True
         for _ in range(self.group_config.NENT - len(self.entities)):
             r_f, c_f = None, None
             for _ in range(self.group_config.SPAWN_ATTEMPTS_PER_ENT):
@@ -250,7 +257,8 @@ class PlayerGroup(EntityGroup):
                 pop_id, agent = next(self.agents)
                 agent = agent(self.config, self.id_counter.next_player_id())
                 skills = self.skills_sampler.get_next((r_f, c_f))
-                player = Player(self.realm, (r_f, c_f), agent, self.palette.color(self.group_id), self.group_id, skills)
+                player = Player(self.realm, (r_f, c_f), agent, self.palette.color(
+                    self.group_id), self.group_id, skills)
                 super().spawn(player)
 
     def update_diary(self):
@@ -264,7 +272,7 @@ class PlayerGroup(EntityGroup):
         self.skills_sampler.reset(self.config)
 
     def mask_action(self, action: dict):
-        action = copy.deepcopy(action)
+        # action = copy.deepcopy(action)
         if Attack in action:
             if action[Attack][Style] in self.banned_attack_styles:
                 action.pop(Attack)

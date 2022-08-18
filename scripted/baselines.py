@@ -1,13 +1,13 @@
 import nmmo
 from nmmo import scripting
 from nmmo.lib import colors
+from nmmo.core.agent import Agent
 
 from scripted import move, attack
 
 
-class Scripted(nmmo.Agent):
+class Scripted(Agent):
     '''Template class for scripted models.
-
     You may either subclass directly or mirror the __call__ function'''
     scripted = True
     color = colors.Neon.SKY
@@ -32,11 +32,13 @@ class Scripted(nmmo.Agent):
 
     def forage(self):
         '''Min/max food and water using Dijkstra's algorithm'''
-        move.forageDijkstra(self.config, self.ob, self.actions, self.food_max, self.water_max)
+        move.forageDijkstra(self.config, self.ob, self.actions,
+                            self.food_max, self.water_max)
 
     def explore(self):
         '''Route away from spawn'''
-        move.explore(self.config, self.ob, self.actions, self.spawnR, self.spawnC)
+        move.explore(self.config, self.ob, self.actions,
+                     self.spawnR, self.spawnC)
 
     @property
     def downtime(self):
@@ -73,8 +75,10 @@ class Scripted(nmmo.Agent):
         if self.closest is None:
             return False
 
-        selfLevel = scripting.Observation.attribute(self.ob.agent, nmmo.Serialized.Entity.Level)
-        targLevel = scripting.Observation.attribute(self.closest, nmmo.Serialized.Entity.Level)
+        selfLevel = scripting.Observation.attribute(
+            self.ob.agent, nmmo.Serialized.Entity.Level)
+        targLevel = scripting.Observation.attribute(
+            self.closest, nmmo.Serialized.Entity.Level)
 
         if targLevel <= selfLevel <= 5 or selfLevel >= targLevel + 3:
             self.target = self.closest
@@ -83,16 +87,20 @@ class Scripted(nmmo.Agent):
 
     def scan_agents(self):
         '''Scan the nearby area for agents'''
-        self.closest, self.closestDist = attack.closestTarget(self.config, self.ob)
-        self.attacker, self.attackerDist = attack.attacker(self.config, self.ob)
+        self.closest, self.closestDist = attack.closestTarget(
+            self.config, self.ob)
+        self.attacker, self.attackerDist = attack.attacker(
+            self.config, self.ob)
 
         self.closestID = None
         if self.closest is not None:
-            self.closestID = scripting.Observation.attribute(self.closest, nmmo.Serialized.Entity.ID)
+            self.closestID = scripting.Observation.attribute(
+                self.closest, nmmo.Serialized.Entity.ID)
 
         self.attackerID = None
         if self.attacker is not None:
-            self.attackerID = scripting.Observation.attribute(self.attacker, nmmo.Serialized.Entity.ID)
+            self.attackerID = scripting.Observation.attribute(
+                self.attacker, nmmo.Serialized.Entity.ID)
 
         self.style = None
         self.target = None
@@ -116,7 +124,6 @@ class Scripted(nmmo.Agent):
 
     def __call__(self, obs):
         '''Process observations and return actions
-
         Args:
            obs: An observation object from the environment. Unpack with scripting.Observation
         '''
@@ -125,8 +132,10 @@ class Scripted(nmmo.Agent):
         self.ob = scripting.Observation(self.config, obs)
         agent = self.ob.agent
 
-        self.food = scripting.Observation.attribute(agent, nmmo.Serialized.Entity.Food)
-        self.water = scripting.Observation.attribute(agent, nmmo.Serialized.Entity.Water)
+        self.food = scripting.Observation.attribute(
+            agent, nmmo.Serialized.Entity.Food)
+        self.water = scripting.Observation.attribute(
+            agent, nmmo.Serialized.Entity.Water)
 
         if self.food > self.food_max:
             self.food_max = self.food
@@ -134,9 +143,11 @@ class Scripted(nmmo.Agent):
             self.water_max = self.water
 
         if self.spawnR is None:
-            self.spawnR = scripting.Observation.attribute(agent, nmmo.Serialized.Entity.R)
+            self.spawnR = scripting.Observation.attribute(
+                agent, nmmo.Serialized.Entity.R)
         if self.spawnC is None:
-            self.spawnC = scripting.Observation.attribute(agent, nmmo.Serialized.Entity.C)
+            self.spawnC = scripting.Observation.attribute(
+                agent, nmmo.Serialized.Entity.C)
 
 
 class Random(Scripted):
@@ -147,6 +158,68 @@ class Random(Scripted):
         super().__call__(obs)
 
         move.random(self.config, self.ob, self.actions)
+        return self.actions
+
+
+class CorridorAgent(Scripted):
+    name = 'CorridorAgent_'
+    '''Walks along the corridor and shares resources with another agent'''
+
+    def __init__(self, config, idx):
+        super().__init__(config, idx)
+        self._current_target = "resource"
+        self._resource_amount = 7
+        if (self.iden + 1) % 2 == 0:
+            self._direction = (0, -1)
+            self._resource_pos = (18, 13)
+            self._mid_pos = (18, 16)
+            self._resource_to_share = nmmo.action.Water
+        else:
+            self._direction = (0, 1)
+            self._resource_pos = (18, 20)
+            self._mid_pos = (18, 17)
+            self._resource_to_share = nmmo.action.Food
+
+    def _switch_direction(self, direction):
+        return tuple([-1 * d for d in direction])
+
+    def _manage_direction(self, r, c):
+        if self._current_target == "resource" and (r, c) == self._resource_pos:
+            self._direction = self._switch_direction(self._direction)
+            self._current_target = "mid"
+        elif self._current_target == "mid" and (r, c) == self._mid_pos:
+            self._direction = self._switch_direction(self._direction)
+            self._current_target = "resource"
+
+    def _share(self):
+        self.scan_agents()
+        targetID = self.closestID
+        if targetID is None:
+            return None
+        else:
+            return {
+                nmmo.action.Resource: self._resource_to_share,
+                nmmo.action.Target: targetID,
+                nmmo.action.ResourceAmount: self._resource_amount
+            }
+
+    def __call__(self, obs):
+        super().__call__(obs)
+
+        agent = self.ob.agent
+        Entity = nmmo.Serialized.Entity
+        Tile = nmmo.Serialized.Tile
+
+        r = nmmo.scripting.Observation.attribute(agent, Entity.R)
+        c = nmmo.scripting.Observation.attribute(agent, Entity.C)
+        self._manage_direction(r, c)
+        direction = move.towards(self._direction)
+        self.actions[nmmo.action.Move] = {nmmo.action.Direction: direction}
+        if (r, c) == self._mid_pos:
+            share_action = self._share()
+            if share_action is not None:
+                self.actions[nmmo.action.Share] = share_action
+
         return self.actions
 
 
@@ -221,7 +294,6 @@ class Combat(Scripted):
 class CombatTribrid(Scripted):
     name = 'CombatTri_'
     '''Forages, fights, and explores.
-
     Uses a slightly more sophisticated attack routine'''
 
     def __call__(self, obs):
