@@ -385,7 +385,7 @@ class Env(ParallelEnv):
          Log datastructure
       '''
 
-        for entID, ent in self.realm.players.entities.items():
+        for entID, ent in self.realm.players():
             self.log(ent)
 
         return self.quill.packet
