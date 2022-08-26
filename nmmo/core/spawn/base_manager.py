@@ -79,7 +79,7 @@ class GroupsManager:
         npc_packet = [npc_group.packet for npc_group in self.npc_groups]
         player_packet = [player_group.packet for player_group in self.player_groups]
         return self.merge_packets(npc_packet), self.merge_packets(player_packet)
-    
+
     def merge_packets(self, packets):
         result = {}
         for packet in packets:

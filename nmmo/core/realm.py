@@ -98,6 +98,7 @@ class Realm:
         self.entity_group_manager.spawn()
 
         dead = self.entity_group_manager.cull()
+        self.entity_group_manager.update_diary()
 
         # Update map
         self.map.step()

@@ -1,4 +1,5 @@
 from pdb import set_trace as T
+import copy
 
 from typing import Callable
 from dataclasses import dataclass
@@ -15,7 +16,7 @@ class Diary:
    def __init__(self, tasks):
       self.achievements = []
       for task in tasks:
-         self.achievements.append(Achievement(task.condition, task.target, task.reward))
+         self.achievements.append(Achievement(copy.deepcopy(task.condition), task.target, task.reward))
 
    @property
    def completed(self):
