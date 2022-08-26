@@ -230,7 +230,6 @@ class NPCGroup(EntityGroup):
 class PlayerGroup(EntityGroup):
     def __init__(self, config, realm, group_config, id_counter, group_id):
         super().__init__(config, realm)
-        print("AGENTS", config.AGENTS)
         self.group_config = group_config
         self.loader = group_config.AGENT_LOADER
         self.palette = colors.Palette()

@@ -1,12 +1,11 @@
 import nmmo
 from nmmo import scripting
 from nmmo.lib import colors
-from nmmo.core.agent import Agent
 
 from scripted import move, attack
 
 
-class Scripted(Agent):
+class Scripted(nmmo.Agent):
     '''Template class for scripted models.
     You may either subclass directly or mirror the __call__ function'''
     scripted = True
@@ -75,10 +74,8 @@ class Scripted(Agent):
         if self.closest is None:
             return False
 
-        selfLevel = scripting.Observation.attribute(
-            self.ob.agent, nmmo.Serialized.Entity.Level)
-        targLevel = scripting.Observation.attribute(
-            self.closest, nmmo.Serialized.Entity.Level)
+        selfLevel = scripting.Observation.attribute(self.ob.agent, nmmo.Serialized.Entity.Level)
+        targLevel = scripting.Observation.attribute(self.closest, nmmo.Serialized.Entity.Level)
 
         if targLevel <= selfLevel <= 5 or selfLevel >= targLevel + 3:
             self.target = self.closest
