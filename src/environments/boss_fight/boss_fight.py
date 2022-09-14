@@ -2,13 +2,11 @@ from typing import Callable
 
 from nmmo.core.spawn.spawn_system.position_samplers import RangePositionSampler
 from nmmo.core.spawn.spawn_system.skill_samplers import CustomSkillSampler
-from nmmo.io.action.attack import Melee, Range, Heal, Mage
+from nmmo.io.action.attack import Range, Heal, Mage
 from nmmo.systems.achievement import Task
 from src.core.map_generator.custom_map_generator import CustomMapGenerator
-
-
-from ..base.config import NPCGroupConfig, PlayerGroupConfig, Config
-from ..systems import NPC
+from nmmo.config.base.config import NPCGroupConfig, PlayerGroupConfig, Config
+from nmmo.config.systems import NPC
 
 
 class NpcKilledTask(Callable):
@@ -38,7 +36,6 @@ class BossGroupConfig(NPCGroupConfig):
         super().__init__()
         self.SPAWN_COORDINATES_SAMPLER = coordinates_sampler
         self.SPAWN_SKILLS_SAMPLER = skill_sampler
-        BANNED_ATTACK_STYLES = [Range, Heal, Mage]
 
     NENT = 1
     SPAWN_ATTEMPTS_PER_ENT = 10

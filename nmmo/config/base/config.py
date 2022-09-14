@@ -22,7 +22,7 @@ class PlayerGroupConfig(Template):
     SPAWN_ATTEMPTS_PER_ENT = 5
     BANNED_ATTACK_STYLES = []
     AGENTS = []
-    NENT = 16
+    NENT = 2
 
 
 class Config(Template):
@@ -96,7 +96,7 @@ class Config(Template):
     MAP_GENERATOR = None
     '''Specifies a user map generator. Uses default generator if unspecified.'''
 
-    FORCE_MAP_GENERATION = False
+    FORCE_MAP_GENERATION = True
     '''Whether to regenerate and overwrite existing maps'''
 
     GENERATE_MAP_PREVIEWS = False
@@ -108,8 +108,8 @@ class Config(Template):
     TERRAIN_CENTER = None
     '''Size of each map (number of tiles along each side)'''
 
-    TERRAIN_BORDER = 16
-    TOP_LEFT_CORNER = (16, 16)
+    TERRAIN_BORDER = 8
+    TOP_LEFT_CORNER = (8, 8)
     '''Number of lava border tiles surrounding each side of the map'''
 
     @property
@@ -139,7 +139,7 @@ class Config(Template):
     TERRAIN_LOG_INTERPOLATE_MAX = 0
     '''Maximum interpolation log-strength for noise frequencies'''
 
-    TERRAIN_TILES_PER_OCTAVE = 8
+    TERRAIN_TILES_PER_OCTAVE = 4
     '''Number of octaves sampled from log2 spaced TERRAIN_FREQUENCY range'''
 
     TERRAIN_LAVA = 0.0

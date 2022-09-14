@@ -1,7 +1,6 @@
 from collections import defaultdict
 
 import numpy as np
-from ray import rllib
 from ray.rllib.agents.callbacks import DefaultCallbacks
 from ray.rllib import MultiAgentEnv
 from ray.rllib.agents.ppo.ppo import PPOTrainer
@@ -10,7 +9,6 @@ from ray.rllib.agents.impala.impala import ImpalaTrainer
 from tqdm import tqdm
 
 import nmmo
-from scripted import baselines
 
 
 class RLlibEnv(nmmo.Env, MultiAgentEnv):

@@ -1,7 +1,4 @@
-import os
-
 import nmmo
-from scripted import baselines
 
 
 class RLlib:

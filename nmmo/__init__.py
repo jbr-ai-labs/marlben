@@ -18,5 +18,5 @@ from .systems.achievement import Task
 from .core.terrain import MapGenerator, Terrain
 
 __all__ = ['Env', 'scripting', 'agent', 'Agent', 'MapGenerator', 'Terrain',
-           'Serialized', 'action', 'Action', 'scripting', 'material',
+           'Serialized', 'action', 'Action', 'material',
            'Task', 'Overlay', 'OverlayRegistry']

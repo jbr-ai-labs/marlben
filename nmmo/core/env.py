@@ -263,7 +263,7 @@ class Env(ParallelEnv):
 
         # Preprocess actions for neural models
         for entID in list(actions.keys()):
-            ent = self.realm.players[entID]
+            ent = self.realm.entity(entID)
             if not ent.alive:
                 continue
 
@@ -409,7 +409,7 @@ class Env(ParallelEnv):
       '''
         info = {'population': player.pop}
 
-        if player.entID not in self.realm.players:
+        if player.entID not in self.realm.players():
             return -1, info
 
         if not player.diary:
