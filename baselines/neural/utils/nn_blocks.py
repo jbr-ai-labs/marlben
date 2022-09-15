@@ -4,7 +4,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from src.neural.utils.utils import ModuleList
+from baselines.neural.utils.utils import ModuleList
 
 
 def Conv2d(fIn, fOut, k, stride=1):

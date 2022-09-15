@@ -1,5 +1,5 @@
-from src.environments import rllib_wrapper
-from src.rllib_base import run_tune_experiment
+from rllib import rllib_wrapper
+from rllib.rllib_base import run_tune_experiment
 from config import get_config
 
 

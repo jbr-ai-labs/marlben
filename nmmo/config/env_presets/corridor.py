@@ -6,7 +6,7 @@ from scripted.baselines import CorridorAgent
 from nmmo.core.spawn.spawn_system.position_samplers import UniformPositionSampler
 from nmmo.core.spawn.spawn_system.skill_samplers import CustomSkillSampler
 from nmmo.systems.achievement import Task
-from src.core.map_generator.custom_map_generator import CustomMapGenerator
+from nmmo.envs.custom_map_generator import CustomMapGenerator
 from src.core.map_generator import PATH_TO_CUSTOM_MAPS
 
 

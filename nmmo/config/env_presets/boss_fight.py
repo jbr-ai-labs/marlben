@@ -2,9 +2,9 @@ from typing import Callable
 
 from nmmo.core.spawn.spawn_system.position_samplers import RangePositionSampler
 from nmmo.core.spawn.spawn_system.skill_samplers import CustomSkillSampler
-from nmmo.io.action.attack import Melee, Range, Heal, Mage
+from nmmo.io.action.attack import Range, Heal, Mage
 from nmmo.systems.achievement import Task
-from src.core.map_generator.custom_map_generator import CustomMapGenerator
+from nmmo.envs.custom_map_generator import CustomMapGenerator
 
 
 from ..base.config import NPCGroupConfig, PlayerGroupConfig, Config
