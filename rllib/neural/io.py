@@ -5,7 +5,7 @@ import torch
 from torch import nn
 
 import nmmo
-from baselines.neural.utils import nn_blocks
+from rllib.neural.utils import nn_blocks
 
 
 class MixedEmbedding(nn.Module):
