@@ -56,8 +56,6 @@ def spawn_in_range(player_manager, config, realm):
     if player_manager.spawned:
         return 
     player_manager.spawned = True
-    map_height = config.MAP_HEIGHT
-    map_width = config.MAP_WIDTH
     top, left = config.TOP_LEFT_CORNER
     for _ in range(config.NENT):
         agent_idx = player_manager.idx - 1

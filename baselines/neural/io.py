@@ -55,7 +55,7 @@ class Input(nn.Module):
             self.entWeight = self.entWeight.cuda()
 
     def forward(self, inp):
-        '''Produces tensor representations from an IO object
+        '''Produces tensor representations from an IO object 6082238515
 
       Args:                                                                   
          inp: An IO object specifying observations                      

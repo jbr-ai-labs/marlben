@@ -1,6 +1,7 @@
 from nmmo.config.base.config import Config
 from nmmo.core.spawn.spawn_system import skill_samplers
 from .config import NPCGroupConfig, PlayerGroupConfig
+from ... import Agent
 
 
 class SmallNPCGroupConfig(NPCGroupConfig):
@@ -9,7 +10,8 @@ class SmallNPCGroupConfig(NPCGroupConfig):
 
 
 class SmallPlayerGroupConfig(PlayerGroupConfig):
-    NENT = 64
+    NENT = 1
+    AGENTS = [Agent]
 
 
 class Small(Config):
@@ -20,11 +22,10 @@ class Small(Config):
 
     TERRAIN_LOG_INTERPOLATE_MIN = 0
 
-    TERRAIN_CENTER = 32
-    MAP_HEIGHT = 32
-    MAP_WIDTH = 32
-    PLAYER_GROUPS = [SmallPlayerGroupConfig()]
-    NPC_GROUPS = [SmallNPCGroupConfig()]
+    TERRAIN_CENTER = 4
+    MAP_HEIGHT = 4
+    MAP_WIDTH = 4
+    PLAYER_GROUPS = [SmallPlayerGroupConfig(), SmallPlayerGroupConfig()]
 
 
 class MediumNPCGroupConfig(NPCGroupConfig):

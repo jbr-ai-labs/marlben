@@ -1,6 +1,7 @@
 import nmmo
 
-from config import bases, scale
+from src.config import scale
+from src.config import bases
 
 
 class Medium(scale.Baseline, bases.Medium, nmmo.config.AllGameSystems):

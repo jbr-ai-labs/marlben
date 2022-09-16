@@ -1,10 +1,11 @@
 import json
-from nmmo.core.terrain import MapGenerator, Save
-import numpy as np
-from tqdm import tqdm
 import os
 from os import path as osp
-import matplotlib.pyplot as plt
+
+import numpy as np
+from tqdm import tqdm
+
+from nmmo.core.terrain import MapGenerator
 
 
 class CustomMapGenerator(MapGenerator):
@@ -26,8 +27,7 @@ class CustomMapGenerator(MapGenerator):
             # make rock border so the agent doesn't leave the main map
             map_template[[top-2, top+height+1], left-2:left+width+2] = 5
             map_template[top-2:top+height+2, [left-2, left+width+1]] = 5
-            path = osp.join(self.config.PATH_MAPS,
-                            'map{}'.format(idx+1))
+            path = osp.join(self.config.PATH_MAPS, 'map{}'.format(idx+1))
             os.makedirs(path, exist_ok=True)
             path = osp.join(path, "map.npy")
             np.save(path, map_template)
