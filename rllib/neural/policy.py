@@ -2,8 +2,8 @@ import torch
 from torch import nn
 from torch.nn.utils import rnn
 
-from src.neural import io
-from src.neural.utils import nn_blocks
+from rllib.neural import io
+from rllib.neural.utils import nn_blocks
 
 
 class Base(nn.Module):

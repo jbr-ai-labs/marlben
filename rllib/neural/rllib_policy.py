@@ -1,7 +1,7 @@
 from ray.rllib.models.torch.recurrent_net import RecurrentNetwork
 from torch import nn
 import torch
-from src.neural.policy import Recurrent
+from rllib.neural.policy import Recurrent
 
 
 class RLlibPolicy(RecurrentNetwork, nn.Module):

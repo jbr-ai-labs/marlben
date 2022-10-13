@@ -1,6 +1,6 @@
-from src.environments import rllib_wrapper
-from src.rllib_base import run_tune_experiment
-from src.config import get_config
+from rllib import rllib_wrapper
+from rllib.rllib_base import run_tune_experiment
+from config import get_config
 
 
 if __name__ == '__main__':

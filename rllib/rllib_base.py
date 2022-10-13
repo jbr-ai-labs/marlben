@@ -3,9 +3,9 @@ from copy import deepcopy
 
 import numpy as np
 import ray
-from src.environments import rllib_wrapper as wrapper
+from rllib import rllib_wrapper as wrapper
 import torch
-from ray import rllib, tune
+from ray import tune
 from ray.tune import CLIReporter
 from ray.tune.integration.wandb import WandbLoggerCallback
 

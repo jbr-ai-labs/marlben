@@ -1,8 +1,8 @@
 import ray
 
-from .environments import Corridor
-from .environments.gathering.env import Gathering
-from .environments.rllib_wrapper import RLlibEnv
+from ..nmmo.envs import Corridor
+from ..nmmo.envs.gathering.env import Gathering
+from .rllib_wrapper import RLlibEnv
 from .neural import rllib_policy
 
 env_factory = {
