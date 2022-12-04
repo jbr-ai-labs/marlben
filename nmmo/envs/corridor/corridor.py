@@ -9,9 +9,11 @@ from scripted.baselines import CorridorAgent
 from nmmo.envs.custom_map_generator import CustomMapGenerator
 
 from nmmo.config.base.config import PlayerGroupConfig, Config
-from nmmo.config.systems import Sharing
+from nmmo.config.systems import Sharing, Building
 
 HORIZON = 70
+
+PATH_TO_CUSTOM_MAPS = osp.dirname(__file__)
 
 
 class PlayerDiedTask(Callable):
@@ -59,7 +61,7 @@ class BaseCorridorConfig(Config, Sharing):
 
     MAP_PREVIEW_DOWNSCALE = 1
     TERRAIN_LOG_INTERPOLATE_MIN = 0
-    PATH_MAPS = osp.join(PATH_TO_CUSTOM_MAPS, "corridor")
+    PATH_MAPS = osp.join(PATH_TO_CUSTOM_MAPS, "maps")
     MAP_GENERATOR = CustomMapGenerator
 
     RESOURCE_BASE_RESOURCE = 14

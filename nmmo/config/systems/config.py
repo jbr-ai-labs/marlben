@@ -120,3 +120,9 @@ class Sharing(Resource):
     SHARING_DISTANCE = 3
     SHARE_MIN = 10
     SHARE_MAX = 10
+
+
+class Building:
+    @property
+    def Building(self):
+        return True
