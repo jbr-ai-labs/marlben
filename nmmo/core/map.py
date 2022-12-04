@@ -16,11 +16,11 @@ class Map:
     def __init__(self, config, realm):
         self.config = config
 
-        sz = config.TERRAIN_SIZE
-        self.tiles = np.zeros((sz, sz), dtype=object)
+        self.tiles = np.zeros((config.MAP_HEIGHT + 2*config.TERRAIN_BORDER, config.MAP_WIDTH + 2*config.TERRAIN_BORDER),
+                              dtype=object)
 
-        for r in range(sz):
-            for c in range(sz):
+        for r in range(config.MAP_HEIGHT + 2*config.TERRAIN_BORDER):
+            for c in range(config.MAP_WIDTH + 2*config.TERRAIN_BORDER):
                 self.tiles[r, c] = core.Tile(config, realm, r, c)
 
     @property
@@ -52,10 +52,10 @@ class Map:
 
         materials = {mat.index: mat for mat in material.All}
         for r, row in enumerate(map_file):
-            for c, idx in enumerate(row):
+            for c, (idx, vc, ac) in enumerate(row):
                 mat = materials[idx]
                 tile = self.tiles[r, c]
-                tile.reset(mat, config)
+                tile.reset(mat, vc, ac, config)
 
     def step(self):
         '''Evaluate updatable tiles'''

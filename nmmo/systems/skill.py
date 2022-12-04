@@ -2,6 +2,7 @@ from pdb import set_trace as T
 import abc
 
 import numpy as np
+
 from nmmo.systems import experience, combat, ai
 
 from nmmo.lib import material
@@ -185,9 +186,15 @@ class Fishing(Skill):
       water = entity.resources.water
       water.decrement(1)
 
-      if material.Water not in ai.utils.adjacentMats(
-            realm.map.tiles, entity.pos):
+      adj_tiles = ai.utils.adjacentTiles(realm.map.tiles, entity.pos)
+      water_nearby = False
+      for tile in adj_tiles:
+         water_in_tile = (type(tile.state) in [material.Water] and
+                          tile.accessibility_color in entity.accessible_colors)
+         water_nearby = water_nearby or water_in_tile
+      if not water_in_tile:
          return
+
    
       restore = self.config.RESOURCE_HARVEST_RESTORE_FRACTION
       restore = np.floor(restore * self.level)
@@ -215,8 +222,10 @@ class Hunting(Skill):
       food.decrement(1)
 
       r, c = entity.pos
-      if (type(realm.map.tiles[r, c].mat) not in [material.Forest] or
-            not realm.map.harvest(r, c)):
+      tile = realm.map.tiles[r, c]
+      if (type(tile.mat) not in [material.Forest] or
+              tile.accessibility_color not in entity.accessible_colors or
+              not realm.map.harvest(r, c)):
          return
 
       restore = self.config.RESOURCE_HARVEST_RESTORE_FRACTION
@@ -264,6 +273,9 @@ class CollectResource(Skill):
       resource_positions = ai.utils.adjacentPosWithMat(
          realm.map.tiles, entity.pos, self.material_type
       )
+      resource_positions = [(r, c) for r, c in resource_positions
+                            if realm.map.tiles[r, c].accessibility_color in entity.accessible_colors]
+
       if not len(resource_positions):
          return
       

@@ -213,6 +213,19 @@ class Serialized(metaclass=utils.IterableNameComparable):
             self.max = config.TERRAIN_SIZE - 1
             self.scale = 0.15
 
+      class AccessibilityColor(Discrete):
+         def init(self, config):
+            self.max = config.NUM_ACCESSIBILITY_COLORS
+            self.val = 0
+            self.scale = 1.
+
+      class VisibilityColor(Discrete):
+         def init(self, config):
+            self.max = config.NUM_VISIBILITY_COLORS
+            self.val = 0
+            self.scale = 1.
+
+
 for objName, obj in Serialized:
    for idx, (attrName, attr) in enumerate(obj):
       attr.index = idx 

@@ -8,7 +8,7 @@ from nmmo.entity import entity
 
 
 class Player(entity.Entity):
-    def __init__(self, realm, pos, agent, color, pop, skills):
+    def __init__(self, realm, pos, agent, color, pop, skills, visible_colors, accessible_colors):
         super().__init__(realm, pos, agent.iden, agent.name, color, pop, skills)
 
         self.agent = agent
@@ -24,6 +24,9 @@ class Player(entity.Entity):
         self.diary = None
         if tasks := realm.config.TASKS:
             self.diary = Diary(tasks)
+
+        self.visible_colors = visible_colors
+        self.accessible_colors = accessible_colors
 
         self.dataframe.init(nmmo.Serialized.Entity, self.entID, self.pos)
 

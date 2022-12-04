@@ -59,7 +59,7 @@ class BaseCorridorConfig(Config, Sharing):
 
     MAP_PREVIEW_DOWNSCALE = 1
     TERRAIN_LOG_INTERPOLATE_MIN = 0
-    PATH_MAPS = osp.join(PATH_TO_CUSTOM_MAPS, "corridor")
+    PATH_MAPS = None
     MAP_GENERATOR = CustomMapGenerator
 
     RESOURCE_BASE_RESOURCE = 14

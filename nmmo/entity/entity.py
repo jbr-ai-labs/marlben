@@ -123,6 +123,8 @@ class Entity:
         self.history = History(self)
         self.resources = Resources(self)
         self.loadout = equipment.Loadout()
+        self.visible_colors = set(range(realm.config.NUM_VISIBILITY_COLORS + 1))
+        self.accessible_colors = set(range(realm.config.NUM_ACCESSIBILITY_COLORS + 1))
 
     def packet(self):
         data = {'status': self.status.packet(), 'history': self.history.packet(), 'loadout': self.loadout.packet(),
