@@ -7,7 +7,7 @@ slices instead of a lengthy traversal over hundreds of game properties.
 Synchronization bugs are notoriously difficult to track down: make sure
 to follow the correct instantiation protocol, e.g. as used for defining
 agent/tile observations, when adding new types observations to the code"""
-
+import copy
 from collections import defaultdict
 
 import nmmo
@@ -250,6 +250,33 @@ class Dataframe:
         stim['Entity']['N'] = np.array([len(ents)], dtype=np.int32)
 
         ent.targets = ents
-        stim['Tile'] = self.data['Tile'].get(ent)
+        stim['Tile'] = self.__apply_visibility_to_tiles(ent, self.data['Tile'].get(ent))
 
         return stim
+
+    def __apply_visibility_to_tiles(self, ent, tiles):
+        accessibility_col = self.data["Tile"].discrete.cols["AccessibilityColor"]
+        accessibility_offset = self.data["Tile"].discrete.discrete["AccessibilityColor"]
+        visibility_col = self.data["Tile"].discrete.cols["VisibilityColor"]
+        visibility_offset = self.data["Tile"].discrete.discrete["VisibilityColor"]
+        visibility_c_col = self.data["Tile"].continuous.cols["VisibilityColor"]
+        accessibility_c_col = self.data["Tile"].continuous.cols["AccessibilityColor"]
+        index_col = self.data["Tile"].discrete.discrete["Index"]
+        index_c_col = self.data["Tile"].continuous.discrete["Index"]
+
+        new_tiles = {"Continuous": [], "Discrete": []}
+        for (row_d, row_c) in zip(tiles["Discrete"], tiles["Continuous"]):
+            new_row_d = copy.deepcopy(row_d)
+            new_row_c = copy.deepcopy(row_c)
+            if (row_d[visibility_col] - visibility_offset) not in ent.visible_colors:
+                new_row_d[index_col] = 5
+                new_row_c[index_c_col] = 5.
+            new_row_d[visibility_col] = visibility_offset
+            new_row_d[accessibility_col] = accessibility_offset
+            new_row_c[visibility_c_col] = 0.
+            new_row_c[accessibility_c_col] = 0.
+            new_tiles["Continuous"].append(new_row_c)
+            new_tiles["Discrete"].append(new_row_d)
+        new_tiles["Continuous"] = np.array(new_tiles["Continuous"])
+        new_tiles["Discrete"] = np.array(new_tiles["Discrete"])
+        return new_tiles

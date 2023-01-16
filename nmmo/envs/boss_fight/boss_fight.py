@@ -7,10 +7,7 @@ from nmmo.systems.achievement import Task
 from nmmo.envs.custom_map_generator import CustomMapGenerator
 from nmmo.config.base.config import NPCGroupConfig, PlayerGroupConfig, Config
 from nmmo.config.systems import NPC
-
-
-from ..base.config import NPCGroupConfig, PlayerGroupConfig, Config
-from ..systems import NPC
+from nmmo.core.agent import Random
 
 
 class NpcKilledTask(Callable):
@@ -56,6 +53,7 @@ class TankGroupConfig(PlayerGroupConfig):
 
     SPAWN_ATTEMPTS_PER_ENT = 10
     BANNED_ATTACK_STYLES = [Range, Heal, Mage]
+    AGENTS = [Random]
 
 
 class BossFightConfig(Config, NPC):
