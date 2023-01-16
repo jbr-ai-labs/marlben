@@ -4,5 +4,6 @@ from .share import Share, Target, ResourceAmount, Resource, Food, Water
 from .move import Move, Direction, West, North, South, East
 from .message import Message
 from .common import Fixed
+from .build import Build, BuildDecision
 
 Action.hook()
