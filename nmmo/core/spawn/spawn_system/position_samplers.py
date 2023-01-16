@@ -26,7 +26,7 @@ class ConcurrentPositionSampler(PositionSampler):
         if self.x_sampler is None:
             map_height = config.MAP_HEIGHT
             map_width = config.MAP_WIDTH
-            top, left = config.TOP_LEFT_CORNER
+            top, left = config.TERRAIN_BORDER, config.TERRAIN_BORDER
 
             horizontal_range = np.arange(left + 2, left + map_width, 4).tolist()
             vertical_range = np.arange(top + 2, top + map_height, 4).tolist()
@@ -63,7 +63,7 @@ class ContinuousPositionSampler(PositionSampler):
         if self.x_border_choice is None:
             map_height = config.MAP_HEIGHT
             map_width = config.MAP_WIDTH
-            top, left = config.TOP_LEFT_CORNER
+            top, left = config.TERRAIN_BORDER, config.TERRAIN_BORDER
             self.x_border_choice = ChoiceSampler([left, left + map_width])
             self.y_border_choice = ChoiceSampler([top, top + map_height])
             self.x_range_sampler = UniformSampler(left, left + map_width)
@@ -81,7 +81,7 @@ class UniformPositionSampler(PositionSampler):
     def reset(self, config):
         map_height = config.MAP_HEIGHT
         map_width = config.MAP_WIDTH
-        top, left = config.TOP_LEFT_CORNER
+        top, left = config.TERRAIN_BORDER, config.TERRAIN_BORDER
 
         if self.r_range is None:
             r_start, r_end = top, top + map_height
@@ -115,10 +115,10 @@ class RangePositionSampler(PositionSampler):
         if self.x_sampler is None:
             map_height = config.MAP_HEIGHT
             map_width = config.MAP_WIDTH
-            top, left = config.TOP_LEFT_CORNER
+            border = config.TERRAIN_BORDER
 
-            r_range = [r + top for r in self.r_range]
-            c_range = [c + left for c in self.c_range]
+            r_range = [r + config.TERRAIN_BORDER for r in self.r_range]
+            c_range = [c + config.TERRAIN_BORDER for c in self.c_range]
 
             self.x_sampler = ChoiceSampler(r_range)
             self.y_sampler = ChoiceSampler(c_range)

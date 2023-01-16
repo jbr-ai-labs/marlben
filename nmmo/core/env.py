@@ -509,7 +509,7 @@ class Env(ParallelEnv):
                 current = tile.ents
                 n = len(current)
                 if n == 0:
-                    ent = entity.Player(self.realm, (r, c), entID, pop, name, color)
+                    ent = entity.Player(self.realm, (r, c), entID, pop, name, color, [0], [0])
                 else:
                     ent = list(current.values())[0]
 

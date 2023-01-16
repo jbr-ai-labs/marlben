@@ -236,6 +236,8 @@ class PlayerGroup(EntityGroup):
         self.coordinate_sampler = self.group_config.SPAWN_COORDINATES_SAMPLER
         self.skills_sampler = self.group_config.SPAWN_SKILLS_SAMPLER
         self.banned_attack_styles = self.group_config.BANNED_ATTACK_STYLES
+        self.visible_colors = set(list(self.group_config.VISIBLE_COLORS) + [0])
+        self.accessible_colors = set(list(self.group_config.ACCESSIBLE_COLORS) + [0])
         self.realm = realm
         self.id_counter = id_counter
         self.group_id = group_id
@@ -257,7 +259,7 @@ class PlayerGroup(EntityGroup):
                 agent = agent(self.config, self.id_counter.next_player_id())
                 skills = self.skills_sampler.get_next((r_f, c_f))
                 player = Player(self.realm, (r_f, c_f), agent, self.palette.color(
-                    self.group_id), self.group_id, skills)
+                    self.group_id), self.group_id, skills, self.visible_colors, self.accessible_colors)
                 super().spawn(player)
 
     def update_diary(self):
