@@ -5,5 +5,6 @@ from .move import Move, Direction, West, North, South, East
 from .message import Message
 from .common import Fixed
 from .build import Build, BuildDecision
+from .plant import Plant, PlantDecision
 
 Action.hook()
