@@ -126,3 +126,8 @@ class Building:
     @property
     def Building(self):
         return True
+
+class Planting:
+    @property
+    def Planting(self):
+        return True
