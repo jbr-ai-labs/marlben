@@ -52,7 +52,9 @@ class Map:
 
         materials = {mat.index: mat for mat in material.All}
         for r, row in enumerate(map_file):
+            #print(f"{r}/{self.tiles.shape[0]}")
             for c, (idx, vc, ac) in enumerate(row):
+                #print(f"\t{c}/{self.tiles.shape[1]}")
                 mat = materials[idx]
                 tile = self.tiles[r, c]
                 tile.reset(mat, vc, ac, config)
