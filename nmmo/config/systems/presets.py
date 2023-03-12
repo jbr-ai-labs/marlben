@@ -1,4 +1,4 @@
-from nmmo.config.systems.config import Sharing, Progression, NPC
+from nmmo.config.systems.config import Sharing, Progression, NPC, Building
 
 
-class AllGameSystems(Sharing, Progression, NPC): pass
+class AllGameSystems(Sharing, Progression, NPC, Building): pass

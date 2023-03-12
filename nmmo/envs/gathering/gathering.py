@@ -1,5 +1,5 @@
 from nmmo import Agent
-from nmmo.config import Resource
+from nmmo.config import Resource, Building
 from nmmo.config.base.config import PlayerGroupConfig, Config
 from .utils.map_generator import GatheringMapGenerator
 import math
@@ -66,3 +66,8 @@ class ObscuredAndExclusiveGatheringConfig(GatheringConfig):
             group.VISIBLE_COLORS = [i+1]
 
         self.PATH_MAPS = f'maps/gathering_obscured_and_exclusive_{self.MAP_WIDTH}x{self.MAP_HEIGHT}'
+
+
+class GatheringBuildingConfig(Small, Resource, Building):
+    TRAIN_HORIZON = HORIZON
+    EVAL_HORIZON = HORIZON

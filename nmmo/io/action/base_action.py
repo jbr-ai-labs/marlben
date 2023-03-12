@@ -3,6 +3,7 @@ from nmmo.io.action.common import NodeType, Node
 from nmmo.io.action.move import Move
 from nmmo.io.action.attack import Attack
 from nmmo.io.action.share import Share
+from nmmo.io.action.build import Build
 from nmmo.lib.utils import staticproperty
 
 
@@ -12,7 +13,7 @@ class Action(Node):
     @staticproperty
     def edges():
         '''List of valid actions'''
-        return [Move, Attack, Share]
+        return [Move, Attack, Share, Build]
 
     @staticproperty
     def n():

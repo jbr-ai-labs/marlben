@@ -115,13 +115,15 @@ class Output(nn.Module):
                 lens = None
                 if arg.argType == nmmo.action.Fixed:
                     batch = obs.shape[0]
-                    idxs = [e.idx for e in arg.edges]
+                    if not 'edges' in arg.__dict__:
+                        idxs = list(range(arg.N(self.config)))
+                    else:
+                        idxs = [e.idx for e in arg.edges]
                     cands = self.arg.weight[idxs]
                     cands = cands.repeat(batch, 1, 1)
                 else:
                     cands = lookup['Entity']
                     lens = lookup['N']
-
                 logits = self.net(obs, cands, lens)
                 rets[atn][arg] = logits
 
@@ -143,7 +145,6 @@ class DiscreteAction(Action):
 
     def forward(self, stim, args, lens):
         x = self.net(stim, args)
-
         if lens is not None:
             mask = torch.arange(x.shape[-1]).to(x.device).expand_as(x)
             x[mask >= lens] = 0
