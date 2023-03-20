@@ -1,0 +1,18 @@
+name: marlben
+channels:
+  - conda-forge
+dependencies:
+  -  numpy=1.22.3
+  -  torch=1.11.0
+  -  ray[rllib]=1.11.0
+  -  tqdm=4.61.1
+  -  scipy=1.8.0
+  -  gym=0.21.0
+  -  PettingZoo=1.14.0
+  -  imageio=2.8.0
+  -  Twisted=19.2.0
+  -  autobahn=19.3.3
+  -  pytest=7.1.1
+  -  wandb
+  -  openskill
+  -  vec_noise
