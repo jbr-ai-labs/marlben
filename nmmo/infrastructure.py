@@ -262,7 +262,7 @@ class Dataframe:
         visibility_c_col = self.data["Tile"].continuous.cols["VisibilityColor"]
         accessibility_c_col = self.data["Tile"].continuous.cols["AccessibilityColor"]
         index_col = self.data["Tile"].discrete.discrete["Index"]
-        index_c_col = self.data["Tile"].continuous.discrete["Index"]
+        index_c_col = self.data["Tile"].continuous.cols["Index"]
 
         new_tiles = {"Continuous": [], "Discrete": []}
         for (row_d, row_c) in zip(tiles["Discrete"], tiles["Continuous"]):
