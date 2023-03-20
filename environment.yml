@@ -6,7 +6,7 @@ dependencies:
   -  pip:
        - pettingzoo~=1.14.0
        - torch==1.11.0
-       - ray[rllib]~=1.11.0
+       - ray[rllib]~=1.13.0
        - vec_noise
        - numpy~=1.22.3
        - tqdm~=4.61.1
