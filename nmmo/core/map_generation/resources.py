@@ -1,5 +1,5 @@
 import numpy as np
-from nmmo.core.terrain import Terrain
+from nmmo import Terrain
 
 
 def generate_resources(tile_map, resource_type, resource_amount, visibility_colors, accessibility_colors,

@@ -1,5 +1,5 @@
 import numpy as np
-from nmmo.core.terrain import Terrain
+from nmmo import Terrain
 
 
 def _walk_and_paint(important_cells, mask, reached_cells):

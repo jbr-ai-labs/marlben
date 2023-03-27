@@ -1,45 +1,12 @@
-from pdb import set_trace as T
-
-import scipy.stats as stats
-import numpy as np
-
 import os
 
+import numpy as np
 import vec_noise
-from imageio import imread, imsave
+from imageio import imread, imwrite
+from scipy import stats as stats
 from tqdm import tqdm
 
-from nmmo import material
-
-
-def sharp(self, noise):
-    '''Exponential noise sharpener for perlin ridges'''
-    return 2 * (0.5 - abs(0.5 - noise));
-
-
-class Save:
-    '''Save utility for map files'''
-
-    def render(mats, lookup, path):
-        '''Render tiles to png'''
-        images = [[lookup[e] for e in l] for l in mats]
-        image = np.vstack([np.hstack(e) for e in images])
-        imsave(path, image)
-
-    def fractal(terrain, path):
-        '''Render raw noise fractal to png'''
-        frac = (256 * terrain).astype(np.uint8)
-        imsave(path, frac)
-
-    def np(mats, path):
-        '''Save map to .npy'''
-        path = os.path.join(path, 'map.npy')
-        np.save(path, mats.astype(int))
-
-
-class Terrain:
-    '''Terrain material class; populated at runtime'''
-    pass
+from nmmo.lib import material
 
 
 class MapGenerator:
@@ -208,3 +175,33 @@ class MapGenerator:
         matl[edge & stone] = Terrain.FOREST
 
         return val, matl
+
+
+def sharp(self, noise):
+    '''Exponential noise sharpener for perlin ridges'''
+    return 2 * (0.5 - abs(0.5 - noise));
+
+
+class Save:
+    '''Save utility for map files'''
+
+    def render(mats, lookup, path):
+        '''Render tiles to png'''
+        images = [[lookup[e] for e in l] for l in mats]
+        image = np.vstack([np.hstack(e) for e in images])
+        imsave(path, image)
+
+    def fractal(terrain, path):
+        '''Render raw noise fractal to png'''
+        frac = (256 * terrain).astype(np.uint8)
+        imsave(path, frac)
+
+    def np(mats, path):
+        '''Save map to .npy'''
+        path = os.path.join(path, 'map.npy')
+        np.save(path, mats.astype(int))
+
+
+class Terrain:
+    '''Terrain material class; populated at runtime'''
+    pass

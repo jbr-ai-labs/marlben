@@ -1,8 +1,7 @@
-from nmmo.core.terrain import MapGenerator
-from nmmo.core.terrain import Terrain
-from nmmo.lib.generation.rock_patterns import generate_huge_rocks
-from nmmo.lib.generation.resources import generate_resources
-from nmmo.lib.generation.checks import check_connectivity
+from nmmo import MapGenerator, Terrain
+from nmmo.core.map_generation.rock_patterns import generate_huge_rocks
+from nmmo.core.map_generation.resources import generate_resources
+from nmmo.core.map_generation.checks import check_connectivity
 import numpy as np
 
 
