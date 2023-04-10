@@ -262,6 +262,7 @@ class Dataframe:
         visibility_c_col = self.data["Tile"].continuous.cols["VisibilityColor"]
         accessibility_c_col = self.data["Tile"].continuous.cols["AccessibilityColor"]
         index_col = self.data["Tile"].discrete.discrete["Index"]
+        index_c_col = self.data["Tile"].continuous.cols["Index"]
 
         new_tiles = {"Continuous": [], "Discrete": []}
         for (row_d, row_c) in zip(tiles["Discrete"], tiles["Continuous"]):
@@ -269,6 +270,7 @@ class Dataframe:
             new_row_c = copy.deepcopy(row_c)
             if (row_d[visibility_col] - visibility_offset) not in ent.visible_colors:
                 new_row_d[index_col] = 5
+                new_row_c[index_c_col] = 5.
             new_row_d[visibility_col] = visibility_offset
             new_row_d[accessibility_col] = accessibility_offset
             new_row_c[visibility_c_col] = 0.
