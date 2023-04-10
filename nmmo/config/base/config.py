@@ -112,11 +112,11 @@ class Config(Template):
     MAP_PREVIEW_DOWNSCALE = 1
     '''Downscaling factor for png previews'''
 
-    TERRAIN_CENTER = None
+    TERRAIN_CENTER = None  # TODO: Remove as we support HEIGHT and WIDTH parameters
     '''Size of each map (number of tiles along each side)'''
 
     TERRAIN_BORDER = 8
-    TOP_LEFT_CORNER = (8, 8)
+    TOP_LEFT_CORNER = (8, 8)  # TODO: Should implement as a property instead
     '''Number of lava border tiles surrounding each side of the map'''
 
     @property

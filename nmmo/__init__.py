@@ -15,8 +15,7 @@ from .core import agent
 from .core.agent import Agent
 from .core.env import Env
 from .systems.achievement import Task
-from .core.terrain import MapGenerator, Terrain
+from .core.map_generation.base import MapGenerator, Terrain
 
-__all__ = ['Env', 'scripting', 'agent', 'Agent', 'MapGenerator', 'Terrain',
-           'Serialized', 'action', 'Action', 'material',
+__all__ = ['Env', 'scripting', 'agent', 'Agent', 'Serialized', 'action', 'Action', 'material',
            'Task', 'Overlay', 'OverlayRegistry']

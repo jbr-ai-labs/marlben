@@ -6,7 +6,7 @@ from pettingzoo import ParallelEnv
 
 import nmmo
 from nmmo import entity, core
-from nmmo.core import terrain
+from nmmo.core.map_generation import base as terrain
 from nmmo.infrastructure import DataType
 from nmmo.lib import log
 
@@ -40,7 +40,7 @@ class Env(ParallelEnv):
                 config.AGENTS = [agent.Random]
 
         if not config.MAP_GENERATOR:
-            config.MAP_GENERATOR = terrain.MapGenerator
+            config.MAP_GENERATOR = nmmo.core.map_generation.base.MapGenerator
 
         self.realm = core.Realm(config)
         self.registry = nmmo.OverlayRegistry(config, self)

@@ -5,7 +5,7 @@ from os import path as osp
 import numpy as np
 from tqdm import tqdm
 
-from nmmo.core.terrain import MapGenerator
+from nmmo import MapGenerator
 
 
 class CustomMapGenerator(MapGenerator):
