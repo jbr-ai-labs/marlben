@@ -30,7 +30,7 @@ class Build(Node):
 
         if build_decision:
             config = env.map.tiles[r, c].config
-            env.map.tiles[r, c].reset(Stone, config)
+            env.map.tiles[r, c].reset(Stone, True, True, config)
 
 
 class BuildDecision(Node):

@@ -43,8 +43,8 @@ class Realm:
         npc, player = self.entity_group_manager.packet
         return {'environment': self.map.repr,
                 'resource': self.map.packet,
-                'player': npc,
-                'npc': player}
+                'player': player,
+                'npc': npc}
 
     @property
     def population(self):
