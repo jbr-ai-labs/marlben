@@ -4,7 +4,7 @@ from nmmo.core.spawn.spawn_system.position_samplers import RangePositionSampler
 from nmmo.core.spawn.spawn_system.skill_samplers import CustomSkillSampler
 from nmmo.io.action.attack import Range, Heal, Mage
 from nmmo.systems.achievement import Task
-from nmmo.envs.custom_map_generator import CustomMapGenerator
+from nmmo.core.map_generation.pregen_map_generator import PregeneratedMapGenerator
 from nmmo.config.base.config import NPCGroupConfig, PlayerGroupConfig, Config
 from nmmo.config.systems import NPC
 from nmmo.core.agent import Random
@@ -68,4 +68,4 @@ class BossFightConfig(Config, NPC):
 
     MAP_PREVIEW_DOWNSCALE = 1
     TERRAIN_LOG_INTERPOLATE_MIN = 0
-    MAP_GENERATOR = CustomMapGenerator
+    MAP_GENERATOR = PregeneratedMapGenerator

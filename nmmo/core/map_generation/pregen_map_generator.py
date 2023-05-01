@@ -8,7 +8,7 @@ from tqdm import tqdm
 from nmmo import MapGenerator
 
 
-class CustomMapGenerator(MapGenerator):
+class PregeneratedMapGenerator(MapGenerator):
     def __init__(self, config):
         super().__init__(config)
 

@@ -28,7 +28,7 @@ def setup_ray(config):
 def setup_polcies(mapPolicy, config):
     policies = {}
     env = nmmo.Env(config)
-    for i in range(config.NPOLICIES):
+    for i in range(config.NPOLICIES):  # FIXME: Is it ok that we iterate through policies (not an agents)?
         params = {"agent_id": i,
                   "obs_space_dict": env.observation_space(i),
                   "act_space_dict": env.action_space(i)}

@@ -6,10 +6,10 @@ from nmmo.core.spawn.spawn_system.position_samplers import UniformPositionSample
 from nmmo.core.spawn.spawn_system.skill_samplers import CustomSkillSampler
 from nmmo.systems.achievement import Task
 from scripted.baselines import CorridorAgent
-from nmmo.envs.custom_map_generator import CustomMapGenerator
+from nmmo.core.map_generation.pregen_map_generator import PregeneratedMapGenerator
 
 from nmmo.config.base.config import PlayerGroupConfig, Config
-from nmmo.config.systems import Sharing, Building
+from nmmo.config.systems import Sharing
 
 HORIZON = 70
 
@@ -62,7 +62,7 @@ class BaseCorridorConfig(Config, Sharing):
     MAP_PREVIEW_DOWNSCALE = 1
     TERRAIN_LOG_INTERPOLATE_MIN = 0
     PATH_MAPS = osp.join(PATH_TO_CUSTOM_MAPS, "maps")
-    MAP_GENERATOR = CustomMapGenerator
+    MAP_GENERATOR = PregeneratedMapGenerator
 
     RESOURCE_BASE_RESOURCE = 14
     RESOURCE_HARVEST_RESTORE_FRACTION = 1.0
