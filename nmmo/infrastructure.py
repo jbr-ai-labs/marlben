@@ -261,7 +261,7 @@ class Dataframe:
         visibility_offset = self.data["Tile"].discrete.discrete["VisibilityColor"]
         visibility_c_col = self.data["Tile"].continuous.cols["VisibilityColor"]
         accessibility_c_col = self.data["Tile"].continuous.cols["AccessibilityColor"]
-        index_col = self.data["Tile"].discrete.discrete["Index"]
+        index_col = self.data["Tile"].discrete.cols["Index"]
         index_c_col = self.data["Tile"].continuous.cols["Index"]
 
         new_tiles = {"Continuous": [], "Discrete": []}
