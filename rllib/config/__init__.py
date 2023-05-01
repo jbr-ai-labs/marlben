@@ -8,6 +8,6 @@ def get_config(env_name):
     EnvConfig = name2config[env_name]
 
     class Cfg(EnvConfig, Small, Debug):
-        RENDER = True
+        RENDER = False
 
     return Cfg
