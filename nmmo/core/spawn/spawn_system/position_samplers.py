@@ -28,13 +28,16 @@ class ConcurrentPositionSampler(PositionSampler):
             map_width = config.MAP_WIDTH
             top, left = config.TERRAIN_BORDER, config.TERRAIN_BORDER
 
-            horizontal_range = np.arange(left + 2, left + map_width, 4).tolist()
+            horizontal_range = np.arange(
+                left + 2, left + map_width, 4).tolist()
             vertical_range = np.arange(top + 2, top + map_height, 4).tolist()
 
             lefts = (left + np.zeros(len(vertical_range), dtype=np.int)).tolist()
-            rights = ((left + map_width) + np.zeros(len(vertical_range), dtype=np.int)).tolist()
+            rights = ((left + map_width) +
+                      np.zeros(len(vertical_range), dtype=np.int)).tolist()
             highs = (top + np.zeros(len(horizontal_range), dtype=np.int)).tolist()
-            lows = ((top + map_height) + np.zeros(len(horizontal_range), dtype=np.int)).tolist()
+            lows = ((top + map_height) +
+                    np.zeros(len(horizontal_range), dtype=np.int)).tolist()
 
             border_x = horizontal_range + lefts + horizontal_range + rights
             border_y = lows + vertical_range + highs + vertical_range
@@ -87,12 +90,12 @@ class UniformPositionSampler(PositionSampler):
             r_start, r_end = top, top + map_height
         else:
             r_start, r_end = [r + top for r in self.r_range]
-        
+
         if self.c_range is None:
             c_start, c_end = left, left + map_width
         else:
             c_start, c_end = [c + left for c in self.c_range]
-        
+
         self.x_sampler = UniformSampler(r_start, r_end)
         self.y_sampler = UniformSampler(c_start, c_end)
 

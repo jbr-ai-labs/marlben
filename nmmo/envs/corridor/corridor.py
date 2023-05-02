@@ -77,12 +77,14 @@ def create_group_config(agents):
         TraderGroupConfig(
             agents=[agents[0]],
             n_ent=1,
-            coordinates_sampler=UniformPositionSampler(r_range=[1, 1], c_range=[4, 4])
+            coordinates_sampler=UniformPositionSampler(
+                r_range=[1, 1], c_range=[4, 4])
         ),
         TraderGroupConfig(
             agents=[agents[1]],
             n_ent=1,
-            coordinates_sampler=UniformPositionSampler(r_range=[1, 1], c_range=[5, 5])
+            coordinates_sampler=UniformPositionSampler(
+                r_range=[1, 1], c_range=[5, 5])
         )
     ]
 

@@ -47,7 +47,8 @@ class History:
         self.playerKills = 0
 
         self.damage = nmmo.Serialized.Entity.Damage(ent.dataframe, ent.entID)
-        self.timeAlive = nmmo.Serialized.Entity.TimeAlive(ent.dataframe, ent.entID)
+        self.timeAlive = nmmo.Serialized.Entity.TimeAlive(
+            ent.dataframe, ent.entID)
 
         self.lastPos = None
 
@@ -79,9 +80,11 @@ class Base:
         self.r = nmmo.Serialized.Entity.R(ent.dataframe, ent.entID, r)
         self.c = nmmo.Serialized.Entity.C(ent.dataframe, ent.entID, c)
 
-        self.population = nmmo.Serialized.Entity.Population(ent.dataframe, ent.entID, pop)
+        self.population = nmmo.Serialized.Entity.Population(
+            ent.dataframe, ent.entID, pop)
         self.self = nmmo.Serialized.Entity.Self(ent.dataframe, ent.entID, 1)
-        self.identity = nmmo.Serialized.Entity.ID(ent.dataframe, ent.entID, ent.entID)
+        self.identity = nmmo.Serialized.Entity.ID(
+            ent.dataframe, ent.entID, ent.entID)
         self.level = nmmo.Serialized.Entity.Level(ent.dataframe, ent.entID, 3)
 
         ent.dataframe.init(nmmo.Serialized.Entity, ent.entID, (r, c))
@@ -115,7 +118,8 @@ class Entity:
         self.closest = None
         self.spawnPos = pos
 
-        self.attackerID = nmmo.Serialized.Entity.AttackerID(self.dataframe, self.entID, 0)
+        self.attackerID = nmmo.Serialized.Entity.AttackerID(
+            self.dataframe, self.entID, 0)
 
         # Submodules
         self.base = Base(self, pos, iden, name, color, pop)
@@ -123,8 +127,10 @@ class Entity:
         self.history = History(self)
         self.resources = Resources(self)
         self.loadout = equipment.Loadout()
-        self.visible_colors = set(range(realm.config.NUM_VISIBILITY_COLORS + 1))
-        self.accessible_colors = set(range(realm.config.NUM_ACCESSIBILITY_COLORS + 1))
+        self.visible_colors = set(
+            range(realm.config.NUM_VISIBILITY_COLORS + 1))
+        self.accessible_colors = set(
+            range(realm.config.NUM_ACCESSIBILITY_COLORS + 1))
 
     def packet(self):
         data = {'status': self.status.packet(), 'history': self.history.packet(), 'loadout': self.loadout.packet(),

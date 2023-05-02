@@ -22,7 +22,7 @@ class Small(Config):
 
     TERRAIN_LOG_INTERPOLATE_MIN = 0
 
-    TERRAIN_CENTER = 8 # 4
+    TERRAIN_CENTER = 8  # 4
     MAP_HEIGHT = 4
     MAP_WIDTH = 4
     PLAYER_GROUPS = [SmallPlayerGroupConfig(), SmallPlayerGroupConfig()]

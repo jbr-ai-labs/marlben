@@ -3,6 +3,7 @@ import os
 import numpy as np
 import vec_noise
 from imageio import imread, imwrite
+from matplotlib.image import imsave
 from scipy import stats as stats
 from tqdm import tqdm
 
@@ -103,7 +104,8 @@ class MapGenerator:
         start = frequency
         end = min(start, start - np.log2(center) + offset)
         for idx, freq in enumerate(np.logspace(start, end, octaves, base=2)):
-            val[:, :, idx] = vec_noise.snoise2(seed * size + freq * X, idx * size + freq * Y)
+            val[:, :, idx] = vec_noise.snoise2(
+                seed * size + freq * X, idx * size + freq * Y)
 
         # Compute L1 distance
         x = np.abs(np.arange(size) - size // 2)
@@ -124,7 +126,9 @@ class MapGenerator:
         expand = int(np.log2(center)) + 1
         for idx, octave in enumerate(range(expand, 1, -1)):
             freq, mag = 1 / 2 ** octave, 1 / 2 ** idx
-            noise += mag * vec_noise.snoise2(seed * size + freq * X, idx * size + freq * Y)
+            noise += mag * \
+                vec_noise.snoise2(seed * size + freq * X,
+                                  idx * size + freq * Y)
 
         noise -= np.min(noise)
         noise = octaves * noise / np.max(noise) - 1e-12
@@ -179,7 +183,7 @@ class MapGenerator:
 
 def sharp(self, noise):
     '''Exponential noise sharpener for perlin ridges'''
-    return 2 * (0.5 - abs(0.5 - noise));
+    return 2 * (0.5 - abs(0.5 - noise))
 
 
 class Save:

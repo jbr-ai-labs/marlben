@@ -26,7 +26,8 @@ class DefaultSkillSampler(SkillsSampler):
 class CustomSkillSampler(SkillsSampler):
     def __init__(self, skill2config: dict):
         super().__init__()
-        self.skill2sampler = dict([(k, self._sampler_by_config(skill2config[k])) for k in skill2config])
+        self.skill2sampler = dict(
+            [(k, self._sampler_by_config(skill2config[k])) for k in skill2config])
 
     def _sampler_by_config(self, skill_sampler_config):
         if skill_sampler_config["name"] == "const":
@@ -39,7 +40,8 @@ class CustomSkillSampler(SkillsSampler):
     def get_next(self, pos):
         skills = SkillsBalanced(self.config)
         for k in self.skill2sampler:
-            skills.__getattribute__(k).setExpByLevel(self.skill2sampler[k].get_next())
+            skills.__getattribute__(k).setExpByLevel(
+                self.skill2sampler[k].get_next())
         return skills
 
     def reset(self, config):
@@ -58,14 +60,14 @@ class DefaultNPCSkillSampler(SkillsSampler):
     def get_next(self, pos):
         danger = combat.danger(self.config, pos)
 
-        lmin    = self.level_min
-        lmax    = self.level_max
+        lmin = self.level_min
+        lmax = self.level_max
 
-        lbase   = danger*(lmax-lmin) + lmin
+        lbase = danger*(lmax-lmin) + lmin
         lspread = self.level_spread
 
-        lvlMin  = int(max(lmin, lbase - lspread))
-        lvlMax  = int(min(lmax, lbase + lspread))
+        lvlMin = int(max(lmin, lbase - lspread))
+        lvlMax = int(min(lmax, lbase + lspread))
 
         lvls = [random.randint(lvlMin, lvlMax) for _ in range(5)]
 

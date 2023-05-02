@@ -36,7 +36,8 @@ class Share(Node):
             return
 
         # Execute attack
-        entity.history.share = {'target': targ.entID, 'resource': resource.__name__, 'amount': amount}
+        entity.history.share = {'target': targ.entID,
+                                'resource': resource.__name__, 'amount': amount}
 
         from nmmo.systems import sharing
         true_amount = sharing.share(entity, targ, resource.resource, amount)

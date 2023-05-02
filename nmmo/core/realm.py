@@ -8,7 +8,8 @@ def prioritized(entities: Dict, merged: Dict):
     """Sort actions into merged according to priority"""
     for idx, actions in entities.items():
         for atn, args in actions.items():
-            merged[atn.priority].append((idx, (atn, dict([(k.arg_name, v) for k, v in args.items()]))))
+            merged[atn.priority].append(
+                (idx, (atn, dict([(k.arg_name, v) for k, v in args.items()]))))
     return merged
 
 
@@ -69,7 +70,7 @@ class Realm:
 
     def step(self, actions):
         '''Run game logic for one tick
-      
+
         Args:
             actions: Dict of agent actions
         '''

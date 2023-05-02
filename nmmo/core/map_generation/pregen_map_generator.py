@@ -22,7 +22,8 @@ class PregeneratedMapGenerator(MapGenerator):
         map_height = height + self.config.TERRAIN_BORDER * 2
         top, left = self.config.TERRAIN_BORDER, self.config.TERRAIN_BORDER
         for idx in tqdm(range(self.config.NMAPS)):
-            map_template = np.zeros(shape=(map_height, map_width, 3), dtype=np.int32)
+            map_template = np.zeros(
+                shape=(map_height, map_width, 3), dtype=np.int32)
             tiles = np.array(maps[str(idx)], dtype=np.int32)
             map_template[top:top+height, left:left+width] = tiles
             # make rock border so the agent doesn't leave the main map

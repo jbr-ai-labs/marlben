@@ -83,6 +83,7 @@ def run_tune_experiment(config, env_name, trainer_wrapper):
                     'num_sgd_iter': config.NUM_SGD_ITER,
                     'framework': 'torch',
                     'horizon': np.inf,
+                    "disable_env_checking": True,
                     'soft_horizon': False,
                     'no_done_at_end': False,
                     'env': env_name,

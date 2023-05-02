@@ -1,8 +1,5 @@
-from pdb import set_trace as T
-import pytest
-
 import nmmo
-from nmmo.config import Config, Small, Large, Resource, Combat, Progression, NPC, AllGameSystems
+from nmmo.config import Small, Large, Resource, Combat, Progression, NPC, AllGameSystems
 
 # Test utils
 def create_and_reset(conf):

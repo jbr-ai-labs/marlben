@@ -1,8 +1,7 @@
-from pdb import set_trace as T
-
 from pettingzoo.test import parallel_api_test
 
 import nmmo
+
 
 def test_pettingzoo_api():
     env = nmmo.Env()

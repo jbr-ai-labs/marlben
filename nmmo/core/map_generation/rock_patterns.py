@@ -11,7 +11,8 @@ def generate_huge_rocks(height, width, rock_seed_proba, rock_growth_proba,
     while (prev_rocks != rocks).sum() > 0 and attempts < max_growth_attempts:
         candidates = np.logical_or(np.logical_or(np.roll(new_rocks, 1, 0), np.roll(new_rocks, -1, 0)),
                                    np.logical_or(np.roll(new_rocks, 1, 1), np.roll(new_rocks, -1, 1)))
-        new_rocks = np.logical_and(candidates, random.rand(height, width) < rock_growth_proba)
+        new_rocks = np.logical_and(candidates, random.rand(
+            height, width) < rock_growth_proba)
         prev_rocks = rocks
         rocks = np.logical_or(rocks, new_rocks)
         attempts += 1
@@ -31,7 +32,8 @@ def generate_labyrinth(height, width, additional_links_min, additional_links_max
 
     while expandable_cells.qsize() > 0:
         _, (x, y) = expandable_cells.get()
-        directions = (size + direction_helper + np.array([[x, y] for _ in range(4)])) % size
+        directions = (size + direction_helper +
+                      np.array([[x, y] for _ in range(4)])) % size
         available_directions = []
         for i, (tx, ty) in enumerate(directions):
             if cells[tx, ty].sum() == 0:
@@ -47,7 +49,8 @@ def generate_labyrinth(height, width, additional_links_min, additional_links_max
             expandable_cells.put((random.random(), (x, y)))
 
     for _ in range(random.randint(additional_links_min, additional_links_max + 1)):
-        x, y, i = random.randint(0, h), random.randint(0, w), random.randint(0, 4)
+        x, y, i = random.randint(0, h), random.randint(
+            0, w), random.randint(0, 4)
         while cells[x, y, i] > 0:
             x, y = random.randint(0, h), random.randint(0, w),
             i = random.randint(0, 4)

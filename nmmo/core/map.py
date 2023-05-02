@@ -9,7 +9,7 @@ import os
 
 class Map:
     '''Map object representing a list of tiles
-   
+
    Also tracks a sparse list of tile updates
    '''
 
@@ -42,7 +42,8 @@ class Map:
         self.updateList = set()
 
         path_map_suffix = config.PATH_MAP_SUFFIX.format(idx)
-        fPath = os.path.join(config.PATH_CWD, config.PATH_MAPS, path_map_suffix)
+        fPath = os.path.join(
+            config.PATH_CWD, config.PATH_MAPS, path_map_suffix)
 
         try:
             map_file = np.load(fPath)

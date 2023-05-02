@@ -1,7 +1,5 @@
 import os
 
-import numpy as np
-
 import nmmo
 from nmmo.config.common import Template, SequentialLoader
 from nmmo.core.spawn.spawn_system import position_samplers, skill_samplers
@@ -52,19 +50,18 @@ class Config(Template):
             assert type(self) != Config, err
 
     ############################################################################
-    ### Meta-Parameters
+    # Meta-Parameters
     RENDER = False
 
     def game_system_enabled(self, name) -> bool:
         return hasattr(self, name)
 
     ############################################################################
-    ### Visibility and Accessibility settings
+    # Visibility and Accessibility settings
     NUM_VISIBILITY_COLORS = 0
     NUM_ACCESSIBILITY_COLORS = 0
 
-
-    ### Population Parameters
+    # Population Parameters
     AGENT_LOADER = SequentialLoader
     '''Agent loader class specifying spawn sampling'''
 
@@ -94,12 +91,12 @@ class Config(Template):
         return 2 * self.NSTIM + 1
 
     ############################################################################
-    ### Agent Parameters
+    # Agent Parameters
     BASE_HEALTH = 10
     '''Initial Constitution level and agent health'''
 
     ############################################################################
-    ### Terrain Generation Parameters
+    # Terrain Generation Parameters
     MAP_GENERATOR = None
     '''Specifies a user map generator. Uses default generator if unspecified.'''
 
@@ -162,7 +159,7 @@ class Config(Template):
     '''Noise threshold for forest'''
 
     ############################################################################
-    ### Path Parameters
+    # Path Parameters
     PATH_ROOT = os.path.dirname(nmmo.__file__)
     '''Global repository directory'''
 

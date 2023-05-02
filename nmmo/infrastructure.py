@@ -250,7 +250,8 @@ class Dataframe:
         stim['Entity']['N'] = np.array([len(ents)], dtype=np.int32)
 
         ent.targets = ents
-        stim['Tile'] = self.__apply_visibility_to_tiles(ent, self.data['Tile'].get(ent))
+        stim['Tile'] = self.__apply_visibility_to_tiles(
+            ent, self.data['Tile'].get(ent))
 
         return stim
 

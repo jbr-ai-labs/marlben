@@ -119,7 +119,7 @@ class Env(ParallelEnv):
         return gym.spaces.Dict(actions)
 
     ############################################################################
-    ### Core API
+    # Core API
     def reset(self, idx=None, step=True):
         '''OpenAI Gym API reset function
 
@@ -213,7 +213,7 @@ class Env(ParallelEnv):
 
             Where agent_i is the integer index of the i\'th agent and
             obs_i is specified by the observation_space function.
-           
+
          rewards:
             A dictionary of agent rewards of format::
 
@@ -229,7 +229,7 @@ class Env(ParallelEnv):
             By default, agents receive -1 reward for dying and 0 reward for
             all other circumstances. Override Env.reward to specify
             custom reward functions
- 
+
          dones:
             A dictionary of agent done booleans of format::
 
@@ -295,7 +295,8 @@ class Env(ParallelEnv):
                 atns = ent.agent(ob)
                 for key in atns:
                     if nmmo.action.Target in atns[key]:
-                        atns[key][nmmo.action.Target] = self.realm.entity(atns[key][nmmo.action.Target])
+                        atns[key][nmmo.action.Target] = self.realm.entity(
+                            atns[key][nmmo.action.Target])
                 self.actions[entID] = atns
             else:
                 obs[entID] = ob
@@ -321,7 +322,7 @@ class Env(ParallelEnv):
         return obs, rewards, dones, infos
 
     ############################################################################
-    ### Logging
+    # Logging
     def log(self, ent) -> None:
         '''Logs agent data upon death
 
@@ -391,7 +392,7 @@ class Env(ParallelEnv):
         return self.quill.packet
 
     ############################################################################
-    ### Override hooks
+    # Override hooks
     def reward(self, player):
         '''Computes the reward for the specified agent
 
@@ -422,7 +423,7 @@ class Env(ParallelEnv):
         return reward, info
 
     ############################################################################
-    ### Client data
+    # Client data
     def render(self, mode='human') -> None:
         '''Data packet used by the renderer
 
@@ -509,13 +510,15 @@ class Env(ParallelEnv):
                 current = tile.ents
                 n = len(current)
                 if n == 0:
-                    ent = entity.Player(self.realm, (r, c), entID, pop, name, color, [0], [0])
+                    ent = entity.Player(self.realm, (r, c),
+                                        entID, pop, name, color, [0], [0])
                 else:
                     ent = list(current.values())[0]
 
                 obs = self.realm.dataframe.get(ent)
                 if n == 0:
-                    self.realm.dataframe.remove(nmmo.Serialized.Entity, entID, ent.pos)
+                    self.realm.dataframe.remove(
+                        nmmo.Serialized.Entity, entID, ent.pos)
 
                 observations[entID] = obs
                 ents[entID] = ent

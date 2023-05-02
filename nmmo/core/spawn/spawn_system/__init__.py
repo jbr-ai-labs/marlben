@@ -7,8 +7,8 @@ class SpawnFactory:
     class Type(Enum):
         CONCURRENT = 'concurrent'
         CONTINUOUS = 'continuous'
-        IN_RANGE   = 'in_range'
-    
+        IN_RANGE = 'in_range'
+
     def get_spawn_system(spawn_system_name):
         mode = SpawnFactory.Type(spawn_system_name)
         if mode == SpawnFactory.Type.CONCURRENT:

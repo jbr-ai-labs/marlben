@@ -1,4 +1,4 @@
-from nmmo.io.action.common import Fixed, NodeType, Node#, BoolDecision
+from nmmo.io.action.common import Fixed, NodeType, Node  # , BoolDecision
 from nmmo.lib.utils import staticproperty
 from nmmo.lib.material import Stone
 

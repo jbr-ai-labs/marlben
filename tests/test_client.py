@@ -1,7 +1,4 @@
-'''Manual test for client connectivity'''
-
-from pdb import set_trace as T
-import pytest
+"""Manual test for client connectivity"""
 
 import nmmo
 
@@ -12,4 +9,7 @@ if __name__ == '__main__':
     env.reset()
     while True:
        env.render()
-       env.step({})
+       _, _, dones, _ = env.step({})
+       print(dones)
+       if sum(dones.values()):
+           break
