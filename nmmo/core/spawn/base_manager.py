@@ -256,8 +256,14 @@ class PlayerGroup(EntityGroup):
                 pop_id, agent = next(self.agents)
                 agent = agent(self.config, self.id_counter.next_player_id())
                 skills = self.skills_sampler.get_next((r_f, c_f))
-                player = Player(self.realm, (r_f, c_f), agent, self.palette.color(
-                    self.group_id), self.group_id, skills, self.visible_colors, self.accessible_colors)
+
+                player = Player(
+                    self.realm, (r_f, c_f), agent,
+                    self.palette.color(self.group_id),
+                    self.group_id, skills,
+                    visible_colors=self.visible_colors,
+                    accessible_colors=self.accessible_colors
+                )
                 super().spawn(player)
 
     def update_diary(self):
