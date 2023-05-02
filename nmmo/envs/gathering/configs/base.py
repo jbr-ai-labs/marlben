@@ -4,9 +4,9 @@ from os import path as osp
 from nmmo import Agent
 from nmmo.config import Resource
 from nmmo.config.base.config import PlayerGroupConfig, Config
+from nmmo.core.map_generation.pregen_map_generator import PregeneratedMapGenerator
 from nmmo.envs.gathering.utils.map_generator import GatheringMapGenerator
 from nmmo.core.spawn.spawn_system.position_samplers import UniformPositionSampler
-from nmmo.envs.custom_map_generator import CustomMapGenerator
 from scripted.baselines import GatheringAgent
 import math
 
@@ -76,7 +76,7 @@ class GatheringConfig(BaseGatheringConfig):
         self.AGENTS = process_agents(self.PLAYER_GROUPS)
 
 class GatheringConfigScripted(BaseGatheringConfig):
-    MAP_GENERATOR = CustomMapGenerator
+    MAP_GENERATOR = PregeneratedMapGenerator
     RESOURCE_HARVEST_RESTORE_FRACTION = 1.0
     AGENT_TYPE = GatheringAgent
     def __init__(self, n_groups, agents_per_group):

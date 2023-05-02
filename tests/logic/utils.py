@@ -1,4 +1,4 @@
-from nmmo import MapGenerator, Terrain
+from nmmo import MapGenerator
 import numpy as np
 import os
 from os import path as osp
@@ -26,7 +26,7 @@ def build_map_generator(map):
             os.makedirs(self.config.PATH_MAPS, exist_ok=True)
             map_template[[top-2, top+height+1], left-2:left+width+2, 0] = 5
             map_template[top-2:top+height+2, [left-2, left+width+1], 0] = 5
-            path = osp.join(self.config.PATH_MAPS, 'map_0')
+            path = osp.join(self.config.PATH_MAPS, 'map1')
             os.makedirs(path, exist_ok=True)
             path = osp.join(path, "map.npy")
             np.save(path, map_template)

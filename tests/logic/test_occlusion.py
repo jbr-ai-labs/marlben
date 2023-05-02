@@ -1,22 +1,14 @@
-import os
-from os import path as osp
-from nmmo import MapGenerator, Terrain
-
-import numpy as np
-from matplotlib import pyplot as plt
-import nmmo
 from nmmo import Env, Agent
 from nmmo.config.base.config import Config, PlayerGroupConfig
 from nmmo.config.systems.config import Resource
-from nmmo.io import action
 from nmmo.lib.material import Water, Forest, BalancedWater, BalancedForest
 from .utils import build_map_generator
 
-
 map = [
-    [[4, 0, 1], [5, 0, 0], [5, 0, 0], [1, 0, 2]],
-    [[2, 0, 0], [4, 0, 3], [4, 0, 0], [2, 0, 0]],
-    [[1, 0, 2], [5, 0, 0], [5, 0, 0], [4, 0, 1]]
+    [[1, 0, 0], [2, 0, 0], [2, 0, 0], [1, 1, 0]],
+    [[2, 0, 0], [2, 0, 0], [2, 0, 0], [2, 0, 0]],
+    [[2, 0, 0], [2, 0, 0], [2, 0, 0], [2, 0, 0]],
+    [[1, 1, 0], [2, 0, 0], [2, 0, 0], [4, 2, 0]]
 ]
 
 
@@ -24,9 +16,9 @@ class TestPGCfg(PlayerGroupConfig):
     NENT = 1
     AGENTS = [Agent]
 
-    def __init__(self, color):
+    def __init__(self, visibility_color):
         super().__init__()
-        self.ACCESSIBLE_COLORS = [color]
+        self.VISIBLE_COLORS = [visibility_color]
 
 
 class TestCfg(Config, Resource):
@@ -45,12 +37,10 @@ class TestCfg(Config, Resource):
     PLAYER_GROUPS = [TestPGCfg(1), TestPGCfg(2)]
 
 
-def test_exclusive():
-    cfg = TestCfg()
-    env = Env(cfg)
+def test_occlusion():
+    env = Env(TestCfg())
     env.reset()
-    for _ in range(2):
-        obs, _, _, _ = env.step({})
+    obs, _, _, _ = env.step({})
 
     assert len(obs) == 2
 
@@ -63,11 +53,14 @@ def test_exclusive():
     players = [player1, player2]
 
     resource_tiles = [tile for row in env.realm.map.tiles for tile in row if tile.mat in (Water, BalancedWater, Forest, BalancedForest)]
+    base_coord = env.config.NSTIM
 
     for tile in resource_tiles:
         for player in players:
-            if abs(tile.r - player.r) + abs(tile.c - player.c) < 2:
-                if tile._accessibility_color in player.accessible_colors:
-                    assert tile.capacity == 0
-                else:
-                    assert tile.capacity == 1
+            dx, dy = base_coord + tile.pos[0] - player.pos[0], base_coord + tile.pos[1] - player.pos[1]
+            if not (0 <= dx < env.config.WINDOW and 0 <= dy < env.config.WINDOW):
+                continue
+            if tile.visibility_color in player.visible_colors:
+                assert obs[player.entID]["Tile"]["Discrete"][dx * env.config.WINDOW + dy][0] in ((1, 3) if tile.mat in (Water, BalancedWater) else (4, 3))
+            else:
+                assert obs[player.entID]["Tile"]["Discrete"][dx * env.config.WINDOW + dy][0] == 5

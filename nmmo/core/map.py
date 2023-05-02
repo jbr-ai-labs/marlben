@@ -1,10 +1,9 @@
-from pdb import set_trace as T
+import os
+
 import numpy as np
 
 from nmmo import core
 from nmmo.lib import material
-
-import os
 
 
 class Map:

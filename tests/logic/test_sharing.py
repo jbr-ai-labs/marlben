@@ -1,4 +1,3 @@
-import nmmo
 from nmmo import Env, Agent
 from nmmo.config.base.config import Config, PlayerGroupConfig
 from nmmo.config.systems.config import Sharing
@@ -31,7 +30,7 @@ class TestCfg(Config, Sharing):
 
 def test_sharing_water():
     env = Env(TestCfg())
-    env.reset()
+    env.reset(step=False)
     obs, _, _, _ = env.step({})
 
     assert len(obs) == 2

@@ -1,5 +1,6 @@
 import numpy as np
-from .base_samplers import UniformSampler, RangeSampler, ListSampler, ConstantSampler, ChoiceSampler
+
+from .base_samplers import UniformSampler, ListSampler, ChoiceSampler
 
 
 class PositionSampler:
@@ -28,16 +29,13 @@ class ConcurrentPositionSampler(PositionSampler):
             map_width = config.MAP_WIDTH
             top, left = config.TERRAIN_BORDER, config.TERRAIN_BORDER
 
-            horizontal_range = np.arange(
-                left + 2, left + map_width, 4).tolist()
-            vertical_range = np.arange(top + 2, top + map_height, 4).tolist()
+            horizontal_range = np.arange(left, left + map_width, 1).tolist()
+            vertical_range = np.arange(top, top + map_height, 1).tolist()
 
-            lefts = (left + np.zeros(len(vertical_range), dtype=np.int)).tolist()
-            rights = ((left + map_width) +
-                      np.zeros(len(vertical_range), dtype=np.int)).tolist()
-            highs = (top + np.zeros(len(horizontal_range), dtype=np.int)).tolist()
-            lows = ((top + map_height) +
-                    np.zeros(len(horizontal_range), dtype=np.int)).tolist()
+            lefts = (left + np.zeros(len(vertical_range), dtype=int)).tolist()
+            rights = ((left + map_width) + np.zeros(len(vertical_range), dtype=int)).tolist()
+            highs = (top + np.zeros(len(horizontal_range), dtype=int)).tolist()
+            lows = ((top + map_height) + np.zeros(len(horizontal_range), dtype=int)).tolist()
 
             border_x = horizontal_range + lefts + horizontal_range + rights
             border_y = lows + vertical_range + highs + vertical_range
@@ -116,10 +114,6 @@ class RangePositionSampler(PositionSampler):
 
     def reset(self, config):
         if self.x_sampler is None:
-            map_height = config.MAP_HEIGHT
-            map_width = config.MAP_WIDTH
-            border = config.TERRAIN_BORDER
-
             r_range = [r + config.TERRAIN_BORDER for r in self.r_range]
             c_range = [c + config.TERRAIN_BORDER for c in self.c_range]
 

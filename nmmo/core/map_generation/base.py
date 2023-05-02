@@ -11,14 +11,14 @@ from nmmo.lib import material
 
 
 class MapGenerator:
-    '''Procedural map generation'''
+    """Procedural map generation"""
 
     def __init__(self, config):
         self.config = config
         self.loadTextures()
 
     def loadTextures(self):
-        '''Called during setup; loads and resizes tile pngs'''
+        """Called during setup; loads and resizes tile pngs"""
         lookup = {}
         path = self.config.PATH_TILE
         scale = self.config.MAP_PREVIEW_DOWNSCALE
