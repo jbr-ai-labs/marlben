@@ -1,6 +1,7 @@
 from nmmo import Env, Agent
 from nmmo.config.base.config import Config, PlayerGroupConfig
 from nmmo.config.systems.config import Sharing
+from nmmo.core.spawn.spawn_system.position_samplers import PositionSampler
 from nmmo.io import action
 from .utils import build_map_generator
 
@@ -9,11 +10,24 @@ map = [
     [[2, 0, 0], [2, 0, 0]]
 ]
 
+class FixedPositionSampler(PositionSampler):
+    def __init__(self, color):
+        super().__init__()
+        self._color = color
+
+    def get_next(self):
+        if self._color == 1:
+            return 9, 9
+        else:
+            return 9, 8
 
 class TestPGCfg(PlayerGroupConfig):
     NENT = 1
     AGENTS = [Agent]
 
+    def __init__(self, color):
+        super().__init__()
+        self.SPAWN_COORDINATES_SAMPLER = FixedPositionSampler(color)
 
 class TestCfg(Config, Sharing):
     MAP_PREVIEW_DOWNSCALE = 4
@@ -23,10 +37,10 @@ class TestCfg(Config, Sharing):
     PATH_MAPS = "./tmp_maps" + '/' + test_name
 
     TERRAIN_LOG_INTERPOLATE_MIN = 0
-    TERRAIN_CENTER = 3
+    TERRAIN_CENTER = 6
     MAP_HEIGHT = 2
     MAP_WIDTH = 2
-    PLAYER_GROUPS = [TestPGCfg(), TestPGCfg()]
+    PLAYER_GROUPS = [TestPGCfg(1), TestPGCfg(2)]
 
 
 def test_sharing_water():
