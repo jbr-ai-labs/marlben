@@ -42,6 +42,7 @@ class TestCfg(Config, Resource):
     MAP_HEIGHT = 4
     MAP_WIDTH = 4
     NSTIM = 3
+    RESOURCE_COOLDOWN = 100
     PLAYER_GROUPS = [TestPGCfg(1), TestPGCfg(2)]
 
 
