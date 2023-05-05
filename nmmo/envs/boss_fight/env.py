@@ -1,6 +1,6 @@
 import nmmo
 from os import path as osp
-from .boss_fight import BossFightConfig
+from .config import BossFightConfig
 
 
 class BossFight(nmmo.Env):

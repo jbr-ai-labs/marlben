@@ -168,13 +168,13 @@ class CorridorAgent(Scripted):
         self._resource_amount = 7
         if (self.iden + 1) % 2 == 0:
             self._direction = (0, -1)
-            self._resource_pos = (18, 13)
-            self._mid_pos = (18, 16)
+            self._resource_pos = (10, 10) # (18, 13)
+            self._mid_pos = (10, 13)
             self._resource_to_share = nmmo.action.Water
         else:
             self._direction = (0, 1)
-            self._resource_pos = (18, 20)
-            self._mid_pos = (18, 17)
+            self._resource_pos = (10, 17)
+            self._mid_pos = (10, 14)
             self._resource_to_share = nmmo.action.Food
 
     def _switch_direction(self, direction):

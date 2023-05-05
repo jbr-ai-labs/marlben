@@ -1,11 +1,12 @@
-from .corridor import Corridor
 
-from .corridor.corridor import ScriptedCorridorConfig, OneNeuralCorridorConfig, CorridorConfig
-from nmmo.envs.gathering.configs.base import GatheringConfig, GatheringConfigScripted
-from nmmo.envs.gathering.configs.building import BuildingGatheringConfig, BuildingGatheringConfigScripted
-from nmmo.envs.gathering.configs.obscured import ObscuredGatheringConfig
-from nmmo.envs.gathering.configs.exclusive import ExclusiveGatheringConfig
-from nmmo.envs.gathering.configs.obscured_and_exclusive import ObscuredAndExclusiveGatheringConfig
+from nmmo.envs.corridor import ScriptedCorridorConfig, OneNeuralCorridorConfig, CorridorConfig, Corridor
+from nmmo.envs.boss_fight import BossFightConfig, BossFight
+from nmmo.envs.gathering import GatheringConfig, GatheringConfigScripted, Gathering
+from nmmo.envs.gathering_building import BuildingGatheringConfig, BuildingGatheringConfigScripted, GatheringBuilding
+from nmmo.envs.gathering_obscured import ObscuredGatheringConfig, GatheringObscured
+from nmmo.envs.gathering_exclusive import ExclusiveGatheringConfig, GatheringExclusive
+from nmmo.envs.gathering_obscured_and_exclusive import ObscuredAndExclusiveGatheringConfig, GatheringObscuredAndExclusive
+
 
 name2config = {
     "CorridorScripted": ScriptedCorridorConfig,
