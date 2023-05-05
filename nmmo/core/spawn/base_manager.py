@@ -1,15 +1,11 @@
 import random
 from collections.abc import Mapping
 
-import numpy as np
-
-from nmmo import Serialized
-from nmmo.core.spawn.spawn_system import SpawnFactory
+from nmmo.io.stimulus import Serialized
 from nmmo.entity import Player
 from nmmo.entity.npc import NPC
+from nmmo.io.action import Attack, Style, Melee, Range, Mage
 from nmmo.lib import colors
-from nmmo.io.action import Attack, Style, Melee, Range, Mage, Heal
-import copy
 
 
 class _IdCounter:
@@ -77,7 +73,8 @@ class GroupsManager:
     @property
     def packet(self):
         npc_packet = [npc_group.packet for npc_group in self.npc_groups]
-        player_packet = [player_group.packet for player_group in self.player_groups]
+        player_packet = [
+            player_group.packet for player_group in self.player_groups]
         return self.merge_packets(npc_packet), self.merge_packets(player_packet)
 
     def merge_packets(self, packets):
@@ -237,7 +234,8 @@ class PlayerGroup(EntityGroup):
         self.skills_sampler = self.group_config.SPAWN_SKILLS_SAMPLER
         self.banned_attack_styles = self.group_config.BANNED_ATTACK_STYLES
         self.visible_colors = set(list(self.group_config.VISIBLE_COLORS) + [0])
-        self.accessible_colors = set(list(self.group_config.ACCESSIBLE_COLORS) + [0])
+        self.accessible_colors = set(
+            list(self.group_config.ACCESSIBLE_COLORS) + [0])
         self.realm = realm
         self.id_counter = id_counter
         self.group_id = group_id
@@ -258,8 +256,14 @@ class PlayerGroup(EntityGroup):
                 pop_id, agent = next(self.agents)
                 agent = agent(self.config, self.id_counter.next_player_id())
                 skills = self.skills_sampler.get_next((r_f, c_f))
-                player = Player(self.realm, (r_f, c_f), agent, self.palette.color(
-                    self.group_id), self.group_id, skills, self.visible_colors, self.accessible_colors)
+
+                player = Player(
+                    self.realm, (r_f, c_f), agent,
+                    self.palette.color(self.group_id),
+                    self.group_id, skills,
+                    visible_colors=self.visible_colors,
+                    accessible_colors=self.accessible_colors
+                )
                 super().spawn(player)
 
     def update_diary(self):

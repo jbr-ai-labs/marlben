@@ -19,7 +19,7 @@ class Plant(Node):
     def call(env, entity, plant_decision):
         if not env.config.game_system_enabled('Planting'):
             return
-        
+
         if plant_decision == 0:
             return
 
@@ -36,7 +36,8 @@ class Plant(Node):
             config = env.map.tiles[r, c].config
             tile = env.map.tiles[r, c]
             tile.reset(Forest, config)
-            tile.current_cooldown = config.RESOURCE_COOLDOWN # if harvesting, cooldown must be set to max
+            # if harvesting, cooldown must be set to max
+            tile.current_cooldown = config.RESOURCE_COOLDOWN
             tile.state = tile.mat.degen(config)
             tile.index.update(tile.state.index)
             entity.resources.food.decrement(1)

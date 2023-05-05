@@ -1,14 +1,7 @@
-import os
-from os import path as osp
-from nmmo import MapGenerator, Terrain
-
-import numpy as np
-from matplotlib import pyplot as plt
-import nmmo
 from nmmo import Env, Agent
 from nmmo.config.base.config import Config, PlayerGroupConfig
 from nmmo.config.systems.config import Resource
-from nmmo.io import action
+from nmmo.core.spawn.spawn_system.position_samplers import PositionSampler
 from nmmo.lib.material import Water, Forest, BalancedWater, BalancedForest
 from .utils import build_map_generator
 
@@ -19,6 +12,16 @@ map = [
     [[1, 1, 0], [2, 0, 0], [2, 0, 0], [4, 2, 0]]
 ]
 
+class FixedPositionSampler(PositionSampler):
+    def __init__(self, color):
+        super().__init__()
+        self._color = color
+
+    def get_next(self):
+        if self._color == 1:
+            return 8, 9
+        else:
+            return 11, 10
 
 class TestPGCfg(PlayerGroupConfig):
     NENT = 1
@@ -27,13 +30,15 @@ class TestPGCfg(PlayerGroupConfig):
     def __init__(self, visibility_color):
         super().__init__()
         self.VISIBLE_COLORS = [visibility_color]
+        self.SPAWN_COORDINATES_SAMPLER = FixedPositionSampler(visibility_color)
 
 
 class TestCfg(Config, Resource):
     MAP_PREVIEW_DOWNSCALE = 4
-    MAP_GENERATOR = build_map_generator(map)
+    test_name = 'occlusion'
+    MAP_GENERATOR = build_map_generator(map, test_name)
     RESOURCE_BASE_RESOURCE = 20
-    PATH_MAPS = "./tmp_maps"
+    PATH_MAPS = "./tmp_maps" + '/' + test_name
 
     TERRAIN_LOG_INTERPOLATE_MIN = 0
     TERRAIN_CENTER = 6
@@ -46,8 +51,7 @@ class TestCfg(Config, Resource):
 
 
 def test_occlusion():
-    cfg = TestCfg()
-    env = Env(cfg)
+    env = Env(TestCfg())
     env.reset()
     obs, _, _, _ = env.step({})
 

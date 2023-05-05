@@ -1,10 +1,6 @@
 import nmmo
-from nmmo.systems import ai, equipment
-from nmmo.lib import material
-
-from nmmo.systems.skill import Skills, SkillsBalanced
-from nmmo.systems.achievement import Diary
 from nmmo.entity import entity
+from nmmo.systems.achievement import Diary
 
 
 class Player(entity.Entity):
@@ -85,7 +81,6 @@ class Player(entity.Entity):
 
         self.resources.update(realm, self, actions)
         self.skills.update(realm, self, actions)
-
 
     def update_diary(self, realm):
         if self.diary:

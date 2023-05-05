@@ -13,12 +13,12 @@ def inRange(entity, stim, config, N):
 
 
 def l1(start, goal):
-   sr, sc = start
-   gr, gc = goal
-   return abs(gr - sr) + abs(gc - sc)
+    sr, sc = start
+    gr, gc = goal
+    return abs(gr - sr) + abs(gc - sc)
 
 
 def l2(start, goal):
-   sr, sc = start
-   gr, gc = goal
-   return 0.5*((gr - sr)**2 + (gc - sc)**2)**0.5
+    sr, sc = start
+    gr, gc = goal
+    return 0.5*((gr - sr)**2 + (gc - sc)**2)**0.5

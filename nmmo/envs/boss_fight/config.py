@@ -19,7 +19,8 @@ class NpcKilledTask(Callable):
 
     def __call__(self, realm, entity):
         # Amount of NPCs died at this turn
-        self.dead_counter += len(realm.entity_group_manager.npc_groups[self.npc_group_id].dead)
+        self.dead_counter += len(
+            realm.entity_group_manager.npc_groups[self.npc_group_id].dead)
         return self.dead_counter
 
 

@@ -168,13 +168,13 @@ class CorridorAgent(Scripted):
         self._resource_amount = 7
         if (self.iden + 1) % 2 == 0:
             self._direction = (0, -1)
-            self._resource_pos = (18, 13)
-            self._mid_pos = (18, 16)
+            self._resource_pos = (10, 10) # (18, 13)
+            self._mid_pos = (10, 13)
             self._resource_to_share = nmmo.action.Water
         else:
             self._direction = (0, 1)
-            self._resource_pos = (18, 20)
-            self._mid_pos = (18, 17)
+            self._resource_pos = (10, 17)
+            self._mid_pos = (10, 14)
             self._resource_to_share = nmmo.action.Food
 
     def _switch_direction(self, direction):
@@ -219,6 +219,92 @@ class CorridorAgent(Scripted):
 
         return self.actions
 
+
+class GatheringAgent(Scripted):
+    name = 'GatheringAgent_'
+    '''Collects Resourses in a simple Gathering Env'''
+
+    def __init__(self, config, idx):
+        super().__init__(config, idx)
+
+        self._current_target = "Water"
+        self._forest_pos = 13
+        self._water_pos = 10
+        self._direction = (-1, 0)
+    
+    
+    def _switch_direction(self, direction):
+        return tuple([-1 * d for d in direction])
+    
+    def _manage_direction(self, r, c):
+        if self._current_target == "Forest" and r == self._forest_pos:
+            self._direction = self._switch_direction(self._direction)
+            self._current_target = "Water"
+        elif self._current_target == "Water" and r == self._water_pos:
+            self._direction = self._switch_direction(self._direction)
+            self._current_target = "Forest"
+    
+    def gather_actions(self):
+        agent = self.ob.agent
+        Entity = nmmo.Serialized.Entity
+
+        r = nmmo.scripting.Observation.attribute(agent, Entity.R)
+        c = nmmo.scripting.Observation.attribute(agent, Entity.C)
+        self._manage_direction(r, c)
+        direction = move.towards(self._direction)
+        self.actions[nmmo.action.Move] = {nmmo.action.Direction: direction}
+        return self.actions
+
+    
+    def __call__(self, obs):
+        super().__call__(obs)
+        return self.gather_actions()
+
+        
+class GatheringBuildingAgent(GatheringAgent):
+    def __init__(self, config, idx):
+        super().__init__(config, idx)
+
+        self._building_finished = False
+        self._building_target_num = 0
+        self._building_targets = [13, 10]
+        self._need_building = False
+        self._sidestep = -(self.iden % 2 * 2 - 1)
+    
+    def build_actions(self):
+        agent = self.ob.agent
+        Entity = nmmo.Serialized.Entity
+        r = nmmo.scripting.Observation.attribute(agent, Entity.R)
+        building = self._need_building
+
+        if self._building_target_num < len(self._building_targets):
+            target = self._building_targets[self._building_target_num]
+            direction = target - r
+            if direction == 0:
+                self._building_target_num += 1
+                direction = (0, -self._sidestep)
+                direction = move.towards(direction)
+                self._sidestep *= -1
+            else:
+                direction = int(direction / abs(direction))
+                direction = move.towards((direction, 0))
+
+        self._need_building = self._building_target_num > 0
+
+        self.actions[nmmo.action.Move] = {nmmo.action.Direction: direction}
+        self.actions[nmmo.action.Build] = {nmmo.action.BuildDecision: building}
+
+        self._building_finished = self._building_target_num > 1
+
+        return self.actions
+    
+
+    def __call__(self, obs):
+        super().__call__(obs)
+        if not self._building_finished:
+            return self.build_actions()
+        return self.gather_actions()
+    
 
 class Meander(Scripted):
     name = 'Meander_'

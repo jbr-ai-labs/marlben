@@ -31,12 +31,13 @@ class Share(Node):
         end = np.array(targ.base.pos)
         dif = np.max(np.abs(start - end))
 
-        # Can't attack same cell or out of range
-        if dif == 0 or dif > rng:
+        # Can't share same cell or out of range or negative amount
+        if dif == 0 or dif > rng or amount < 0:
             return
 
         # Execute attack
-        entity.history.share = {'target': targ.entID, 'resource': resource.__name__, 'amount': amount}
+        entity.history.share = {'target': targ.entID,
+                                'resource': resource.__name__, 'amount': amount}
 
         from nmmo.systems import sharing
         true_amount = sharing.share(entity, targ, resource.resource, amount)

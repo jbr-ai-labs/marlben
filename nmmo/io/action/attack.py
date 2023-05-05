@@ -87,7 +87,7 @@ class Target(Node):
         return config.N_AGENT_OBS
 
     def args(stim, entity, config):
-        #Should pass max range?
+        # Should pass max range?
         return inRange(entity, stim, config, None)
 
     @staticproperty

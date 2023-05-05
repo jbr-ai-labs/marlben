@@ -60,16 +60,20 @@ class Direction(Node):
 
 
 class North(Node):
+    index = 0
     delta = (-1, 0)
 
 
 class South(Node):
+    index = 1
     delta = (1, 0)
 
 
 class East(Node):
+    index = 2
     delta = (0, 1)
 
 
 class West(Node):
+    index = 3
     delta = (0, -1)

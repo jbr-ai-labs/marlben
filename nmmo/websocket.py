@@ -1,20 +1,18 @@
-from pdb import set_trace as T
-import numpy as np
-
-from signal import signal, SIGINT
-import sys, os, json, pickle, time
+import json
+import os
+import sys
 import threading
-import ray
+import time
+from signal import signal, SIGINT
 
+import numpy as np
+from autobahn.twisted.resource import WebSocketResource
+from autobahn.twisted.websocket import WebSocketServerFactory, \
+    WebSocketServerProtocol
 from twisted.internet import reactor
-from twisted.internet.task import LoopingCall
 from twisted.python import log
 from twisted.web.server import Site
 from twisted.web.static import File
-
-from autobahn.twisted.websocket import WebSocketServerFactory, \
-    WebSocketServerProtocol
-from autobahn.twisted.resource import WebSocketResource
 
 
 class GodswordServerProtocol(WebSocketServerProtocol):
@@ -110,7 +108,8 @@ class WSServerFactory(WebSocketServerFactory):
         self.tick += 1
         uptime = np.round(self.tickRate * self.tick, 1)
         delta = time.time() - self.time
-        print('Wall Clock: ', str(delta)[:5], 'Uptime: ', uptime, ', Tick: ', self.tick)
+        print('Wall Clock: ', str(delta)[
+              :5], 'Uptime: ', uptime, ', Tick: ', self.tick)
         delta = self.tickRate - delta
         if delta > 0:
             time.sleep(delta)
@@ -137,7 +136,8 @@ class Application:
         log.startLogging(sys.stdout)
 
         port = 8080
-        self.factory = WSServerFactory(u'ws://localhost:{}'.format(port), realm)
+        self.factory = WSServerFactory(
+            u'ws://localhost:{}'.format(port), realm)
         self.factory.protocol = GodswordServerProtocol
         resource = WebSocketResource(self.factory)
 

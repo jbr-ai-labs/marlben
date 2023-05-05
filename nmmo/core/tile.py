@@ -15,9 +15,12 @@ class Tile:
         self.r = nmmo.Serialized.Tile.R(realm.dataframe, self.serial, r)
         self.c = nmmo.Serialized.Tile.C(realm.dataframe, self.serial, c)
         self.nEnts = nmmo.Serialized.Tile.NEnts(realm.dataframe, self.serial)
-        self.index = nmmo.Serialized.Tile.Index(realm.dataframe, self.serial, 0)
-        self._visibility_color = nmmo.Serialized.Tile.VisibilityColor(realm.dataframe, self.serial)
-        self._accessibility_color = nmmo.Serialized.Tile.AccessibilityColor(realm.dataframe, self.serial)
+        self.index = nmmo.Serialized.Tile.Index(
+            realm.dataframe, self.serial, 0)
+        self._visibility_color = nmmo.Serialized.Tile.VisibilityColor(
+            realm.dataframe, self.serial)
+        self._accessibility_color = nmmo.Serialized.Tile.AccessibilityColor(
+            realm.dataframe, self.serial)
 
         realm.dataframe.init(nmmo.Serialized.Tile, self.serial, (r, c))
 
@@ -55,7 +58,7 @@ class Tile:
 
     @property
     def static(self):
-        '''No updates needed'''
+        """No updates needed"""
         assert self.capacity <= self.mat.capacity
         return self.capacity == self.mat.capacity
 
@@ -109,7 +112,8 @@ class Tile:
         if self.capacity == 0:
             return False
         elif self.capacity <= 1:
-            self.current_cooldown = self.config.RESOURCE_COOLDOWN  # if harvesting, cooldown must be set to max
+            # if harvesting, cooldown must be set to max
+            self.current_cooldown = self.config.RESOURCE_COOLDOWN
             self.state = self.mat.degen(self.config)
             self.index.update(self.state.index)
         self.capacity -= 1

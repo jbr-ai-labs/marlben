@@ -1,4 +1,4 @@
-from nmmo.io.action.common import Fixed, NodeType, Node#, BoolDecision
+from nmmo.io.action.common import Fixed, NodeType, Node  # , BoolDecision
 from nmmo.lib.utils import staticproperty
 from nmmo.lib.material import Stone
 
@@ -30,7 +30,7 @@ class Build(Node):
 
         if build_decision:
             config = env.map.tiles[r, c].config
-            env.map.tiles[r, c].reset(Stone, config)
+            env.map.tiles[r, c].reset(Stone, True, True, config)
 
 
 class BuildDecision(Node):

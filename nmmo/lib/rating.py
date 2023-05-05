@@ -14,8 +14,8 @@ def rank(policy_ids, scores):
 
     # Double argsort returns ranks
     return np.argsort(np.argsort(
-        [-np.mean(vals) for policy, vals in 
-        sorted(agents.items())])).tolist()
+        [-np.mean(vals) for policy, vals in
+         sorted(agents.items())])).tolist()
 
 
 class OpenSkillRating:
@@ -23,6 +23,7 @@ class OpenSkillRating:
 
     Provides a simple method for updating skill estimates from raw
     per-agent scores as are typically returned by the environment.'''
+
     def __init__(self, agents, anchor, mu=1000, sigma=100/3, anchor_mu=1500):
         '''
         Args:
@@ -36,12 +37,12 @@ class OpenSkillRating:
             assert type(agents) != set, err
 
         self.ratings = {agent:
-                openskill.Rating(mu=mu, sigma=sigma)
-                for agent in agents}
+                        openskill.Rating(mu=mu, sigma=sigma)
+                        for agent in agents}
 
-        self.mu        = mu
-        self.sigma     = sigma
-        self.anchor    = anchor
+        self.mu = mu
+        self.sigma = sigma
+        self.anchor = anchor
         self.anchor_mu = anchor_mu
 
         self.anchor_baseline()
@@ -62,7 +63,8 @@ class OpenSkillRating:
 
         if __debug__:
             err = 'Specify either ranks or policy_ids and scores'
-            assert ranks is None  != (policy_ids is None and scores is None), err
+            assert ranks is None != (
+                policy_ids is None and scores is None), err
 
         if ranks is None:
             ranks = rank(policy_ids, scores)
@@ -82,5 +84,5 @@ class OpenSkillRating:
         for agent, rating in self.ratings.items():
             rating.sigma = self.sigma
             if agent == self.anchor:
-                rating.mu    = self.anchor_mu
+                rating.mu = self.anchor_mu
                 rating.sigma = self.sigma
