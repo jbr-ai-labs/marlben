@@ -1,10 +1,12 @@
-# Installation
+# Marlben
 
-## NeuralMMO
+![marlben-tests](../../actions/workflows/python-package-conda.yml/badge.svg)
 
-[https://neuralmmo.github.io/build/html/rst/landing.html#icon-installation](https://neuralmmo.github.io/build/html/rst/landing.html#icon-installation)
+Marlben is a multi-agent reinforcement learning benchmark based on the [NeuralMMO](https://github.com/NeuralMMO/environment) game engine
 
+## Installation
 ```python 3.9```  **is required!**
+
 
 # Usage
 
