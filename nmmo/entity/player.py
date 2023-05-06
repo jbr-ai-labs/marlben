@@ -73,7 +73,7 @@ class Player(entity.Entity):
         return data
 
     def update(self, realm, actions):
-        '''Post-action update. Do not include history'''
+        """Post-action update. Do not include history"""
         super().update(realm, actions)
 
         if not self.alive:
