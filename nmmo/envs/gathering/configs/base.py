@@ -7,7 +7,7 @@ from nmmo.config.base.config import PlayerGroupConfig, Config
 from nmmo.core.map_generation.pregen_map_generator import PregeneratedMapGenerator
 from nmmo.envs.gathering.utils.map_generator import GatheringMapGenerator
 from nmmo.core.spawn.spawn_system.position_samplers import UniformPositionSampler
-from scripted.baselines import GatheringAgent
+from scripted.environments.gathering import GatheringAgent
 import math
 
 
