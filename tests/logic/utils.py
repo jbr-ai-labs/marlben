@@ -4,7 +4,7 @@ import os
 from os import path as osp
 
 
-def build_map_generator(map, test_name):
+def build_map_generator(map):
     class SingleMapGenerator(MapGenerator):
         _map = map
 
