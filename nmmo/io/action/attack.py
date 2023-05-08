@@ -49,8 +49,10 @@ class Attack(Node):
         entity.history.attack = {}
         entity.history.attack['target'] = targ.entID
         entity.history.attack['style'] = style.__name__
-        targ.attacker = entity
-        targ.attackerID.update(entity.entID)
+        if style.__class__.__name__ != "Heal":
+            # Healing is not considered an attack
+            targ.attacker = entity
+            targ.attackerID.update(entity.entID)
 
         from nmmo.systems import combat
         dmg = combat.attack(entity, targ, style.skill, stealing_enabled)

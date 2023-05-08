@@ -32,7 +32,7 @@ class TestPGCfg(PlayerGroupConfig):
 class TestCfg(Config, Sharing):
     MAP_PREVIEW_DOWNSCALE = 4
     test_name = 'sharing'
-    MAP_GENERATOR = build_map_generator(map, test_name)
+    MAP_GENERATOR = build_map_generator(map)
     RESOURCE_BASE_RESOURCE = 16
     PATH_MAPS = "./tmp_maps" + '/' + test_name
 

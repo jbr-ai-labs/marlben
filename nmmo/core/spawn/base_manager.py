@@ -206,7 +206,7 @@ class NPCGroup(EntityGroup):
                 skills = self.skills_sampler.get_next((r, c))
                 # TODO: Check & change
                 npc = NPC.spawn(self.realm, (r, c),
-                                self.id_counter.next_npc_id(), skills)
+                                self.id_counter.next_npc_id(), skills, self.group_config.DANGER)
                 npc.skills.style = random.choice(self.available_styles)
                 if npc:
                     super().spawn(npc)
@@ -248,7 +248,7 @@ class PlayerGroup(EntityGroup):
             r_f, c_f = None, None
             for _ in range(self.group_config.SPAWN_ATTEMPTS_PER_ENT):
                 r, c = self.coordinate_sampler.get_next()
-                if not self.realm.map.tiles[r, c].occupied:
+                if not self.realm.map.tiles[r, c].occupied and not self.realm.map.tiles[r, c].impassible:
                     r_f, c_f = r, c
                     break
 

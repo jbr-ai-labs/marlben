@@ -2,12 +2,12 @@ from typing import Callable
 
 from nmmo.core.spawn.spawn_system.position_samplers import RangePositionSampler
 from nmmo.core.spawn.spawn_system.skill_samplers import CustomSkillSampler
-from nmmo.io.action.attack import Range, Heal, Mage
+from nmmo.io.action.attack import Range, Heal, Mage, Melee
 from nmmo.systems.achievement import Task
 from nmmo.core.map_generation.pregen_map_generator import PregeneratedMapGenerator
 from nmmo.config.base.config import NPCGroupConfig, PlayerGroupConfig, Config
 from nmmo.config.systems import NPC
-from nmmo.core.agent import Random
+from nmmo.core.agent import Agent
 
 
 class NpcKilledTask(Callable):
@@ -32,19 +32,22 @@ class PlayerDiedTask(Callable):
 
 
 class BossGroupConfig(NPCGroupConfig):
-    def __init__(self, coordinates_sampler=RangePositionSampler([8], [3]),
-                 skill_sampler=CustomSkillSampler({"constitution": {"name": "const", "level": 250},
-                                                   "melee": {"name": "const", "level": 20}})):
-        super().__init__()
-        self.SPAWN_COORDINATES_SAMPLER = coordinates_sampler
-        self.SPAWN_SKILLS_SAMPLER = skill_sampler
-
+    BANNED_ATTACK_STYLES = {Heal, Range, Mage}
+    DANGER = 1.0  # Boss are aggressive by default
     NENT = 1
     SPAWN_ATTEMPTS_PER_ENT = 10
 
+    def __init__(self, n_tanks, n_fighters, n_healers, coordinates_sampler=RangePositionSampler([7], [5])):
+        super().__init__()
+        self.SPAWN_COORDINATES_SAMPLER = coordinates_sampler
+        self.SPAWN_SKILLS_SAMPLER = CustomSkillSampler(
+            {"constitution": {"name": "const", "level": 125 * n_tanks + 250 * n_fighters + 1},
+             "melee": {"name": "const", "level": 20 + 5 * n_healers}})
+        self.DANGER = 1.0  # Boss are aggressive by default
+
 
 class TankGroupConfig(PlayerGroupConfig):
-    def __init__(self, n_ent=2, coordinates_sampler=RangePositionSampler([1, 1], [2, 4]),
+    def __init__(self, n_ent=2, coordinates_sampler=RangePositionSampler(list(range(1, 4)), list(range(3, 7))),
                  skill_sampler=CustomSkillSampler({"constitution": {"name": "const", "level": 200},
                                                    "melee": {"name": "const", "level": 5}})):
         super().__init__()
@@ -54,13 +57,15 @@ class TankGroupConfig(PlayerGroupConfig):
 
     SPAWN_ATTEMPTS_PER_ENT = 10
     BANNED_ATTACK_STYLES = [Range, Heal, Mage]
-    AGENTS = [Random]
+    AGENTS = [Agent]
 
 
 class BossFightConfig(Config, NPC):
-    NPC_GROUPS = [BossGroupConfig()]
-    PLAYER_GROUPS = [TankGroupConfig()]
+    NPC_GROUPS = [BossGroupConfig(2, 0, 0)]
+    PLAYER_GROUPS = [TankGroupConfig(2)]
     TASKS = [Task(NpcKilledTask(0), 1, 10.), Task(PlayerDiedTask(), 1, -10.)]
+    REGEN_HEALTH = 0.
+    COMBAT_DEFENSE_WEIGHT = 1.
 
     TOP_LEFT_CORNER = (16, 17)
     TERRAIN_CENTER = 12

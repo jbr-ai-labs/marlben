@@ -23,11 +23,11 @@ class NPC(entity.Entity):
         self.lastAction = actions
 
     @staticmethod
-    def spawn(realm, pos, iden, skills):
+    def spawn(realm, pos, iden, skills, custom_danger=None):
         config = realm.config
 
         # Select AI Policy
-        danger = combat.danger(config, pos)
+        danger = combat.danger(config, pos) if custom_danger is None else custom_danger
         if danger >= config.NPC_SPAWN_AGGRESSIVE:
             ent = Aggressive(realm, pos, iden, skills)
         elif danger >= config.NPC_SPAWN_NEUTRAL:

@@ -230,11 +230,14 @@ def aStar(config, ob, actions, rr, cc, cutoff=100):
             # if not vacant(tile):
             #   continue
 
-            if occupied:
+            if matl == material.Lava.index:
+                continue  # We don't want to step on Lava, right?
+
+            if occupied and not nxt == goal:
                 continue
 
             # Omitted water from the original implementation. Seems key
-            if matl in material.Impassible:
+            if matl in material.Impassible and not nxt == goal:
                 continue
 
             newCost = cost[cur] + 1

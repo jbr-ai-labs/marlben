@@ -5,7 +5,7 @@ import nmmo.lib.distance
 from scripted import utils
 
 
-def closestTarget(config, ob):
+def closestTarget(config, ob, npc_only=False):
     shortestDist = np.inf
     closestAgent = None
 
@@ -19,6 +19,9 @@ def closestTarget(config, ob):
     for target in ob.agents:
         exists = nmmo.scripting.Observation.attribute(target, Entity.Self)
         if not exists:
+            continue
+
+        if npc_only and nmmo.scripting.Observation.attribute(target, Entity.ID) >= 0:
             continue
 
         tr = nmmo.scripting.Observation.attribute(target, Entity.R)

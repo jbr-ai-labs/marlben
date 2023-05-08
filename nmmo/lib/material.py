@@ -95,6 +95,10 @@ class Impassible(metaclass=Meta):
     materials = {Lava, Stone, ScrubImpassible, BalancedForest, BalancedWater}
 
 
+class Resource(metaclass=Meta):
+    '''Materials corresponding to resources'''
+    materials = {Forest, BalancedForest, Water, BalancedWater}
+
 class Habitable(metaclass=Meta):
     '''Materials that agents cannot walk on'''
     materials = {Grass, Scrub, Forest}

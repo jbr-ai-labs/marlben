@@ -42,7 +42,7 @@ class Player(entity.Entity):
         if dmg > 0 and stealing_enabled:
             self.resources.food.increment(dmg)
             self.resources.water.increment(dmg)
-        self.skills.applyDamage(dmg, style)
+        self.skills.applyDamage(dmg, style, stealing_enabled)
 
     def receiveDamage(self, source, dmg, stealing_enabled=True):
         if not super().receiveDamage(source, dmg, stealing_enabled):

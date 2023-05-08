@@ -2,9 +2,7 @@ from os import path as osp
 
 from nmmo.config import Building
 from nmmo.envs import GatheringConfig, GatheringConfigScripted
-from scripted.baselines import GatheringBuildingAgent
-
-
+from scripted.environments.gathering import GatheringBuildingAgent
 
 PATH_TO_CUSTOM_MAPS = osp.dirname(__file__)
 

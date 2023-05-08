@@ -5,7 +5,7 @@ from nmmo.core.agent import Agent
 from nmmo.core.spawn.spawn_system.position_samplers import UniformPositionSampler
 from nmmo.core.spawn.spawn_system.skill_samplers import CustomSkillSampler
 from nmmo.systems.achievement import Task
-from scripted.baselines import CorridorAgent
+from scripted.environments.corridor import CorridorAgent
 from nmmo.core.map_generation.pregen_map_generator import PregeneratedMapGenerator
 
 from nmmo.config.base.config import PlayerGroupConfig, Config
