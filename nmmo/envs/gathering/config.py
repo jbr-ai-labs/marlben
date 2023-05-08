@@ -21,11 +21,11 @@ class GatheringPlayerGroup(PlayerGroupConfig):
         super().__init__()
         self.NENT = n_agents
         self.VISIBLE_COLORS = visible_colors
+        self.SPAWN_ATTEMPTS_PER_ENT = 50
         self.ACCESSIBLE_COLORS = accessible_colors
         self.AGENTS = agents if agents is not None else [Agent]
         if coord_sampler is not None:
             self.SPAWN_COORDINATES_SAMPLER = coord_sampler
-
 
 def create_group_config(agents, agents_per_group, coord_samplers=None):
     cfgs = []
@@ -53,7 +53,7 @@ class BaseGatheringConfig(Resource, Config):
     MAP_GENERATOR = GatheringMapGenerator
     RESOURCE_COOLDOWN = 8
     RESOURCE_BASE_RESOURCE = 32
-    RESOURCE_HARVEST_RESTORE_FRACTION = 1 / RESOURCE_COOLDOWN
+    RESOURCE_HARVEST_RESTORE_FRACTION = 1 / RESOURCE_COOLDOWN  # FIXME: Higher cooldown means less resource restoration?
     
     def __init__(self, n_groups, agents_per_group):
         super().__init__()
@@ -67,24 +67,26 @@ class BaseGatheringConfig(Resource, Config):
 
 
 class GatheringConfig(BaseGatheringConfig):
-    AGENT_TYPE = Agent
+    NMAPS = 10
+
     def __init__(self, n_groups, agents_per_group):
+        # FIXME: You should not create multiple player groups with the same preset agent
         super().__init__(n_groups, agents_per_group)
-        self.PLAYER_GROUPS = create_group_config([self.AGENT_TYPE for _ in range(n_groups)], agents_per_group)
+        self.PLAYER_GROUPS = [GatheringPlayerGroup(agents_per_group, agents=[Agent]) for _ in range(n_groups)]
         self.AGENTS = process_agents(self.PLAYER_GROUPS)
 
-class GatheringConfigScripted(BaseGatheringConfig):
+
+class GatheringConfigScripted(GatheringConfig):
     MAP_GENERATOR = PregeneratedMapGenerator
     RESOURCE_HARVEST_RESTORE_FRACTION = 1.0
     AGENT_TYPE = GatheringAgent
+
     def __init__(self, n_groups, agents_per_group):
         super().__init__(n_groups, agents_per_group)
         self.PATH_MAPS = osp.join(PATH_TO_CUSTOM_MAPS, "test_maps")
-        coord_samplers = []
-        for group in range(n_groups):
-            column = (1 + group // 2) * (1 - group % 2) + (7 - group // 2 - 1) * (group % 2)
-            coord_samplers.append(
-                UniformPositionSampler(r_range=[4, 4], c_range=[column, column])
-            )
-        self.PLAYER_GROUPS = create_group_config([self.AGENT_TYPE for _ in range(n_groups)], agents_per_group, coord_samplers=coord_samplers)
+        for i, group in enumerate(self.PLAYER_GROUPS):
+            column = (1 + i // 2) * (1 - i % 2) + (7 - i // 2 - 1) * (i % 2)
+            group.SPAWN_COORDINATES_SAMPLER = UniformPositionSampler(r_range=[4, 4], c_range=[column, column])
+            group.AGENTS[0] = GatheringAgent
+
         self.AGENTS = process_agents(self.PLAYER_GROUPS)

@@ -1,6 +1,7 @@
 from pdb import set_trace as T
 
 from nmmo.systems.ai import behavior, utils
+import random
 
 
 def passive(realm, entity):
@@ -17,7 +18,8 @@ def neutral(realm, entity):
     actions = {}
 
     if not entity.attacker:
-        behavior.meander(realm, actions, entity)
+        if random.random() > 0.5:
+            behavior.meander(realm, actions, entity)
     else:
         entity.target = entity.attacker
         behavior.hunt(realm, actions, entity)

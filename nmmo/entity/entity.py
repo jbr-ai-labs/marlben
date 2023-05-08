@@ -10,6 +10,13 @@ class Resources:
         self.water = nmmo.Serialized.Entity.Water(ent.dataframe, ent.entID)
         self.food = nmmo.Serialized.Entity.Food(ent.dataframe, ent.entID)
 
+        self.health.max = ent.skills.constitution.level
+        self.water.max = ent.skills.fishing.level
+        self.food.max = ent.skills.hunting.level
+        self.health.update(self.health.max)
+        self.water.update(self.water.max)
+        self.food.update(self.food.max)
+
     def update(self, realm, entity, actions):
         self.health.max = entity.skills.constitution.level
         self.water.max = entity.skills.fishing.level

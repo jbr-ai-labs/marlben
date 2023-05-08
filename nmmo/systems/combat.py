@@ -24,14 +24,15 @@ def attack(entity, targ, skillFn, stealing_enabled=True):
 
     targetDefense = targ.skills.defense.level + targ.loadout.defense
 
-    die = config.COMBAT_DICE_SIDES
-    roll = np.random.randint(1, die+1)
-    dc = accuracy(config, entitySkill.level, targetSkill.level, targetDefense)
-    crit = roll == die
+    dmg = damage(entitySkill.__class__, entitySkill.level)
+    if dmg > 0:
+        die = config.COMBAT_DICE_SIDES
+        roll = np.random.randint(1, die+1)
+        dc = accuracy(config, entitySkill.level, targetSkill.level, targetDefense)
+        crit = roll == die
 
-    dmg = 1  # Chip dmg on a miss
-    if roll >= dc or crit:
-        dmg = damage(entitySkill.__class__, entitySkill.level)
+        if not crit and roll < dc:
+            dmg = 1
 
     # Note: damage can be negative!
     dmg = min(dmg, entity.resources.health.val)

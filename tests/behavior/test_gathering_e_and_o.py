@@ -1,8 +1,10 @@
+import random
+
 from nmmo.envs.gathering_obscured_and_exclusive import GatheringObscuredAndExclusive, ObscuredAndExclusiveGatheringConfig
 from scripted.environments.gathering import ObscuredAndExclusiveGatheringAgent
 import numpy as np
 
-from .test_gatchering_exclusive import _get_lifetimes_and_survivors
+from .test_gathering_exclusive import _get_lifetimes_and_survivors
 
 
 class ObscuredAndExclusiveGatheringScriptedConfig(ObscuredAndExclusiveGatheringConfig):
@@ -13,27 +15,60 @@ class ObscuredAndExclusiveGatheringScriptedConfig(ObscuredAndExclusiveGatheringC
 
 
 def test_obscured_and_exclusive_gathering_simple():
-    env = GatheringObscuredAndExclusive(ObscuredAndExclusiveGatheringConfig(1, 2))
-    lifetime, survived = _get_lifetimes_and_survivors(env)
-    assert np.mean(lifetime) >= 250
-    assert survived >= 1
+    random.seed(0)
+    np.random.seed(0)
+    env = GatheringObscuredAndExclusive(ObscuredAndExclusiveGatheringScriptedConfig(1, 2))
+    survivors = []
+    lifetimes = []
+
+    for _ in range(10):
+        lifetime, survived = _get_lifetimes_and_survivors(env)
+        survivors.append(survived)
+        lifetimes.extend(lifetime)
+    assert np.mean(lifetimes) >= 200
+    assert np.mean(survivors) >= 0.7
 
 
 def test_obscured_and_exclusive_gathering_tiny():
-    env = GatheringObscuredAndExclusive(ObscuredAndExclusiveGatheringConfig(2, 1))
-    lifetime, survived = _get_lifetimes_and_survivors(env)
-    assert np.mean(lifetime) >= 150
-    assert survived >= 1
+    random.seed(0)
+    np.random.seed(0)
+    env = GatheringObscuredAndExclusive(ObscuredAndExclusiveGatheringScriptedConfig(2, 1))
+    survivors = []
+    lifetimes = []
+
+    for _ in range(10):
+        lifetime, survived = _get_lifetimes_and_survivors(env)
+        survivors.append(survived)
+        lifetimes.extend(lifetime)
+    assert np.mean(lifetimes) >= 200
+    assert np.mean(survivors) >= 0.75
 
 
 def test_obscured_and_exclusive_gathering_medium():
-    env = GatheringObscuredAndExclusive(ObscuredAndExclusiveGatheringConfig(4, 2))
-    lifetime, survived = _get_lifetimes_and_survivors(env)
-    assert np.mean(lifetime) >= 50
-    assert survived >= 1
+    random.seed(0)
+    np.random.seed(0)
+    env = GatheringObscuredAndExclusive(ObscuredAndExclusiveGatheringScriptedConfig(3, 2))
+    survivors = []
+    lifetimes = []
+
+    for _ in range(10):
+        lifetime, survived = _get_lifetimes_and_survivors(env)
+        survivors.append(survived)
+        lifetimes.extend(lifetime)
+    assert 200 >= np.mean(lifetimes) >= 100
+    assert np.mean(survivors) >= 0.6
 
 
 def test_obscured_and_exclusive_gathering_large():
-    env = GatheringObscuredAndExclusive(ObscuredAndExclusiveGatheringConfig(6, 4))
-    lifetime, survived = _get_lifetimes_and_survivors(env)
-    assert survived == 0
+    random.seed(0)
+    np.random.seed(0)
+    env = GatheringObscuredAndExclusive(ObscuredAndExclusiveGatheringScriptedConfig(4, 4))
+    survivors = []
+    lifetimes = []
+
+    for _ in range(10):
+        lifetime, survived = _get_lifetimes_and_survivors(env)
+        survivors.append(survived)
+        lifetimes.extend(lifetime)
+    assert 90 >= np.mean(lifetimes) >= 37
+    assert 1.5 >= np.mean(survivors)

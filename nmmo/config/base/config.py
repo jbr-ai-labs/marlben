@@ -3,21 +3,23 @@ import os
 import nmmo
 from nmmo.config.common import Template, SequentialLoader
 from nmmo.core.spawn.spawn_system import position_samplers, skill_samplers
+from nmmo.io.action import Heal
 
 
 class NPCGroupConfig(Template):
     SPAWN_COORDINATES_SAMPLER = position_samplers.UniformPositionSampler()
     SPAWN_SKILLS_SAMPLER = skill_samplers.DefaultNPCSkillSampler(1, None, None)
     SPAWN_ATTEMPTS_PER_ENT = 5
-    BANNED_ATTACK_STYLES = []
+    BANNED_ATTACK_STYLES = [Heal]  # By default, monsters can't heal someone
     NENT = 16
+    DANGER = None  # Compute vanilla NMMO danger by default
 
 
 class PlayerGroupConfig(Template):
     AGENT_LOADER = SequentialLoader
     SPAWN_COORDINATES_SAMPLER = position_samplers.ConcurrentPositionSampler()
     SPAWN_SKILLS_SAMPLER = skill_samplers.DefaultSkillSampler()
-    SPAWN_ATTEMPTS_PER_ENT = 5
+    SPAWN_ATTEMPTS_PER_ENT = 10
     BANNED_ATTACK_STYLES = []
     VISIBLE_COLORS = []
     ACCESSIBLE_COLORS = []
@@ -75,7 +77,7 @@ class Config(Template):
     NMAPS = 1
     '''Number of maps to generate'''
 
-    NTILE = 6
+    NTILE = 16
     # TODO: Find a way to auto-compute this
     '''Number of distinct terrain tile types'''
 

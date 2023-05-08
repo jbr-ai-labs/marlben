@@ -146,8 +146,8 @@ class Scripted(nmmo.Agent):
             self.spawnC = scripting.Observation.attribute(
                 agent, nmmo.Serialized.Entity.C)
 
-        self.currR = scripting.Observation.attribute(agent, nmmo.Serialized.Entity.R)
-        self.currC = scripting.Observation.attribute(agent, nmmo.Serialized.Entity.C)
+        self.currR = round(scripting.Observation.attribute(agent, nmmo.Serialized.Entity.R))
+        self.currC = round(scripting.Observation.attribute(agent, nmmo.Serialized.Entity.C))
 
 
 class Random(Scripted):

@@ -13,10 +13,10 @@ from nmmo.envs.boss_fight.config import BossFightConfig, TankGroupConfig, BossGr
 
 
 class FighterGroupConfig(PlayerGroupConfig):
-    def __init__(self, n_ent=2, coordinates_sampler=RangePositionSampler([1, 1], [2, 4]),
+    def __init__(self, n_ent=2, coordinates_sampler=RangePositionSampler(list(range(1, 4)), list(range(3, 7))),
                  skill_sampler=CustomSkillSampler({"constitution": {"name": "const", "level": 50},
-                                                   "melee": {"name": "const", "level": 10},
-                                                   "range": {"name": "const", "level": 12}})):
+                                                   "melee": {"name": "const", "level": 15},
+                                                   "range": {"name": "const", "level": 20}})):
         super().__init__()
         self.NENT = n_ent
         self.SPAWN_COORDINATES_SAMPLER = coordinates_sampler
@@ -28,9 +28,9 @@ class FighterGroupConfig(PlayerGroupConfig):
 
 
 class HealerGroupConfig(PlayerGroupConfig):
-    def __init__(self, n_ent=2, coordinates_sampler=RangePositionSampler([1, 1], [2, 4]),
+    def __init__(self, n_ent=2, coordinates_sampler=RangePositionSampler(list(range(1, 4)), list(range(3, 7))),
                  skill_sampler=CustomSkillSampler({"constitution": {"name": "const", "level": 50},
-                                                   "heal": {"name": "const", "level": 10}})):
+                                                   "heal": {"name": "const", "level": 20}})):
         super().__init__()
         self.NENT = n_ent
         self.SPAWN_COORDINATES_SAMPLER = coordinates_sampler

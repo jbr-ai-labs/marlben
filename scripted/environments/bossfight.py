@@ -1,3 +1,5 @@
+import numpy as np
+
 import nmmo
 from nmmo import scripting
 from nmmo.io.action import *
@@ -19,9 +21,13 @@ class BossFightTankAgent(Scripted):
         self.scan_agents(True)
         if self.closestID is not None:
             self.style = Melee
-            move.pathfind(self.config, self.ob, self.actions,
-                          nmmo.scripting.Observation.attribute(self.closest, Entity.R) - self.currR,
-                          nmmo.scripting.Observation.attribute(self.closest, Entity.C) - self.currC)
+            self.target = self.closest
+            self.targetID = self.closestID
+            self.targetDist = self.closestDist
+            if self.closestDist > self.config.COMBAT_MELEE_REACH:
+                move.pathfind(self.config, self.ob, self.actions,
+                              nmmo.scripting.Observation.attribute(self.closest, Entity.R) - self.currR,
+                              nmmo.scripting.Observation.attribute(self.closest, Entity.C) - self.currC)
             self.attack()
         else:
             self.explore()
@@ -35,6 +41,9 @@ class BossRaidFighterAgent(Scripted):
     color = colors.Neon.BLOOD
     is_evading = False
 
+    def evade(self):
+        move.evade(self.config, self.ob, self.actions, self.closest)
+
     def __call__(self, obs):
         super().__call__(obs)
 
@@ -46,12 +55,16 @@ class BossRaidFighterAgent(Scripted):
                 self.style = nmmo.action.Melee
             else:
                 self.style = nmmo.action.Range
+            self.target = self.closest
+            self.targetID = self.closestID
+            self.targetDist = self.closestDist
             self.attack()
 
-            if self.attacker is None or self.is_evading:
-                move.pathfind(self.config, self.ob, self.actions,
-                              nmmo.scripting.Observation.attribute(self.closest, Entity.R) - self.currR,
-                              nmmo.scripting.Observation.attribute(self.closest, Entity.C) - self.currC)
+            if self.attacker is None and not self.is_evading:
+                if self.closestDist > self.config.COMBAT_MELEE_REACH:
+                    move.pathfind(self.config, self.ob, self.actions,
+                                  nmmo.scripting.Observation.attribute(self.closest, Entity.R) - self.currR,
+                                  nmmo.scripting.Observation.attribute(self.closest, Entity.C) - self.currC)
             else:
                 self.evade()
                 # Evade until out of melee attack range
@@ -71,6 +84,9 @@ class BossRaidHealerAgent(Scripted):
     name = 'HealerAgent_'
     color = colors.Neon.GREEN
     is_evading = False
+
+    def evade(self):
+        move.evade(self.config, self.ob, self.actions, self.closest)
 
     def __call__(self, obs):
         super().__call__(obs)
@@ -107,7 +123,7 @@ class BossRaidHealerAgent(Scripted):
         self.actions = {}
         if self.lowestHealthID is not None:
             self.actions[Attack] = {Style: self.style, Target: self.lowestHealthID}
-            if self.attacker is not None or self.is_evading:
+            if self.attacker is not None or (self.is_evading and self.closest is not None):
                 self.evade()
                 if self.is_evading and self.closestDist > self.config.COMBAT_MELEE_REACH + 1:
                     self.is_evading = False

@@ -103,6 +103,7 @@ class Tile:
                     self.current_cooldown -= 1
             elif np.random.rand() < self.mat.respawn:
                 self.capacity += 1
+                # FIXME We don't restore original state, do we?
 
         if self.static:
             self.state = self.mat

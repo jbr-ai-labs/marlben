@@ -66,7 +66,7 @@ def lInf(ent, targ):
 
 def adjacentPos(pos):
     r, c = pos
-    return [(r - 1, c), (r, c - 1), (r + 1, c), (r, c + 1)]
+    return [(r - 1, c), (r, c - 1), (r + 1, c), (r, c + 1), (r, c)]
 
 
 def cropTilesAround(position: (int, int), horizon: int, tiles):

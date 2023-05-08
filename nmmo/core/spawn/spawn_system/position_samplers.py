@@ -24,26 +24,25 @@ class ConcurrentPositionSampler(PositionSampler):
         return self.x_sampler.get_next(), self.y_sampler.get_next()
 
     def reset(self, config):
-        if self.x_sampler is None:
-            map_height = config.MAP_HEIGHT
-            map_width = config.MAP_WIDTH
-            top, left = config.TERRAIN_BORDER, config.TERRAIN_BORDER
+        map_height = config.MAP_HEIGHT
+        map_width = config.MAP_WIDTH
+        top, left = config.TERRAIN_BORDER, config.TERRAIN_BORDER
 
-            horizontal_range = np.arange(left, left + map_width, 1).tolist()
-            vertical_range = np.arange(top, top + map_height, 1).tolist()
+        horizontal_range = np.arange(left, left + map_width, 1).tolist()
+        vertical_range = np.arange(top, top + map_height, 1).tolist()
 
-            lefts = (left + np.zeros(len(vertical_range), dtype=int)).tolist()
-            rights = ((left + map_width) + np.zeros(len(vertical_range), dtype=int)).tolist()
-            highs = (top + np.zeros(len(horizontal_range), dtype=int)).tolist()
-            lows = ((top + map_height) + np.zeros(len(horizontal_range), dtype=int)).tolist()
+        lefts = (left + np.zeros(len(vertical_range), dtype=int)).tolist()
+        rights = ((left + map_width) + np.zeros(len(vertical_range), dtype=int)).tolist()
+        highs = (top + np.zeros(len(horizontal_range), dtype=int)).tolist()
+        lows = ((top + map_height) + np.zeros(len(horizontal_range), dtype=int)).tolist()
 
-            border_x = horizontal_range + lefts + horizontal_range + rights
-            border_y = lows + vertical_range + highs + vertical_range
-            self.x_sampler = ListSampler(border_x)
-            self.y_sampler = ListSampler(border_y)
-        else:
-            self.x_sampler.reset()
-            self.y_sampler.reset()
+        border_y = horizontal_range + lefts + horizontal_range + rights
+        border_x = lows + vertical_range + highs + vertical_range
+        zipped = list(zip(border_x, border_y))
+        np.random.shuffle(zipped)
+        border_x, border_y = zip(*zipped)  # Unzip operation
+        self.x_sampler = ListSampler(border_x)
+        self.y_sampler = ListSampler(border_y)
 
 
 class ContinuousPositionSampler(PositionSampler):
