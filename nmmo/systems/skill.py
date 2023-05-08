@@ -97,7 +97,7 @@ class Combat(SkillGroup):
 
         return data
 
-    def applyDamage(self, dmg, style, stealing_enabled):
+    def applyDamage(self, dmg, style):
         if not self.config.game_system_enabled('Progression'):
             return
 
