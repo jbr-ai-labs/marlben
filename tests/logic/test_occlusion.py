@@ -36,7 +36,7 @@ class TestPGCfg(PlayerGroupConfig):
 class TestCfg(Config, Resource):
     MAP_PREVIEW_DOWNSCALE = 4
     test_name = 'occlusion'
-    MAP_GENERATOR = build_map_generator(map, test_name)
+    MAP_GENERATOR = build_map_generator(map)
     RESOURCE_BASE_RESOURCE = 20
     PATH_MAPS = "./tmp_maps" + '/' + test_name
 
