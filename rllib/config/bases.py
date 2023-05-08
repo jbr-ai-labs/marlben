@@ -29,7 +29,13 @@ class RLlib:
 
     @property
     def TRAIN_BATCH_SIZE(self):
-        return 64 * 256 * self.NUM_WORKERS
+        if self._TRAIN_BATCH_SIZE is None:
+            self._TRAIN_BATCH_SIZE = 64 * 256 * self.NUM_WORKERS
+        return self._TRAIN_BATCH_SIZE
+
+    @TRAIN_BATCH_SIZE.setter
+    def TRAIN_BATCH_SIZE(self, value):
+        self._TRAIN_BATCH_SIZE =  value
 
     # Checkpointing. Resume will load the latest trial, e.g. to continue training
     # Restore (overrides resume) will force load a specific checkpoint (e.g. for rendering)

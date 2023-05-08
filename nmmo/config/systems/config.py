@@ -1,5 +1,5 @@
 class Resource:
-    '''Resource Game System'''
+    """Resource Game System"""
 
     @property  # Reserved flag
     def Resource(self):
