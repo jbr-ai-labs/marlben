@@ -235,8 +235,6 @@ class RLlibLogCallbacks(DefaultCallbacks):
         assert len(base_env.envs) == 1, 'One env per worker'
         env = base_env.envs[0]
 
-        inv_map = {agent.policyID: agent for agent in env.config.AGENTS}
-
         stats = env.terminal()['Stats']
         policy_ids = stats.pop('PolicyID')
 
@@ -247,10 +245,9 @@ class RLlibLogCallbacks(DefaultCallbacks):
             for policy_id, v in zip(policy_ids, vals):
                 policy_stat[policy_id].append(v)
 
-            for policy_id, vals in policy_stat.items():
-                policy = inv_map[policy_id].__name__
 
-                k = f'{policy}_{policy_id}_{key}'
+            for policy_id, vals in policy_stat.items():
+                k = f'{policy_id}_{key}'
                 episode.custom_metrics[k] = np.mean(vals)
 
         if not env.config.EVALUATE:
