@@ -4,6 +4,7 @@ from nmmo.config.base.config import Config, PlayerGroupConfig
 from nmmo.config.systems.config import Building
 from nmmo.io import action
 import copy
+import numpy as np
 from .utils import build_map_generator
 
 map = [
@@ -39,7 +40,7 @@ def test_building():
     player1 = list(env.realm.entity_group_manager.player_groups[0].entities.values())[0]
 
     move_action = {player1.entID: {action.Move: {
-        action.Direction: (action.East if player1.pos[0] == env.config.TERRAIN_BORDER else action.West)
+        action.Direction: (2 if player1.pos[1] == env.config.TERRAIN_BORDER else 3)
     }}}
     build_action = {player1.entID: {action.Build: {
         action.BuildDecision: True
@@ -48,27 +49,23 @@ def test_building():
     env.step(move_action)
     env.step(build_action)
 
-    check = env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER].impassible()
-    check = check or env.realm.map.tiles[env.config.TERRAIN_BORDER+1, env.config.TERRAIN_BORDER].impassible()
-    check2 = env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER].impassible()
-    check2 = check2 and env.realm.map.tiles[env.config.TERRAIN_BORDER+1, env.config.TERRAIN_BORDER].impassible()
+    last_r, last_c = player1.history.lastPos
 
-    assert check and not check2
+    assert env.realm.map.tiles[last_r, last_c].mat == nmmo.lib.material.Stone
 
     move_action = {player1.entID: {action.Move: {
-        action.Direction: (action.East if player1.pos[0] == env.config.TERRAIN_BORDER else action.West)
+        action.Direction: (2 if player1.pos[1] == env.config.TERRAIN_BORDER else 3)
     }}}
     build_action = {player1.entID: {action.Build: {
         action.BuildDecision: True
     }}}
 
-    env.step(build_action)
     env.step(move_action)
+
+    assert player1.pos == player1.history.lastPos
+
     env.step(build_action)
 
-    check = env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER].impassible()
-    check = check or env.realm.map.tiles[env.config.TERRAIN_BORDER+1, env.config.TERRAIN_BORDER].impassible()
-    check2 = env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER].impassible()
-    check2 = check2 and env.realm.map.tiles[env.config.TERRAIN_BORDER+1, env.config.TERRAIN_BORDER].impassible()
+    last_r, last_c = player1.history.lastPos
 
-    assert check and not check2
+    assert env.realm.map.tiles[last_r, last_c].mat != nmmo.lib.material.Stone
