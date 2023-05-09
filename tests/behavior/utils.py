@@ -11,7 +11,6 @@ def run_env(env, steps):
             for entID in group.entities:
                 player = group.entities[entID]
                 assert player.alive
-                print(player.resources.water.val, player.resources.food.val)
                 assert player.resources.water.val > 0, player.resources.water.val
                 assert player.resources.food.val > 0
 

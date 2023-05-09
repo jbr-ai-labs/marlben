@@ -12,4 +12,4 @@ class ObscuredAndExclusiveGatheringConfig(GatheringConfig):
             group.ACCESSIBLE_COLORS = [i+1]
             group.VISIBLE_COLORS = [i+1]
 
-        self.PATH_MAPS = f'maps/gathering_obscured_and_exclusive_{self.MAP_WIDTH}x{self.MAP_HEIGHT}'
+        self.PATH_MAPS = f'maps/exploring_{self.MAP_WIDTH}x{self.MAP_HEIGHT}'

@@ -8,4 +8,4 @@ class ObscuredGatheringConfig(GatheringConfig):
         self.NUM_VISIBILITY_COLORS = n_groups
         for i, group in enumerate(self.PLAYER_GROUPS):
             group.VISIBLE_COLORS = [i+1]
-        self.PATH_MAPS = f'maps/gathering_obscured_{self.MAP_WIDTH}x{self.MAP_HEIGHT}'
+        self.PATH_MAPS = f'maps/spying_{self.MAP_WIDTH}x{self.MAP_HEIGHT}'
