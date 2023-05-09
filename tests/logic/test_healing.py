@@ -1,4 +1,3 @@
-import nmmo
 from nmmo import Env, Agent
 from nmmo.config.base.config import Config, PlayerGroupConfig
 from nmmo.config.systems.config import Combat
@@ -18,7 +17,7 @@ class TestPGCfg(PlayerGroupConfig):
 
 class TestCfg(Config, Combat):
     MAP_PREVIEW_DOWNSCALE = 4
-    MAP_GENERATOR = build_map_generator(map, "healing")
+    MAP_GENERATOR = build_map_generator(map)
     RESOURCE_BASE_RESOURCE = 20
     PATH_MAPS = "./tmp_maps"
 
@@ -38,17 +37,16 @@ def test_healing():
 
     player1 = list(env.realm.entity_group_manager.player_groups[0].entities.values())[0]
     player2 = list(env.realm.entity_group_manager.player_groups[1].entities.values())[0]
-    h1 = copy.deepcopy(player1.resources.health.val)
     h2 = copy.deepcopy(player2.resources.health.val)
 
     attack_action = {player1.entID: {action.Attack: {
-        action.Target: player2.entID,
-        action.Style: action.Melee
+        action.Target: 1,
+        action.Style: action.Melee.index
     }}}
 
     heal_action = {player1.entID: {action.Attack: {
-        action.Target: player2.entID,
-        action.Style: action.Heal
+        action.Target: 1,
+        action.Style: action.Heal.index
     }}}
 
     env.step(attack_action)

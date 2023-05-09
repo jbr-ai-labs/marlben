@@ -67,7 +67,7 @@ class BaseGatheringConfig(Resource, Config):
 
 
 class GatheringConfig(BaseGatheringConfig):
-    NMAPS = 10
+    NMAPS = 1
 
     def __init__(self, n_groups, agents_per_group):
         # FIXME: You should not create multiple player groups with the same preset agent
