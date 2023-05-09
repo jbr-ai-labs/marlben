@@ -25,7 +25,7 @@ def build_map_generator(map):
             # make rock border so the agent doesn't leave the main map
             os.makedirs(self.config.PATH_MAPS, exist_ok=True)
             map_template[[top-2, top+height+1], left-2:left+width+2, 0] = 5
-            map_template[top-2:top+height+2, [left-2, left+width+1], 0] = 5
+            map_template[top-2:top+height+2, [left-1, left+width], 0] = 5
             path = osp.join(self.config.PATH_MAPS, 'map1')
             os.makedirs(path, exist_ok=True)
             path = osp.join(path, "map.npy")

@@ -1,10 +1,7 @@
-import numpy as np
-
 import nmmo
-from nmmo import scripting
 from nmmo.io.action import *
 from nmmo.lib import colors
-from scripted import move, attack
+from scripted import move
 from scripted.baselines import Scripted
 
 
@@ -12,6 +9,7 @@ class BossFightTankAgent(Scripted):
     '''Simple Tank agent. Looks for a boss, then fights it until the end.'''
     name = 'TankAgent_'
     color = colors.Neon.GOLD
+    scripted = True
 
     def __call__(self, obs):
         super().__call__(obs)
