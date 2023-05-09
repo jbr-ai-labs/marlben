@@ -159,8 +159,7 @@ class Random(Scripted):
 
         move.random(self.config, self.ob, self.actions)
         return self.actions
-
-
+    
 class Meander(Scripted):
     name = 'Meander_'
     '''Moves randomly on safe terrain'''
