@@ -11,4 +11,4 @@ class ExclusiveGatheringConfig(GatheringConfig):
         self.NUM_ACCESSIBILITY_COLORS = n_groups
         for i, group in enumerate(self.PLAYER_GROUPS):
             group.ACCESSIBLE_COLORS = [i+1]
-        self.PATH_MAPS = f'maps/gathering_exclusive_{self.MAP_WIDTH}x{self.MAP_HEIGHT}'
+        self.PATH_MAPS = f'maps/colors_{self.MAP_WIDTH}x{self.MAP_HEIGHT}'

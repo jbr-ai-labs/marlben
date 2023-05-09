@@ -1,5 +1,5 @@
 import nmmo
 
 
-class Planting(nmmo.Env):
+class GatheringPlanting(nmmo.Env):
     pass

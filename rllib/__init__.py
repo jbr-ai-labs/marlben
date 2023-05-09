@@ -8,7 +8,7 @@ from nmmo.envs.deathmatch.env import Deathmatch
 from nmmo.envs.gathering.env import Gathering
 from nmmo.envs.predator_prey import PredatorPrey
 from nmmo.envs.pve.env import Pve
-from nmmo.envs.raid.env import Raid
+from nmmo.envs.raid import Raid
 from nmmo.envs.siege.env import Siege
 from nmmo.envs.team_deathmatch.env import TeamDeathmatch
 from .rllib_wrapper import RLlibEnv

@@ -1,10 +1,10 @@
 import random
 
-from nmmo.envs.gathering_obscured import GatheringObscured, ObscuredGatheringConfig
+from nmmo.envs.spying import GatheringObscured, ObscuredGatheringConfig
 from scripted.environments.gathering import ObscuredAndExclusiveGatheringAgent
 import numpy as np
 
-from .test_gathering_exclusive import _get_lifetimes_and_survivors
+from .test_colors import _get_lifetimes_and_survivors
 
 
 class ObscuredGatheringScriptedConfig(ObscuredGatheringConfig):

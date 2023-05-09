@@ -1,10 +1,9 @@
+import nmmo
 from nmmo import Env, Agent
 from nmmo.config.base.config import Config, PlayerGroupConfig
 from nmmo.config.systems.config import Building
 from nmmo.core.spawn.spawn_system.position_samplers import PositionSampler
 from nmmo.io import action
-import copy
-import numpy as np
 from .utils import build_map_generator
 
 map = [

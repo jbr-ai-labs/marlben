@@ -1,6 +1,6 @@
 import random
 
-from nmmo.envs.gathering_exclusive import GatheringExclusive, ExclusiveGatheringConfig
+from nmmo.envs.colors import GatheringExclusive, ExclusiveGatheringConfig
 from nmmo.lib import material
 from scripted.environments.gathering import ObscuredAndExclusiveGatheringAgent
 import numpy as np

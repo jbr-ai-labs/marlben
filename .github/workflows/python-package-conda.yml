@@ -8,7 +8,7 @@ on:
 jobs:
   build-linux:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     strategy:
       max-parallel: 5
 

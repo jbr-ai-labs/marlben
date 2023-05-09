@@ -1,12 +1,11 @@
-
 from nmmo.envs.corridor import ScriptedCorridorConfig, OneNeuralCorridorConfig, CorridorConfig, Corridor
 from nmmo.envs.boss_fight import BossFightConfig, BossFight
 from nmmo.envs.gathering import GatheringConfig, GatheringConfigScripted, Gathering
-from nmmo.envs.gathering_building import BuildingGatheringConfig, BuildingGatheringConfigScripted, GatheringBuilding
-from nmmo.envs.gathering_planting import PlantingGatheringConfig, PlantingGatheringConfigScripted, GatheringPlanting
-from nmmo.envs.gathering_obscured import ObscuredGatheringConfig, GatheringObscured
-from nmmo.envs.gathering_exclusive import ExclusiveGatheringConfig, GatheringExclusive
-from nmmo.envs.gathering_obscured_and_exclusive import ObscuredAndExclusiveGatheringConfig, GatheringObscuredAndExclusive
+from nmmo.envs.building import BuildingGatheringConfig, BuildingGatheringConfigScripted, GatheringBuilding
+from nmmo.envs.planting import PlantingGatheringConfig, PlantingGatheringConfigScripted, GatheringPlanting
+from nmmo.envs.spying import ObscuredGatheringConfig, GatheringObscured
+from nmmo.envs.colors import ExclusiveGatheringConfig, GatheringExclusive
+from nmmo.envs.exploring import ObscuredAndExclusiveGatheringConfig, GatheringObscuredAndExclusive
 
 
 name2config = {
