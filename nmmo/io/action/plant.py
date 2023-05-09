@@ -1,7 +1,7 @@
 from nmmo.io.action.common import Fixed, NodeType, Node
 from nmmo.lib import material
 from nmmo.lib.utils import staticproperty
-from nmmo.lib.material import Forest
+from nmmo.lib.material import BalancedForest
 
 
 class Plant(Node):
@@ -32,15 +32,12 @@ class Plant(Node):
         if entity.status.freeze > 0:
             return
 
-        if entity.resources.food.val >= 1:
+        if entity.resources.food.val >= env.config.PLANTING_COST:
             config = env.map.tiles[r, c].config
             tile = env.map.tiles[r, c]
-            tile.reset(Forest, config)
-            # if harvesting, cooldown must be set to max
-            tile.current_cooldown = config.RESOURCE_COOLDOWN
-            tile.state = tile.mat.degen(config)
-            tile.index.update(tile.state.index)
-            entity.resources.food.decrement(1)
+            tile.reset(BalancedForest, True, True, config)
+            env.map.harvest(r, c)
+            entity.resources.food.decrement(env.config.PLANTING_COST)
 
 
 class PlantDecision(Node):

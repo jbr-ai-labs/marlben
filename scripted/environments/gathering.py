@@ -289,3 +289,29 @@ class ObscuredAndExclusiveGatheringAgent(Scripted):
             target_source = any_target_source
         move.pathfind(self.config, self.ob, self.actions,
                       target_source[0] - self.currR, target_source[1] - self.currC)
+
+
+class GatheringPlantingAgent(GatheringAgent):
+    def __init__(self, config, idx):
+        super().__init__(config, idx)
+
+        self._planted = False
+        self._forest_pos += 1
+
+    def plant_actions(self):
+        if self._planted:
+            return self.actions
+        agent = self.ob.agent
+        Entity = nmmo.Serialized.Entity
+        r = nmmo.scripting.Observation.attribute(agent, Entity.R)
+        plant_decision = self._current_target == "Water" and r == self._forest_pos
+        self._planted = plant_decision
+        if self._planted:
+            self._forest_pos -= 1
+        self.actions[nmmo.action.Plant] = {nmmo.action.PlantDecision: plant_decision}
+        return self.actions
+    
+    def __call__(self, obs):
+        super().__call__(obs)
+        self.gather_actions()
+        return self.plant_actions()

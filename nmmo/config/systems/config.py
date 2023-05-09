@@ -132,3 +132,5 @@ class Planting:
     @property
     def Planting(self):
         return True
+
+    PLANTING_COST = 8

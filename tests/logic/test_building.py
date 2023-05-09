@@ -3,6 +3,8 @@ from nmmo.config.base.config import Config, PlayerGroupConfig
 from nmmo.config.systems.config import Building
 from nmmo.core.spawn.spawn_system.position_samplers import PositionSampler
 from nmmo.io import action
+import copy
+import numpy as np
 from .utils import build_map_generator
 
 map = [
@@ -51,12 +53,14 @@ def test_building():
     env.step(move_action)
     env.step(build_action)
 
+
+    last_r, last_c = player1.history.lastPos
     check = env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER].impassible
     check = check or env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER + 1].impassible
     check2 = env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER].impassible
     check2 = check2 and env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER + 1].impassible
 
-    assert check and not check2
+    assert env.realm.map.tiles[last_r, last_c].mat == nmmo.lib.material.Stone
 
     move_action = {player1.entID: {action.Move: {
         action.Direction: (action.East.index if player1.pos[0] == env.config.TERRAIN_BORDER else action.West.index)
@@ -65,13 +69,16 @@ def test_building():
         action.BuildDecision: True
     }}}
 
-    env.step(build_action)
     env.step(move_action)
+
+    assert player1.pos == player1.history.lastPos
+
     env.step(build_action)
 
+    last_r, last_c = player1.history.lastPos
     check = env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER].impassible
     check = check or env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER + 1].impassible
     check2 = env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER].impassible
     check2 = check2 and env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER + 1].impassible
 
-    assert check and not check2
+    assert env.realm.map.tiles[last_r, last_c].mat != nmmo.lib.material.Stone
