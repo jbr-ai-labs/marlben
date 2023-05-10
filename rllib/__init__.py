@@ -1,16 +1,16 @@
 import ray
 
-from nmmo.config import Planting
-from nmmo.envs import Corridor, BossFight, GatheringBuilding, GatheringExclusive, GatheringObscuredAndExclusive, \
+from marlben.config import Planting
+from marlben.envs import Corridor, BossFight, GatheringBuilding, GatheringExclusive, GatheringObscuredAndExclusive, \
     GatheringObscured
-from nmmo.envs.arena.env import Arena
-from nmmo.envs.deathmatch.env import Deathmatch
-from nmmo.envs.gathering.env import Gathering
-from nmmo.envs.predator_prey import PredatorPrey
-from nmmo.envs.pve.env import Pve
-from nmmo.envs.raid import Raid
-from nmmo.envs.siege.env import Siege
-from nmmo.envs.team_deathmatch.env import TeamDeathmatch
+from marlben.envs.arena.env import Arena
+from marlben.envs.deathmatch.env import Deathmatch
+from marlben.envs.gathering.env import Gathering
+from marlben.envs.predator_prey import PredatorPrey
+from marlben.envs.pve.env import Pve
+from marlben.envs.raid import Raid
+from marlben.envs.siege.env import Siege
+from marlben.envs.team_deathmatch.env import TeamDeathmatch
 from .rllib_wrapper import RLlibEnv
 from .neural import rllib_policy
 

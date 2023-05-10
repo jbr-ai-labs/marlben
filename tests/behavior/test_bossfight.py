@@ -1,6 +1,6 @@
 import random
 
-from nmmo.envs.boss_fight import BossFight, BossFightConfig
+from marlben.envs.boss_fight import BossFight, BossFightConfig
 from scripted.environments.bossfight import BossFightTankAgent
 from scripted.baselines import Combat
 import numpy as np

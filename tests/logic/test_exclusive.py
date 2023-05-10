@@ -1,10 +1,10 @@
-from nmmo import Env, Agent, Serialized
-from nmmo.config.base.config import Config, PlayerGroupConfig
-from nmmo.config.systems.config import Resource
-from nmmo.core.spawn.spawn_system.position_samplers import PositionSampler
-from nmmo.io import action
-from nmmo.io.action import North, South
-from nmmo.scripting import Observation
+from marlben import Env, Agent, Serialized
+from marlben.config.base.config import Config, PlayerGroupConfig
+from marlben.config.systems.config import Resource
+from marlben.core.spawn.spawn_system.position_samplers import PositionSampler
+from marlben.io import action
+from marlben.io.action import North, South
+from marlben.scripting import Observation
 from .utils import build_map_generator
 
 

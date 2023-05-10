@@ -8,10 +8,10 @@ from ray.rllib.agents.ppo.appo import APPOTrainer
 from ray.rllib.agents.impala.impala import ImpalaTrainer
 from tqdm import tqdm
 
-import nmmo
+import marlben
 
 
-class RLlibEnv(nmmo.Env, MultiAgentEnv):
+class RLlibEnv(marlben.Env, MultiAgentEnv):
     """Wrapper class for using Neural MMO with RLlib"""
 
     def __init__(self, config):
@@ -61,7 +61,7 @@ class RLlibEnv(nmmo.Env, MultiAgentEnv):
         return obs, rewards, dones, infos
 
 
-class RLlibOverlayRegistry(nmmo.OverlayRegistry):
+class RLlibOverlayRegistry(marlben.OverlayRegistry):
     """Host class for RLlib Map overlays"""
 
     def __init__(self, realm):
@@ -73,7 +73,7 @@ class RLlibOverlayRegistry(nmmo.OverlayRegistry):
         self.overlays['entityValues'] = EntityValues
 
 
-class RLlibOverlay(nmmo.Overlay):
+class RLlibOverlay(marlben.Overlay):
     '''RLlib Map overlay wrapper'''
 
     def __init__(self, config, realm, trainer, model):
@@ -109,7 +109,7 @@ class Attention(RLlibOverlay):
                     continue
                 data[r, c] = np.mean(attentions[tile])
 
-        colorized = nmmo.overlay.twoTone(data)
+        colorized = marlben.overlay.twoTone(data)
         self.realm.register(colorized)
 
 
@@ -126,7 +126,7 @@ class Values(RLlibOverlay):
             self.values[r, c] = float(self.model.value_function()[idx])
 
     def register(self, obs):
-        colorized = nmmo.overlay.twoTone(self.values[:, :])
+        colorized = marlben.overlay.twoTone(self.values[:, :])
         self.realm.register(colorized)
 
 
@@ -163,7 +163,7 @@ class GlobalValues(RLlibOverlay):
                 batch = {}
 
         print('Value map computed')
-        self.colorized = nmmo.overlay.twoTone(values)
+        self.colorized = marlben.overlay.twoTone(values)
 
     def register(self, obs):
         print('Computing Global Values. This requires one NN pass per tile')

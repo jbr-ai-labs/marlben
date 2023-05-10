@@ -1,9 +1,9 @@
 from distutils.command.config import config
-import nmmo
-from nmmo import Env, Agent
-from nmmo.config.base.config import Config, PlayerGroupConfig
-from nmmo.config.systems.config import Planting
-from nmmo.io import action
+import marlben
+from marlben import Env, Agent
+from marlben.config.base.config import Config, PlayerGroupConfig
+from marlben.config.systems.config import Planting
+from marlben.io import action
 import copy
 from .utils import build_map_generator
 
@@ -55,14 +55,14 @@ def test_plant_and_wait():
 
     last_r, last_c = player1.history.lastPos
 
-    assert env.realm.map.tiles[last_r, last_c].state == nmmo.lib.material.ScrubImpassible
-    assert env.realm.map.tiles[last_r, last_c].mat == nmmo.lib.material.BalancedForest
+    assert env.realm.map.tiles[last_r, last_c].state == marlben.lib.material.ScrubImpassible
+    assert env.realm.map.tiles[last_r, last_c].mat == marlben.lib.material.BalancedForest
     assert abs(food_before - food_after - TestCfg.PLANTING_COST) < 1e-8
 
     for _ in range(TestCfg.RESOURCE_COOLDOWN):
         env.step({})
 
-    assert env.realm.map.tiles[last_r, last_c].state == nmmo.lib.material.BalancedForest
+    assert env.realm.map.tiles[last_r, last_c].state == marlben.lib.material.BalancedForest
 
 
 def test_plant_two_times():
@@ -86,8 +86,8 @@ def test_plant_two_times():
 
     last_r, last_c = player1.history.lastPos
 
-    assert env.realm.map.tiles[last_r, last_c].state == nmmo.lib.material.ScrubImpassible
-    assert env.realm.map.tiles[last_r, last_c].mat == nmmo.lib.material.BalancedForest
+    assert env.realm.map.tiles[last_r, last_c].state == marlben.lib.material.ScrubImpassible
+    assert env.realm.map.tiles[last_r, last_c].mat == marlben.lib.material.BalancedForest
 
     move_action = {player1.entID: {action.Move: {
         action.Direction: (2 if player1.pos[1] == env.config.TERRAIN_BORDER else 3)
@@ -104,7 +104,7 @@ def test_plant_two_times():
 
     last_r, last_c = player1.history.lastPos
 
-    assert env.realm.map.tiles[last_r, last_c].mat != nmmo.lib.material.BalancedForest
+    assert env.realm.map.tiles[last_r, last_c].mat != marlben.lib.material.BalancedForest
 
 
 def test_plant_expensive():
@@ -132,5 +132,5 @@ def test_plant_expensive():
 
     last_r, last_c = player1.history.lastPos
 
-    assert env.realm.map.tiles[last_r, last_c].mat != nmmo.lib.material.BalancedForest
+    assert env.realm.map.tiles[last_r, last_c].mat != marlben.lib.material.BalancedForest
     assert abs(food_before - food_after) < 1e-8

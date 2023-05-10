@@ -1,10 +1,10 @@
-import nmmo
+import marlben
 
 from rllib.config import scale
 from rllib.config import bases
 
 
-class Medium(scale.Baseline, bases.Medium, nmmo.config.AllGameSystems):
+class Medium(scale.Baseline, bases.Medium, marlben.config.AllGameSystems):
     # Load 1000 epoch pretrained model
     RESTORE = True
     RESTORE_ID = '870d'
@@ -16,7 +16,7 @@ class Medium(scale.Baseline, bases.Medium, nmmo.config.AllGameSystems):
     pass
 
 
-class Debug(scale.Debug, bases.Small, nmmo.config.AllGameSystems):
+class Debug(scale.Debug, bases.Small, marlben.config.AllGameSystems):
     RESTORE = False
 
     TRAINING_ITERATIONS = 2

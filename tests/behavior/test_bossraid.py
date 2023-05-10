@@ -2,7 +2,7 @@ import random
 
 import numpy as np
 
-from nmmo.envs.raid import Raid, BossRaidConfig
+from marlben.envs.raid import Raid, BossRaidConfig
 from scripted.environments.bossfight import BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent
 from scripted.baselines import Combat
 

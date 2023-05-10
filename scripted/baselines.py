@@ -1,11 +1,11 @@
-import nmmo
-from nmmo import scripting
-from nmmo.lib import colors
+import marlben
+from marlben import scripting
+from marlben.lib import colors
 
 from scripted import move, attack
 
 
-class Scripted(nmmo.Agent):
+class Scripted(marlben.Agent):
     '''Template class for scripted models.
     You may either subclass directly or mirror the __call__ function'''
     scripted = True
@@ -63,19 +63,19 @@ class Scripted(nmmo.Agent):
             return
 
         if self.targetDist <= self.config.COMBAT_MELEE_REACH:
-            self.style = nmmo.action.Melee
+            self.style = marlben.action.Melee
         elif self.targetDist <= self.config.COMBAT_RANGE_REACH:
-            self.style = nmmo.action.Range
+            self.style = marlben.action.Range
         else:
-            self.style = nmmo.action.Mage
+            self.style = marlben.action.Mage
 
     def target_weak(self):
         '''Target the nearest agent if it is weak'''
         if self.closest is None:
             return False
 
-        selfLevel = scripting.Observation.attribute(self.ob.agent, nmmo.Serialized.Entity.Level)
-        targLevel = scripting.Observation.attribute(self.closest, nmmo.Serialized.Entity.Level)
+        selfLevel = scripting.Observation.attribute(self.ob.agent, marlben.Serialized.Entity.Level)
+        targLevel = scripting.Observation.attribute(self.closest, marlben.Serialized.Entity.Level)
 
         if targLevel <= selfLevel <= 5 or selfLevel >= targLevel + 3:
             self.target = self.closest
@@ -92,12 +92,12 @@ class Scripted(nmmo.Agent):
         self.closestID = None
         if self.closest is not None:
             self.closestID = scripting.Observation.attribute(
-                self.closest, nmmo.Serialized.Entity.ID)
+                self.closest, marlben.Serialized.Entity.ID)
 
         self.attackerID = None
         if self.attacker is not None:
             self.attackerID = scripting.Observation.attribute(
-                self.attacker, nmmo.Serialized.Entity.ID)
+                self.attacker, marlben.Serialized.Entity.ID)
 
         self.style = None
         self.target = None
@@ -130,9 +130,9 @@ class Scripted(nmmo.Agent):
         agent = self.ob.agent
 
         self.food = scripting.Observation.attribute(
-            agent, nmmo.Serialized.Entity.Food)
+            agent, marlben.Serialized.Entity.Food)
         self.water = scripting.Observation.attribute(
-            agent, nmmo.Serialized.Entity.Water)
+            agent, marlben.Serialized.Entity.Water)
 
         if self.food > self.food_max:
             self.food_max = self.food
@@ -141,13 +141,13 @@ class Scripted(nmmo.Agent):
 
         if self.spawnR is None:
             self.spawnR = scripting.Observation.attribute(
-                agent, nmmo.Serialized.Entity.R)
+                agent, marlben.Serialized.Entity.R)
         if self.spawnC is None:
             self.spawnC = scripting.Observation.attribute(
-                agent, nmmo.Serialized.Entity.C)
+                agent, marlben.Serialized.Entity.C)
 
-        self.currR = round(scripting.Observation.attribute(agent, nmmo.Serialized.Entity.R))
-        self.currC = round(scripting.Observation.attribute(agent, nmmo.Serialized.Entity.C))
+        self.currR = round(scripting.Observation.attribute(agent, marlben.Serialized.Entity.R))
+        self.currC = round(scripting.Observation.attribute(agent, marlben.Serialized.Entity.C))
 
 
 class Random(Scripted):
@@ -207,7 +207,7 @@ class CombatNoExplore(Scripted):
 
         self.adaptive_control_and_targeting(explore=False)
 
-        self.style = nmmo.action.Range
+        self.style = marlben.action.Range
         self.attack()
 
         return self.actions
@@ -222,7 +222,7 @@ class Combat(Scripted):
 
         self.adaptive_control_and_targeting()
 
-        self.style = nmmo.action.Range
+        self.style = marlben.action.Range
         self.attack()
 
         return self.actions

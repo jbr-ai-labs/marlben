@@ -1,6 +1,6 @@
 import random
 
-from nmmo.envs.exploring import GatheringObscuredAndExclusive, ObscuredAndExclusiveGatheringConfig
+from marlben.envs.exploring import GatheringObscuredAndExclusive, ObscuredAndExclusiveGatheringConfig
 from scripted.environments.gathering import ObscuredAndExclusiveGatheringAgent
 import numpy as np
 

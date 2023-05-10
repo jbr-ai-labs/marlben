@@ -1,4 +1,4 @@
-from nmmo import MapGenerator
+from marlben import MapGenerator
 import numpy as np
 import os
 from os import path as osp

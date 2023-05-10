@@ -4,7 +4,7 @@ import numpy as np
 import torch
 from torch import nn
 
-import nmmo
+import marlben
 from rllib.neural.utils import nn_blocks
 
 
@@ -38,7 +38,7 @@ class Input(nn.Module):
         self.embeddings = nn.ModuleDict()
         self.attributes = nn.ModuleDict()
 
-        for _, entity in nmmo.Serialized:
+        for _, entity in marlben.Serialized:
             continuous = len([e for e in entity if e[1].CONTINUOUS])
             discrete = len([e for e in entity if e[1].DISCRETE])
             self.attributes[entity.__name__] = nn.Linear(
@@ -96,7 +96,7 @@ class Output(nn.Module):
         self.h = config.HIDDEN
 
         self.net = DiscreteAction(self.config, self.h, self.h)
-        self.arg = nn.Embedding(nmmo.Action.n, self.h)
+        self.arg = nn.Embedding(marlben.Action.n, self.h)
 
     def names(self, nameMap, args):
         '''Lookup argument indices from name mapping'''
@@ -110,10 +110,10 @@ class Output(nn.Module):
          lookup : A fixed size representation of each entity
       '''
         rets = defaultdict(dict)
-        for atn in nmmo.Action.edges:
+        for atn in marlben.Action.edges:
             for arg in atn.edges:
                 lens = None
-                if arg.argType == nmmo.action.Fixed:
+                if arg.argType == marlben.action.Fixed:
                     batch = obs.shape[0]
                     if not 'edges' in arg.__dict__:
                         idxs = list(range(arg.N(self.config)))

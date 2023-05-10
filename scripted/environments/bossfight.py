@@ -1,6 +1,6 @@
-import nmmo
-from nmmo.io.action import *
-from nmmo.lib import colors
+import marlben
+from marlben.io.action import *
+from marlben.lib import colors
 from scripted import move
 from scripted.baselines import Scripted
 
@@ -14,7 +14,7 @@ class BossFightTankAgent(Scripted):
     def __call__(self, obs):
         super().__call__(obs)
 
-        Entity = nmmo.Serialized.Entity
+        Entity = marlben.Serialized.Entity
 
         self.scan_agents(True)
         if self.closestID is not None:
@@ -24,8 +24,8 @@ class BossFightTankAgent(Scripted):
             self.targetDist = self.closestDist
             if self.closestDist > self.config.COMBAT_MELEE_REACH:
                 move.pathfind(self.config, self.ob, self.actions,
-                              nmmo.scripting.Observation.attribute(self.closest, Entity.R) - self.currR,
-                              nmmo.scripting.Observation.attribute(self.closest, Entity.C) - self.currC)
+                              marlben.scripting.Observation.attribute(self.closest, Entity.R) - self.currR,
+                              marlben.scripting.Observation.attribute(self.closest, Entity.C) - self.currC)
             self.attack()
         else:
             self.explore()
@@ -46,13 +46,13 @@ class BossRaidFighterAgent(Scripted):
         super().__call__(obs)
 
         self.scan_agents(True)
-        Entity = nmmo.Serialized.Entity
+        Entity = marlben.Serialized.Entity
 
         if self.closestID is not None:
             if self.closestDist <= self.config.COMBAT_MELEE_REACH:
-                self.style = nmmo.action.Melee
+                self.style = marlben.action.Melee
             else:
-                self.style = nmmo.action.Range
+                self.style = marlben.action.Range
             self.target = self.closest
             self.targetID = self.closestID
             self.targetDist = self.closestDist
@@ -61,8 +61,8 @@ class BossRaidFighterAgent(Scripted):
             if self.attacker is None and not self.is_evading:
                 if self.closestDist > self.config.COMBAT_MELEE_REACH:
                     move.pathfind(self.config, self.ob, self.actions,
-                                  nmmo.scripting.Observation.attribute(self.closest, Entity.R) - self.currR,
-                                  nmmo.scripting.Observation.attribute(self.closest, Entity.C) - self.currC)
+                                  marlben.scripting.Observation.attribute(self.closest, Entity.R) - self.currR,
+                                  marlben.scripting.Observation.attribute(self.closest, Entity.C) - self.currC)
             else:
                 self.evade()
                 # Evade until out of melee attack range
@@ -91,30 +91,30 @@ class BossRaidHealerAgent(Scripted):
 
         self.scan_agents(True)
         self.allies = []
-        Entity = nmmo.Serialized.Entity
+        Entity = marlben.Serialized.Entity
         for target in self.ob.agents:
-            exists = nmmo.scripting.Observation.attribute(target, Entity.Self)
+            exists = marlben.scripting.Observation.attribute(target, Entity.Self)
             if not exists:
                 continue
-            if not nmmo.scripting.Observation.attribute(target, Entity.ID) >= 0:
+            if not marlben.scripting.Observation.attribute(target, Entity.ID) >= 0:
                 continue
             self.allies.append(target)
 
-        self.style = nmmo.action.Heal
+        self.style = marlben.action.Heal
 
         self.lowestHealthID = None
         self.lowestHealth = None
         self.lowestHealthTarget = None
         for target in self.allies:
-            target_pop = nmmo.scripting.Observation.attribute(target, Entity.Population)
-            curr_pop = nmmo.scripting.Observation.attribute(self.ob.agent, Entity.Population)
+            target_pop = marlben.scripting.Observation.attribute(target, Entity.Population)
+            curr_pop = marlben.scripting.Observation.attribute(self.ob.agent, Entity.Population)
             if target_pop == curr_pop:
                 continue  # Do not follow and heal other healers
 
             # TODO: is there a way to get max entity health? It seems like its better to heal one with the lowest health percentage
-            current_health = nmmo.scripting.Observation.attribute(target, Entity.Health)
+            current_health = marlben.scripting.Observation.attribute(target, Entity.Health)
             if self.lowestHealthID is None or current_health < self.lowestHealth:
-                self.lowestHealthID = nmmo.scripting.Observation.attribute(target, Entity.ID)
+                self.lowestHealthID = marlben.scripting.Observation.attribute(target, Entity.ID)
                 self.lowestHealth = current_health
                 self.lowestHealthTarget = target
 
@@ -129,8 +129,8 @@ class BossRaidHealerAgent(Scripted):
                     self.is_evading = True
             else:
                 move.pathfind(self.config, self.ob, self.actions,
-                              nmmo.scripting.Observation.attribute(self.lowestHealthTarget, Entity.R) - self.currR,
-                              nmmo.scripting.Observation.attribute(self.lowestHealthTarget, Entity.C) - self.currC)
+                              marlben.scripting.Observation.attribute(self.lowestHealthTarget, Entity.R) - self.currR,
+                              marlben.scripting.Observation.attribute(self.lowestHealthTarget, Entity.C) - self.currC)
         else:
             self.explore()
 

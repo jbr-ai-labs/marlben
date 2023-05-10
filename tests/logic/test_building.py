@@ -1,9 +1,9 @@
-import nmmo
-from nmmo import Env, Agent
-from nmmo.config.base.config import Config, PlayerGroupConfig
-from nmmo.config.systems.config import Building
-from nmmo.core.spawn.spawn_system.position_samplers import PositionSampler
-from nmmo.io import action
+import marlben
+from marlben import Env, Agent
+from marlben.config.base.config import Config, PlayerGroupConfig
+from marlben.config.systems.config import Building
+from marlben.core.spawn.spawn_system.position_samplers import PositionSampler
+from marlben.io import action
 from .utils import build_map_generator
 
 map = [
@@ -59,7 +59,7 @@ def test_building():
     check2 = env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER].impassible
     check2 = check2 and env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER + 1].impassible
 
-    assert env.realm.map.tiles[last_r, last_c].mat == nmmo.lib.material.Stone
+    assert env.realm.map.tiles[last_r, last_c].mat == marlben.lib.material.Stone
 
     move_action = {player1.entID: {action.Move: {
         action.Direction: (action.East.index if player1.pos[0] == env.config.TERRAIN_BORDER else action.West.index)
@@ -80,4 +80,4 @@ def test_building():
     check2 = env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER].impassible
     check2 = check2 and env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER + 1].impassible
 
-    assert env.realm.map.tiles[last_r, last_c].mat != nmmo.lib.material.Stone
+    assert env.realm.map.tiles[last_r, last_c].mat != marlben.lib.material.Stone

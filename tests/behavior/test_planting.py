@@ -1,7 +1,7 @@
 from .utils import _test_helper
 
 
-from nmmo.envs import GatheringPlanting, PlantingGatheringConfigScripted
+from marlben.envs import GatheringPlanting, PlantingGatheringConfigScripted
 
 def test_gathering_planting_scripted():
     cfg_args = {"n_groups": 2, "agents_per_group": 1}

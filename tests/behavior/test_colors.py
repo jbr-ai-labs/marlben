@@ -1,7 +1,7 @@
 import random
 
-from nmmo.envs.colors import GatheringExclusive, ExclusiveGatheringConfig
-from nmmo.lib import material
+from marlben.envs.colors import GatheringExclusive, ExclusiveGatheringConfig
+from marlben.lib import material
 from scripted.environments.gathering import ObscuredAndExclusiveGatheringAgent
 import numpy as np
 

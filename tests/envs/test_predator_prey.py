@@ -1,5 +1,5 @@
-from nmmo.envs.predator_prey import PredatorPrey
-from nmmo.envs.predator_prey.config import PredatorPreyConfig
+from marlben.envs.predator_prey import PredatorPrey
+from marlben.envs.predator_prey.config import PredatorPreyConfig
 from tests.envs.utils import _test_create_with_config_class, _test_interact_with_config_class
 
 

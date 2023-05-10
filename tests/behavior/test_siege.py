@@ -1,5 +1,5 @@
-from nmmo.envs import BuildingGatheringConfigScripted
-from nmmo.envs.siege.env import Siege
+from marlben.envs import BuildingGatheringConfigScripted
+from marlben.envs.siege.env import Siege
 from tests.behavior.utils import _test_helper
 
 

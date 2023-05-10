@@ -1,6 +1,6 @@
 from .utils import create_env, random_interaction
-from nmmo.envs.corridor.env import Corridor
-from nmmo.envs.corridor.config import CorridorConfig
+from marlben.envs.corridor.env import Corridor
+from marlben.envs.corridor.config import CorridorConfig
 
 
 def test_corridor_env_create():

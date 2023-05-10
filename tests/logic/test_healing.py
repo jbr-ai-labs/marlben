@@ -1,7 +1,7 @@
-from nmmo import Env, Agent
-from nmmo.config.base.config import Config, PlayerGroupConfig
-from nmmo.config.systems.config import Combat
-from nmmo.io import action
+from marlben import Env, Agent
+from marlben.config.base.config import Config, PlayerGroupConfig
+from marlben.config.systems.config import Combat
+from marlben.io import action
 import copy
 from .utils import build_map_generator
 
