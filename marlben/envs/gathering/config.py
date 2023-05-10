@@ -87,6 +87,6 @@ class GatheringConfigScripted(GatheringConfig):
         for i, group in enumerate(self.PLAYER_GROUPS):
             column = (1 + i // 2) * (1 - i % 2) + (7 - i // 2 - 1) * (i % 2)
             group.SPAWN_COORDINATES_SAMPLER = UniformPositionSampler(r_range=[4, 4], c_range=[column, column])
-            group.AGENTS[0] = GatheringAgent
+            group.AGENTS[0] = self.AGENT_TYPE
 
         self.AGENTS = process_agents(self.PLAYER_GROUPS)
