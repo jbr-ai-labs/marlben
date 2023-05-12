@@ -155,7 +155,7 @@ class Entity:
     def update_diary(self, realm):
         pass
 
-    def receiveDamage(self, source, dmg, stealing_enabled):
+    def receiveDamage(self, source, dmg, stealing_enabled=True):
         self.history.damage.update(dmg)
         self.resources.health.decrement(dmg)
 

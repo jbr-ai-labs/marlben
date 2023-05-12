@@ -29,7 +29,7 @@ class RLlib:
 
     @property
     def TRAIN_BATCH_SIZE(self):
-        if self._TRAIN_BATCH_SIZE is None:
+        if not hasattr(self, "_TRAIN_BATCH_SIZE") or self._TRAIN_BATCH_SIZE is None:
             self._TRAIN_BATCH_SIZE = 64 * 256 * self.NUM_WORKERS
         return self._TRAIN_BATCH_SIZE
 
