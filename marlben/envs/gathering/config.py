@@ -68,11 +68,12 @@ class BaseGatheringConfig(Resource, Config):
 
 class GatheringConfig(BaseGatheringConfig):
     NMAPS = 1
+    PLAYER_GROUP_CONFIG = GatheringPlayerGroup
 
     def __init__(self, n_groups, agents_per_group):
         # FIXME: You should not create multiple player groups with the same preset agent
         super().__init__(n_groups, agents_per_group)
-        self.PLAYER_GROUPS = [GatheringPlayerGroup(agents_per_group, agents=[Agent]) for _ in range(n_groups)]
+        self.PLAYER_GROUPS = [self.PLAYER_GROUP_CONFIG(agents_per_group, agents=[Agent]) for _ in range(n_groups)]
         self.AGENTS = process_agents(self.PLAYER_GROUPS)
 
 

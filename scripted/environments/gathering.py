@@ -8,7 +8,7 @@ from marlben.lib import material
 from scripted import move
 from scripted.baselines import Scripted
 from marlben.io.action import Move, Direction, East, West, South, North
-
+from marlben import scripting
 
 class GatheringAgent(Scripted):
     name = 'GatheringAgent_'
@@ -315,3 +315,19 @@ class GatheringPlantingAgent(GatheringAgent):
         super().__call__(obs)
         self.gather_actions()
         return self.plant_actions()
+
+
+class SiegeAgent(GatheringBuildingAgent):
+    def __init__(self, config, idx):
+        super().__init__(config, idx)
+
+    def __call__(self, obs):
+        super().__call__(obs)
+        self.scan_agents(npc_only=True)
+        if self.closest is not None:
+            self.target = self.closest
+            self.targetID = self.closestID
+            self.targetDist = self.closestDist
+        self.style = marlben.action.Melee
+        self.attack()
+        return self.actions

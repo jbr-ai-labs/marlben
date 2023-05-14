@@ -6,6 +6,7 @@ from marlben.envs.planting import PlantingGatheringConfig, PlantingGatheringConf
 from marlben.envs.spying import ObscuredGatheringConfig, GatheringObscured
 from marlben.envs.colors import ExclusiveGatheringConfig, GatheringExclusive
 from marlben.envs.exploring import ObscuredAndExclusiveGatheringConfig, GatheringObscuredAndExclusive
+from marlben.envs.siege import SiegeConfig, SiegeConfigScripted, Siege
 
 
 name2config = {
@@ -20,5 +21,7 @@ name2config = {
     "GatheringPlantingScripted": PlantingGatheringConfigScripted,
     "GatheringObscured": ObscuredGatheringConfig,
     "GatheringExclusive": ExclusiveGatheringConfig,
-    "GatheringObscuredAndExclusive": ObscuredAndExclusiveGatheringConfig
+    "GatheringObscuredAndExclusive": ObscuredAndExclusiveGatheringConfig,
+    "Siege": SiegeConfig,
+    "SiegeScripted": SiegeConfigScripted
 }
