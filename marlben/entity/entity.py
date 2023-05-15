@@ -183,6 +183,10 @@ class Entity:
         return True
 
     @property
+    def dead(self):
+        return not self.alive
+
+    @property
     def isPlayer(self) -> bool:
         return False
 

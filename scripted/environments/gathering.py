@@ -5,7 +5,7 @@ import numpy as np
 
 import marlben
 from marlben.lib import material
-from scripted import move
+from scripted import move, attack
 from scripted.baselines import Scripted
 from marlben.io.action import Move, Direction, East, West, South, North
 from marlben import scripting
@@ -45,6 +45,15 @@ class GatheringAgent(Scripted):
         self.actions[marlben.action.Move] = {marlben.action.Direction: direction}
         return self.actions
 
+    def attack_actions(self, npc_only=True):
+        self.scan_agents(npc_only=npc_only)
+        if self.closest is not None:
+            self.target = self.closest
+            self.targetID = self.closestID
+            self.targetDist = self.closestDist
+        self.style = marlben.action.Melee
+        self.attack()
+        return self.actions
 
     def __call__(self, obs):
         super().__call__(obs)
@@ -323,11 +332,48 @@ class SiegeAgent(GatheringBuildingAgent):
 
     def __call__(self, obs):
         super().__call__(obs)
-        self.scan_agents(npc_only=True)
-        if self.closest is not None:
-            self.target = self.closest
-            self.targetID = self.closestID
-            self.targetDist = self.closestDist
-        self.style = marlben.action.Melee
-        self.attack()
+        self.actions = self.attack_actions()
+        return self.actions
+
+
+class PveAgent(GatheringAgent):
+    def __init__(self, config, idx):
+        super().__init__(config, idx)
+
+    def __call__(self, obs):
+        super().__call__(obs)
+        self.actions = self.attack_actions()
+        return self.actions
+        
+
+class GatheringCombatAgent(GatheringAgent):
+    def __init__(self, config, idx):
+        super().__init__(config, idx)
+        self._attacks = (self.iden + 1) % 2 == 0
+        self._mid_col = 11 + int(not self._attacks)
+    
+    def fight_started(self):
+        agent = self.ob.agent
+        Entity = marlben.Serialized.Entity
+        c = marlben.scripting.Observation.attribute(agent, Entity.C)
+        return c == self._mid_col
+
+    def go_to_fight_actions(self):
+        agent = self.ob.agent
+        Entity = marlben.Serialized.Entity
+        c = marlben.scripting.Observation.attribute(agent, Entity.C)
+
+        if c != self._mid_col:
+            move_action = {Direction: East if self._attacks else West}
+            self.actions[Move] = move_action
+        return self.actions
+
+    def __call__(self, obs):
+        super().__call__(obs)
+        if not self.fight_started():
+            self.go_to_fight_actions()
+        else:
+            self.gather_actions()
+        if self._attacks:
+            self.attack_actions(npc_only=False)
         return self.actions

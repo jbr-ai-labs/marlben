@@ -1,5 +1,5 @@
-from marlben.envs.deathmatch.config import DeathmatchConfig
-from marlben.envs.deathmatch.env import Deathmatch
+from marlben.envs import DeathmatchConfig
+from marlben.envs import Deathmatch
 from tests.envs.utils import _test_create_with_config_class, _test_interact_with_config_class
 
 

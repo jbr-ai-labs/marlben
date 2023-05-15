@@ -1,5 +1,5 @@
 from marlben.envs import SiegeConfigScripted
-from marlben.envs.siege.env import Siege
+from marlben.envs import Siege
 from tests.behavior.utils import _test_helper
 
 

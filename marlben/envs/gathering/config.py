@@ -1,6 +1,5 @@
 from os import path as osp
 
-
 from marlben import Agent
 from marlben.config import Resource
 from marlben.config.base.config import PlayerGroupConfig, Config
