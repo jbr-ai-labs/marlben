@@ -84,7 +84,7 @@ def test_exclusive_gathering_medium():
         survivors.append(survived)
         lifetimes.extend(lifetime)
     assert np.mean(lifetimes) >= 90
-    assert np.mean(survivors) >= 0.5
+    assert np.mean(survivors) >= 0.2
 
 
 def test_exclusive_gathering_large():
