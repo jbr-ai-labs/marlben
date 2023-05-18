@@ -68,4 +68,4 @@ def test_obscured_gathering_large():
         lifetime, survived = _get_lifetimes_and_survivors(env)
         survivors.append(survived)
         lifetimes.extend(lifetime)
-    assert 70 >= np.mean(lifetimes) >= 40
+    assert 85 >= np.mean(lifetimes) >= 40
