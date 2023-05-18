@@ -13,3 +13,6 @@ Marlben is a multi-agent reinforcement learning benchmark based on the [NeuralMM
 ```python3.9 minimal.py```
 
 Run .exe client for rendering
+
+# Wiki
+https://github.com/jbr-ai-labs/marlben/wiki
