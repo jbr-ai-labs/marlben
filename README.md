@@ -5,14 +5,11 @@
 Marlben is a multi-agent reinforcement learning benchmark based on the [NeuralMMO](https://github.com/NeuralMMO/environment) game engine
 
 ## Installation
-```python 3.9```  **is required!**
-
+https://github.com/jbr-ai-labs/marlben/wiki/Quick-Start#installation
 
 # Usage
 
-```python3.9 minimal.py```
-
-Run .exe client for rendering
+https://github.com/jbr-ai-labs/marlben/wiki/Quick-Start#launching-an-environment
 
 # Wiki
 https://github.com/jbr-ai-labs/marlben/wiki
