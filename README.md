@@ -7,9 +7,9 @@ Marlben is a multi-agent reinforcement learning benchmark based on the [NeuralMM
 ## Installation
 https://github.com/jbr-ai-labs/marlben/wiki/Quick-Start#installation
 
-# Usage
+## Usage
 
 https://github.com/jbr-ai-labs/marlben/wiki/Quick-Start#launching-an-environment
 
-# Wiki
+## Wiki
 https://github.com/jbr-ai-labs/marlben/wiki
