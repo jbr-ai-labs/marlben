@@ -1,6 +1,6 @@
 import functools
 
-import gym
+import gymnasium as gym
 import numpy as np
 from pettingzoo import ParallelEnv
 
@@ -12,11 +12,13 @@ from marlben.lib import log
 
 
 class Env(ParallelEnv):
-    '''Environment wrapper for Neural MMO using the Parallel PettingZoo API
+    """
+    Environment wrapper for Marlben using the Parallel PettingZoo API
 
    Neural MMO provides complex environments featuring structured observations/actions,
    variably sized agent populations, and long time horizons. Usage in conjunction
-   with RLlib as demonstrated in the /projekt wrapper is highly recommended.'''
+   with RLlib as demonstrated in the /rllib wrapper is highly recommended.
+   """
 
     metadata = {'render.modes': ['human'], 'name': 'neural-mmo'}
 

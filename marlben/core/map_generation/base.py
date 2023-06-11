@@ -2,7 +2,7 @@ import os
 
 import numpy as np
 import vec_noise
-from imageio import imread, imwrite
+from imageio import imread
 from matplotlib.image import imsave
 from scipy import stats as stats
 from tqdm import tqdm

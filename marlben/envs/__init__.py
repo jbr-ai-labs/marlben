@@ -14,7 +14,7 @@ from marlben.envs.deathmatch import DeathmatchConfig, DeathmatchConfigScripted, 
 from marlben.envs.team_deathmatch import TeamDeathmatchConfig, TeamDeathmatchConfigScripted, TeamDeathmatch
 from marlben.envs.arena import ArenaConfig, ArenaConfigScripted, Arena
 from marlben.envs.predator_prey import PredatorPreyConfig, PredatorPreyConfigScripted, PredatorPrey
-from gym.envs.registration import register
+from gymnasium.envs.registration import register
 
 
 name2config = {
