@@ -93,6 +93,27 @@ def test_boss_raid_scripted_large():
     assert boss_fight_condition
 
 
+def test_boss_raid_scripted_huge():
+    random.seed(0)
+    np.random.seed(0)
+    env = BossRaid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
+                                          n_tanks=6, n_fighters=6, n_healers=6))
+    obs = env.reset()
+    timesteps = 500
+    done = False
+    while not done and timesteps > 0:
+        _, _, _, _ = env.step({})
+        timesteps -= 1
+        done = done or len(env.realm.entity_group_manager.npc_groups[0].entities) == 0
+        done = done or sum(len(pg.entities) for pg in env.realm.entity_group_manager.player_groups) == 0
+    assert timesteps > 0
+    boss_fight_condition = len(env.realm.entity_group_manager.npc_groups[0].entities) == 0
+    if not boss_fight_condition:
+        boss = env.realm.entity_group_manager.npc_groups[0].entities[-1]
+        boss_fight_condition = (boss.resources.health.val / boss.resources.health.max) < 0.4
+    assert boss_fight_condition
+
+
 def test_boss_raid_scripted_no_healers():
     random.seed(0)
     np.random.seed(0)
