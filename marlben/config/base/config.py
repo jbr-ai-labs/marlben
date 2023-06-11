@@ -1,4 +1,5 @@
 import os
+from dataclasses import field
 
 import marlben
 from marlben.config.common import Template, SequentialLoader
@@ -44,24 +45,41 @@ class Config(Template):
       generated automatically.
    '''
 
-    def __init__(self):
+    def __init__(self, dictionary=None):
         super().__init__()
 
-        if __debug__:
-            err = 'config.Config is a base class. Use config.{Small, Medium Large}'''
-            assert type(self) != Config, err
+        if dictionary is not None:
+            self._populate_config(dictionary)
 
+    def _populate_config(self, dictionary):
+        for k, v in dictionary.items():
+            print(k, v)
+            if isinstance(v, dict):
+                self._populate_config(v)
+            else:
+                setattr(self, k, v)
     ############################################################################
     # Meta-Parameters
-    RENDER = False
+    RENDER: bool = False
+
+    def items(self):
+        class_vars = {}
+        for cls in self.__class__.mro()[:-1]:
+            class_vars.update({
+                k: v for k, v in cls.__dict__.items()
+                if k not in object.__dict__ and not k.startswith('_')
+                and not callable(v)
+                and not isinstance(v, property)
+            })
+        return class_vars.items()
 
     def game_system_enabled(self, name) -> bool:
         return hasattr(self, name)
 
     ############################################################################
     # Visibility and Accessibility settings
-    NUM_VISIBILITY_COLORS = 0
-    NUM_ACCESSIBILITY_COLORS = 0
+    NUM_VISIBILITY_COLORS: int = 0
+    NUM_ACCESSIBILITY_COLORS: int = 0
 
     # Population Parameters
     AGENT_LOADER = SequentialLoader
@@ -87,7 +105,6 @@ class Config(Template):
     N_AGENT_OBS = 100
     '''Number of distinct agent observations'''
 
-    @property
     def WINDOW(self):
         '''Size of the square tile crop visible to an agent'''
         return 2 * self.NSTIM + 1

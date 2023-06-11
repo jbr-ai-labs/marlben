@@ -51,7 +51,7 @@ class Simple(Base):
         '''Simple baseline model with flat subnetworks'''
         super().__init__(config)
         h = config.HIDDEN
-        w = config.WINDOW
+        w = config.WINDOW()
         w_final = (w - 2) // 2
         self.ent = nn.Linear(2*h, h)
         self.conv = nn.Conv2d(h, h, 3)
@@ -74,7 +74,7 @@ class Simple(Base):
         tiles = obs['Tile']
         self.attn = torch.norm(tiles, p=2, dim=-1)
 
-        w = self.config.WINDOW
+        w = self.config.WINDOW()
         batch = tiles.size(0)
         hidden = tiles.size(2)
         # Dims correct?

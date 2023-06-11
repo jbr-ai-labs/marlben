@@ -1,6 +1,9 @@
+from dataclasses import dataclass, field
+
 import marlben
 
 
+@dataclass
 class RLlib:
     """Base config for RLlib Models
 
@@ -14,8 +17,8 @@ class RLlib:
     """
 
     # Run in train/evaluation mode
-    EVALUATE = False
-    N_TRAIN_MAPS = 1
+    EVALUATE: bool = False
+    N_TRAIN_MAPS: int = 1
 
     @property
     def MODEL(self):
@@ -35,46 +38,46 @@ class RLlib:
 
     @TRAIN_BATCH_SIZE.setter
     def TRAIN_BATCH_SIZE(self, value):
-        self._TRAIN_BATCH_SIZE =  value
+        self._TRAIN_BATCH_SIZE = value
 
     # Checkpointing. Resume will load the latest trial, e.g. to continue training
     # Restore (overrides resume) will force load a specific checkpoint (e.g. for rendering)
-    EXPERIMENT_DIR = 'experiments'
-    RESUME = False
+    EXPERIMENT_DIR: str = 'experiments'
+    RESUME: bool = False
 
-    RESTORE = False
-    RESTORE_ID = 'Baseline'  # Experiment name suffix
-    RESTORE_CHECKPOINT = 1000
+    RESTORE: bool = False
+    RESTORE_ID: str = 'Baseline'  # Experiment name suffix
+    RESTORE_CHECKPOINT: int = 1000
 
     # Policy specification
-    EVAL_AGENTS = [marlben.Agent]
-    AGENTS = [marlben.Agent]
-    TASKS = []
+    EVAL_AGENTS: list = field(default_factory=lambda: [marlben.Agent])
+    AGENTS: list = field(default_factory=lambda: [marlben.Agent])
+    TASKS: list = field(default_factory=lambda: [])
 
     # Hardware and debug
-    NUM_GPUS_PER_WORKER = 0
-    LOCAL_MODE = False
-    LOG_LEVEL = 1
+    NUM_GPUS_PER_WORKER: int = 0
+    LOCAL_MODE: bool = False
+    LOG_LEVEL: int = 1
 
     # Training and evaluation settings
-    EVALUATION_INTERVAL = 1
-    EVALUATION_PARALLEL = False
-    TRAINING_ITERATIONS = 1000
-    KEEP_CHECKPOINTS_NUM = 3
-    CHECKPOINT_FREQ = 1
-    LSTM_BPTT_HORIZON = 16
-    NUM_SGD_ITER = 1
+    EVALUATION_INTERVAL: int = 1
+    EVALUATION_PARALLEL: bool = False
+    TRAINING_ITERATIONS: int = 1000
+    KEEP_CHECKPOINTS_NUM: int = 3
+    CHECKPOINT_FREQ: int = 1
+    LSTM_BPTT_HORIZON: int = 16
+    NUM_SGD_ITER: int = 1
 
     # Model
     SCRIPTED = None
-    N_AGENT_OBS = 100
-    NPOLICIES = 1
-    HIDDEN = 64
-    EMBED = 64
+    N_AGENT_OBS: int = 100
+    NPOLICIES: int = 1
+    HIDDEN: int = 64
+    EMBED: int = 64
 
     # Reward
-    COOPERATIVE = False
-    TEAM_SPIRIT = 0.0
+    COOPERATIVE: bool = False
+    TEAM_SPIRIT: float = 0.0
 
 
 class Small(RLlib, marlben.config.Small):
@@ -84,14 +87,15 @@ class Small(RLlib, marlben.config.Small):
    64 x 64 maps (excluding the border), and 128 timestep horizons'''
 
     # Memory/Batch Scale
-    ROLLOUT_FRAGMENT_LENGTH = 128
-    SGD_MINIBATCH_SIZE = 128
+    ROLLOUT_FRAGMENT_LENGTH: int = 128
+    SGD_MINIBATCH_SIZE: int = 128
 
     # Horizon
-    TRAIN_HORIZON = 128
-    EVALUATION_HORIZON = 128
+    TRAIN_HORIZON: int = 128
+    EVALUATION_HORIZON: int = 128
 
 
+@dataclass
 class Medium(RLlib, marlben.config.Medium):
     '''Medium scale Neural MMO training setting
 
@@ -99,24 +103,26 @@ class Medium(RLlib, marlben.config.Medium):
    128 x 128 maps (excluding the border), and 1024 timestep horizons'''
 
     # Memory/Batch Scale
-    ROLLOUT_FRAGMENT_LENGTH = 256
-    SGD_MINIBATCH_SIZE = 128
+    ROLLOUT_FRAGMENT_LENGTH: int = 256
+    SGD_MINIBATCH_SIZE: int = 128
 
     # Horizon
-    TRAIN_HORIZON = 1024
-    EVALUATION_HORIZON = 1024
+    TRAIN_HORIZON: int = 1024
+    EVALUATION_HORIZON: int = 1024
 
 
+@dataclass
 class Large(RLlib, marlben.config.Large):
-    '''Large scale Neural MMO training setting
+    """Large scale Neural MMO training setting
 
-   Features up to 2048 concurrent agents and 1024 concurrent NPCs,
-   1024 x 1024 maps (excluding the border), and 8192 timestep horizons'''
+    Features up to 2048 concurrent agents and 1024 concurrent NPCs,
+    1024 x 1024 maps (excluding the border), and 8192 timestep horizons
+    """
 
     # Memory/Batch Scale
-    ROLLOUT_FRAGMENT_LENGTH = 32
-    SGD_MINIBATCH_SIZE = 128
+    ROLLOUT_FRAGMENT_LENGTH: int = 32
+    SGD_MINIBATCH_SIZE: int = 128
 
     # Horizon
-    TRAIN_HORIZON = 8192
-    EVALUATION_HORIZON = 8192
+    TRAIN_HORIZON: int = 8192
+    EVALUATION_HORIZON: int = 8192

@@ -71,9 +71,9 @@ def test_occlusion():
     for tile in resource_tiles:
         for player in players:
             dx, dy = base_coord + tile.pos[0] - player.pos[0], base_coord + tile.pos[1] - player.pos[1]
-            if not (0 <= dx < env.config.WINDOW and 0 <= dy < env.config.WINDOW):
+            if not (0 <= dx < env.config.WINDOW() and 0 <= dy < env.config.WINDOW()):
                 continue
             if tile.visibility_color in player.visible_colors:
-                assert obs[player.entID]["Tile"]["Discrete"][dx * env.config.WINDOW + dy][0] in ((1, 3) if tile.mat in (Water, BalancedWater) else (4, 3))
+                assert obs[player.entID]["Tile"]["Discrete"][dx * env.config.WINDOW() + dy][0] in ((1, 3) if tile.mat in (Water, BalancedWater) else (4, 3))
             else:
-                assert obs[player.entID]["Tile"]["Discrete"][dx * env.config.WINDOW + dy][0] == 5
+                assert obs[player.entID]["Tile"]["Discrete"][dx * env.config.WINDOW() + dy][0] == 5

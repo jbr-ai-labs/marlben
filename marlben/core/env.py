@@ -34,6 +34,7 @@ class Env(ParallelEnv):
 
         if __debug__:
             err = 'Config {} is not a config instance (did you pass the class?)'
+            print(config)
             assert isinstance(config, marlben.config.Config), err.format(config)
 
         for entity_group in config.PLAYER_GROUPS:
@@ -161,9 +162,9 @@ class Env(ParallelEnv):
         self.realm.reset(idx)
 
         if step:
-            self.obs, _, _, _ = self.step({})
+            self.obs, _, _, infos = self.step({})
 
-        return self.obs
+        return self.obs, infos
 
     def close(self):
         if self.client is not None:

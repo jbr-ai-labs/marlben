@@ -1,21 +1,23 @@
 from collections import defaultdict
 
 import numpy as np
-from ray.rllib.agents.callbacks import DefaultCallbacks
 from ray.rllib import MultiAgentEnv
-from ray.rllib.agents.ppo.ppo import PPOTrainer
-from ray.rllib.agents.ppo.appo import APPOTrainer
-from ray.rllib.agents.impala.impala import ImpalaTrainer
+from ray.rllib.algorithms.callbacks import DefaultCallbacks
+from ray.rllib.algorithms.ppo import PPOConfig, PPO
+from ray.rllib.algorithms.appo import APPOConfig, APPO
+from ray.rllib.algorithms.impala import ImpalaConfig, Impala
 from tqdm import tqdm
 
 import marlben
+from marlben.lib import log
 
 
 class RLlibEnv(marlben.Env, MultiAgentEnv):
     """Wrapper class for using Neural MMO with RLlib"""
 
     def __init__(self, config):
-        self.config = config['config']
+        self.config = config["config"]
+        print(self.config, '----------')
         super().__init__(self.config)
 
     def render(self):
@@ -54,11 +56,32 @@ class RLlibEnv(marlben.Env, MultiAgentEnv):
             horizon = config.TRAIN_HORIZON
 
         hit_horizon = self.realm.tick >= horizon
+        truncated = {'__all__': False}
 
         if (hit_horizon or len(self.realm.players()) == 0):
             dones['__all__'] = True
+            truncated['__all___'] = True
 
-        return obs, rewards, dones, infos
+        return obs, rewards, dones, truncated, infos
+
+    def reset(self, seed=None, options=None, idx=None, step=True):
+        self.has_reset = True
+
+        self.actions = {}
+        self.dead = []
+
+        self.quill = log.Quill()
+
+        if idx is None:
+            idx = np.random.randint(self.config.NMAPS) + 1
+
+        self.worldIdx = idx
+        self.realm.reset(idx)
+
+        if step:
+            self.obs, _, _, _, infos = self.step({})
+
+        return self.obs, infos
 
 
 class RLlibOverlayRegistry(marlben.OverlayRegistry):
@@ -189,7 +212,6 @@ class EntityValues(GlobalValues):
 class Trainer:
     def __init__(self, config, env=None, logger_creator=None):
         super().__init__(config, env, logger_creator)
-        self.env_config = config['env_config']['config']
 
     @classmethod
     def name(cls):
@@ -209,23 +231,24 @@ class Trainer:
         return super().evaluate()
 
 
-def PPO(config):
-    class PPO(Trainer, PPOTrainer): pass
+def PPOCustom(config):
+    class PPOCustom(Trainer, PPO): pass
 
-    extra_config = {'sgd_minibatch_size': config.SGD_MINIBATCH_SIZE}
-    return PPO, extra_config
-
-
-def APPO(config):
-    class APPO(Trainer, APPOTrainer): pass
-
-    return APPO, {}
+    ppoConfig = PPOConfig()
+    ppoConfig.sgd_minibatch_size = config.SGD_MINIBATCH_SIZE
+    return PPOCustom, ppoConfig
 
 
-def Impala(config):
-    class Impala(Trainer, ImpalaTrainer): pass
+def APPOCustom(config):
+    class APPOCustom(Trainer, APPO): pass
 
-    return Impala, {}
+    return APPOCustom, APPOConfig()
+
+
+def ImpalaCustom(config):
+    class ImpalaCustom(Trainer, Impala): pass
+
+    return ImpalaCustom, ImpalaConfig
 
 
 ###############################################################################
@@ -244,7 +267,6 @@ class RLlibLogCallbacks(DefaultCallbacks):
             # Per-population metrics
             for policy_id, v in zip(policy_ids, vals):
                 policy_stat[policy_id].append(v)
-
 
             for policy_id, vals in policy_stat.items():
                 k = f'{policy_id}_{key}'

@@ -24,7 +24,7 @@ class Observation:
         Returns:
          Vector corresponding to the specified tile
         """
-        return self.tiles[self.config.WINDOW * (self.delta + rDelta) + self.delta + cDelta]
+        return self.tiles[self.config.WINDOW() * (self.delta + rDelta) + self.delta + cDelta]
 
     @property
     def agent(self):

@@ -191,7 +191,7 @@ class Serialized(metaclass=utils.IterableNameComparable):
     class Tile(metaclass=utils.IterableNameComparable):
         @staticmethod
         def N(config):
-            return config.WINDOW**2
+            return config.WINDOW()**2
 
         class NEnts(Continuous):
             def init(self, config):

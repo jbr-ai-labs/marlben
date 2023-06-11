@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Callable
 from os import path as osp
 
@@ -96,6 +97,7 @@ def process_agents(player_groups):
     return agents
 
 
+@dataclass
 class ScriptedCorridorConfig(BaseCorridorConfig):
     PLAYER_GROUPS = create_group_config(agents=[CorridorAgent, CorridorAgent])
     AGENTS = process_agents(PLAYER_GROUPS)
@@ -106,6 +108,7 @@ class OneNeuralCorridorConfig(BaseCorridorConfig):
     AGENTS = process_agents(PLAYER_GROUPS)
 
 
+@dataclass
 class CorridorConfig(BaseCorridorConfig):
     PLAYER_GROUPS = create_group_config(agents=[Agent, Agent])
     AGENTS = process_agents(PLAYER_GROUPS)

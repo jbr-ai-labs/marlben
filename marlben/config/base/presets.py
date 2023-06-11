@@ -1,7 +1,10 @@
+from dataclasses import dataclass, field
+
 from marlben.config.base.config import Config
 from marlben.core.spawn.spawn_system import skill_samplers
 from .config import NPCGroupConfig, PlayerGroupConfig
 from ... import Agent
+from ...core.spawn.spawn_system.skill_samplers import SkillsSampler
 
 
 class SmallNPCGroupConfig(NPCGroupConfig):
@@ -14,29 +17,33 @@ class SmallPlayerGroupConfig(PlayerGroupConfig):
     AGENTS = [Agent]
 
 
+@dataclass
 class Small(Config):
     '''A small config for debugging and experiments with an expensive outer loop'''
 
-    PATH_MAPS = 'maps/small'
-    MAP_PREVIEW_DOWNSCALE = 4
+    PATH_MAPS: str = 'maps/small'
+    MAP_PREVIEW_DOWNSCALE: int = 4
 
-    TERRAIN_LOG_INTERPOLATE_MIN = 0
+    TERRAIN_LOG_INTERPOLATE_MIN: int = 0
 
-    TERRAIN_CENTER = 8  # 4
-    MAP_HEIGHT = 4
-    MAP_WIDTH = 4
-    PLAYER_GROUPS = [SmallPlayerGroupConfig(), SmallPlayerGroupConfig()]
+    TERRAIN_CENTER: int = 8  # 4
+    MAP_HEIGHT: int = 4
+    MAP_WIDTH: int = 4
+    PLAYER_GROUPS: list = field(default_factory=lambda: [SmallPlayerGroupConfig(), SmallPlayerGroupConfig()])
 
 
+@dataclass
 class MediumNPCGroupConfig(NPCGroupConfig):
-    NENT = 128
-    SPAWN_SKILLS_SAMPLER = skill_samplers.DefaultNPCSkillSampler(1, 30, 5)
+    NENT: int = 128
+    SPAWN_SKILLS_SAMPLER: SkillsSampler = skill_samplers.DefaultNPCSkillSampler(1, 30, 5)
 
 
+@dataclass
 class MediumPlayerGroupConfig(PlayerGroupConfig):
-    NENT = 256
+    NENT: int = 256
 
 
+@dataclass
 class Medium(Config):
     '''A medium config suitable for most academic-scale research'''
 
@@ -51,15 +58,18 @@ class Medium(Config):
     NPC_GROUPS = [MediumNPCGroupConfig()]
 
 
+@dataclass
 class LargeNPCGroupConfig(NPCGroupConfig):
     NENT = 1024
     SPAWN_SKILLS_SAMPLER = skill_samplers.DefaultNPCSkillSampler(1, 99, 10)
 
 
+@dataclass
 class LargePlayerGroupConfig(PlayerGroupConfig):
     NENT = 2048
 
 
+@dataclass
 class Large(Config):
     '''A large config suitable for large-scale research or fast models'''
 

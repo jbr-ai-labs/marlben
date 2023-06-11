@@ -1,6 +1,6 @@
 import ray
 
-from marlben.config import Planting
+from marlben.config import Planting, Config
 from marlben.envs import Corridor, BossFight, GatheringBuilding, GatheringExclusive, GatheringObscuredAndExclusive, \
     GatheringObscured
 from marlben.envs.arena.env import Arena
@@ -35,7 +35,9 @@ env_factory = {
 
 for key in env_factory.keys():
     class CustomEnv(env_factory[key], RLlibEnv):
-        pass
+        def __init__(self, config):
+            super().__init__(config)
+
     ray.tune.registry.register_env(key, lambda config: CustomEnv(config))
 
 ray.tune.registry.register_env('base', lambda config: RLlibEnv(config))

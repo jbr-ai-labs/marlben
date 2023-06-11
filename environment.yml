@@ -6,12 +6,12 @@ dependencies:
   -  pip:
        - pettingzoo~=1.14.0
        - torch==1.11.0
-       - ray[rllib]~=1.13.0
+       - ray[rllib]~=2.5.0
        - vec_noise~=1.1.4
        - numpy~=1.24.3
        - tqdm~=4.61.1
        - scipy~=1.8.0
-       - gymnasium~=0.28.1
+       - gymnasium~=0.26.3
        - imageio~=2.8.0
        - Twisted~=19.2.0
        - autobahn~=19.3.3

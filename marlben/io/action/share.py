@@ -50,7 +50,6 @@ class ResourceAmount(Node):
 
     @classmethod
     def N(cls, config):
-        # return config.WINDOW ** 2
         return config.N_AGENT_OBS
 
     def args(stim, entity, config):
