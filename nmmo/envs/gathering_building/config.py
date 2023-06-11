@@ -8,8 +8,8 @@ PATH_TO_CUSTOM_MAPS = osp.dirname(__file__)
 
 
 class BuildingGatheringConfig(GatheringConfig, Building):
-    def __init__(self, n_groups, agents_per_group):
-        super().__init__(n_groups, agents_per_group)
+    def __init__(self, n_groups, agents_per_group, tiles_per_agent=32, adjust_resource_amount=False):
+        super().__init__(n_groups, agents_per_group, tiles_per_agent, adjust_resource_amount)
         self.PATH_MAPS = f'maps/gathering_building_{self.MAP_WIDTH}x{self.MAP_HEIGHT}'
 
 

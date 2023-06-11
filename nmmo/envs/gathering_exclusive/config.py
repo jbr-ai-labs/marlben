@@ -3,8 +3,8 @@ from nmmo.envs import GatheringConfig
 
 class ExclusiveGatheringConfig(GatheringConfig):
 
-    def __init__(self, n_groups, agents_per_group):
-        super().__init__(n_groups, agents_per_group)
+    def __init__(self, n_groups, agents_per_group, tiles_per_agent=32, adjust_resource_amount=False):
+        super().__init__(n_groups, agents_per_group, tiles_per_agent, adjust_resource_amount)
         self.RESOURCE_COOLDOWN = 4
         self.RESOURCE_BASE_RESOURCE = 40
         self.RESOURCE_HARVEST_RESTORE_FRACTION = (self.RESOURCE_COOLDOWN / self.RESOURCE_BASE_RESOURCE)**0.5
