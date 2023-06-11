@@ -1,6 +1,3 @@
-from pdb import set_trace as T
-
-
 class Material:
     harvestable = False
     capacity = 1
