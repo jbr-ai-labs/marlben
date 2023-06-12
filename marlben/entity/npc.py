@@ -8,7 +8,9 @@ from marlben.entity import entity
 from marlben.systems import combat, equipment, ai, combat, skill
 from marlben.lib.colors import Neon
 
-
+"""
+Represents NPC on the map with a specified spawn place and set of actions
+"""
 class NPC(entity.Entity):
     def __init__(self, realm, pos, iden, name, color, pop, skills):
         super().__init__(realm, pos, iden, name, color, pop, skills)
