@@ -7,6 +7,10 @@ from marlben.io import action
 import copy
 from .utils import build_map_generator
 
+"""
+A set of testcases for planting system
+"""
+
 map = [
     [[2, 0, 0], [2, 0, 0]]
 ]
@@ -55,6 +59,7 @@ def test_plant_and_wait():
 
     last_r, last_c = player1.history.lastPos
 
+    # Check that forest appeared and resource were spend
     assert env.realm.map.tiles[last_r, last_c].state == marlben.lib.material.ScrubImpassible
     assert env.realm.map.tiles[last_r, last_c].mat == marlben.lib.material.BalancedForest
     assert abs(food_before - food_after - TestCfg.PLANTING_COST) < 1e-8
@@ -86,6 +91,7 @@ def test_plant_two_times():
 
     last_r, last_c = player1.history.lastPos
 
+    # Check that forest appeared and resource were spend
     assert env.realm.map.tiles[last_r, last_c].state == marlben.lib.material.ScrubImpassible
     assert env.realm.map.tiles[last_r, last_c].mat == marlben.lib.material.BalancedForest
 
@@ -132,5 +138,6 @@ def test_plant_expensive():
 
     last_r, last_c = player1.history.lastPos
 
+    # Check that forest is not appeared as agent don't have enough resources
     assert env.realm.map.tiles[last_r, last_c].mat != marlben.lib.material.BalancedForest
     assert abs(food_before - food_after) < 1e-8

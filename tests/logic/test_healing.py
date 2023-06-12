@@ -5,6 +5,13 @@ from marlben.io import action
 import copy
 from .utils import build_map_generator
 
+"""
+A testcase for healing logic
+"""
+
+
+# Configuring a toy env
+
 map = [
     [[2, 0, 0], [2, 0, 0]]
 ]
@@ -29,6 +36,7 @@ class TestCfg(Config, Combat):
 
 
 def test_healing():
+    # Creating toy env
     env = Env(TestCfg())
     env.reset()
     obs, _, _, _ = env.step({})
@@ -39,6 +47,7 @@ def test_healing():
     player2 = list(env.realm.entity_group_manager.player_groups[1].entities.values())[0]
     h2 = copy.deepcopy(player2.resources.health.val)
 
+    # Making attack and heal actions
     attack_action = {player1.entID: {action.Attack: {
         action.Target: 1,
         action.Style: action.Melee.index
@@ -49,9 +58,11 @@ def test_healing():
         action.Style: action.Heal.index
     }}}
 
+    # Check that after attack health of other agent is dropped
     env.step(attack_action)
     assert player2.resources.health.val < h2
 
+    # Check that after healing health of other agent is restored
     for _ in range(4):
         env.step(heal_action)
     assert player2.resources.health.val == h2

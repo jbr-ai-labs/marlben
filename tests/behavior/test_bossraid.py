@@ -6,6 +6,13 @@ from marlben.envs.raid import Raid, BossRaidConfig
 from scripted.environments.bossfight import BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent
 from scripted.baselines import Combat
 
+"""
+A set of testcases for Raid environment.
+Each test checks that outcome with scripted policies are within given boundaries.
+It's expected that with increasing number of agents it requires more coordination between agents and 
+therefore scripted agents struggle to defeat the boss.
+"""
+
 
 class ScriptedBossRaidConfig(BossRaidConfig):
     def __init__(self, tank_agent, fighter_agent, healer_agent, n_tanks=2, n_fighters=2, n_healers=2):
@@ -96,8 +103,8 @@ def test_boss_raid_scripted_large():
 def test_boss_raid_scripted_huge():
     random.seed(0)
     np.random.seed(0)
-    env = BossRaid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
-                                          n_tanks=6, n_fighters=6, n_healers=6))
+    env = Raid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
+                                      n_tanks=6, n_fighters=6, n_healers=6))
     obs = env.reset()
     timesteps = 500
     done = False
