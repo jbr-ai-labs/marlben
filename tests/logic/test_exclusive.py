@@ -7,6 +7,11 @@ from marlben.io.action import North, South
 from marlben.scripting import Observation
 from .utils import build_map_generator
 
+"""
+A set of testcases for accessibility system
+"""
+
+# Configuring a toy environment
 
 map = [
     [[4, 0, 1], [5, 0, 0], [5, 0, 0], [1, 0, 2]],
@@ -57,6 +62,8 @@ def test_exclusive():
     cfg = TestCfg()
     env = Env(cfg)
     env.reset()
+
+    # Make idle steps so that agents can collect available resources
     for _ in range(2):
         obs, _, _, _ = env.step({})
 
@@ -65,6 +72,7 @@ def test_exclusive():
     player1 = list(env.realm.entity_group_manager.player_groups[0].entities.values())[0]
     player2 = list(env.realm.entity_group_manager.player_groups[1].entities.values())[0]
 
+    # Check that accessibility colors set correctly
     assert len(player1.accessible_colors) == 2 and 0 in player1.accessible_colors and 1 in player1.accessible_colors
     assert len(player2.accessible_colors) == 2 and 0 in player2.accessible_colors and 2 in player2.accessible_colors
 

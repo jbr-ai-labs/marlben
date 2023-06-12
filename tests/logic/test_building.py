@@ -6,9 +6,15 @@ from marlben.core.spawn.spawn_system.position_samplers import PositionSampler
 from marlben.io import action
 from .utils import build_map_generator
 
+"""
+A set of testcases for Building system
+"""
+
 map = [
     [[2, 0, 0], [2, 0, 0]]
 ]
+
+# Configuration of toy testing env
 
 class FixedPositionSampler(PositionSampler):
     def get_next(self):
@@ -40,8 +46,10 @@ def test_building():
 
     assert len(obs) == 1
 
+    # Get player from the environment
     player1 = list(env.realm.entity_group_manager.player_groups[0].entities.values())[0]
 
+    # Apply move and build actions
     move_action = {player1.entID: {action.Move: {
         action.Direction: (action.East.index if player1.pos[0] == env.config.TERRAIN_BORDER else action.West.index)
     }}}
@@ -52,7 +60,7 @@ def test_building():
     env.step(move_action)
     env.step(build_action)
 
-
+    # Check if unpassable tile appeared
     last_r, last_c = player1.history.lastPos
     check = env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER].impassible
     check = check or env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER + 1].impassible
@@ -61,6 +69,7 @@ def test_building():
 
     assert env.realm.map.tiles[last_r, last_c].mat == marlben.lib.material.Stone
 
+    # Make move and build action
     move_action = {player1.entID: {action.Move: {
         action.Direction: (action.East.index if player1.pos[0] == env.config.TERRAIN_BORDER else action.West.index)
     }}}
@@ -70,9 +79,13 @@ def test_building():
 
     env.step(move_action)
 
+    # Check that tile that agent built previously is unpassable
+
     assert player1.pos == player1.history.lastPos
 
     env.step(build_action)
+
+    # Check that agent can't place unpassable tile when staying in the same position
 
     last_r, last_c = player1.history.lastPos
     check = env.realm.map.tiles[env.config.TERRAIN_BORDER, env.config.TERRAIN_BORDER].impassible

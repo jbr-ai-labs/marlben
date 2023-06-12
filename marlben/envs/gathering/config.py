@@ -54,11 +54,14 @@ class BaseGatheringConfig(Resource, Config):
     RESOURCE_BASE_RESOURCE = 32
     RESOURCE_HARVEST_RESTORE_FRACTION = 1 / RESOURCE_COOLDOWN  # FIXME: Higher cooldown means less resource restoration?
     
-    def __init__(self, n_groups, agents_per_group):
+    def __init__(self, n_groups, agents_per_group, tiles_per_agent=32, adjust_resource_amount=False):
         super().__init__()
         assert n_groups > 0 and agents_per_group > 0
         total_agents = n_groups * agents_per_group
-        map_size = math.ceil((total_agents * 32)**0.5 / 4) * 4  # Round up. Should be divisible by 4
+        map_size = math.ceil((total_agents * tiles_per_agent)**0.5 / 4) * 4  # Round up. Should be divisible by 4
+        if adjust_resource_amount:
+            # For some environments, it's important to give agent more time to reach resources
+            self.RESOURCE_BASE_RESOURCE = 2 * map_size
         self.MAP_WIDTH = map_size
         self.MAP_HEIGHT = map_size
         self.TERRAIN_CENTER = map_size
@@ -69,9 +72,9 @@ class GatheringConfig(BaseGatheringConfig):
     NMAPS = 1
     PLAYER_GROUP_CONFIG = GatheringPlayerGroup
 
-    def __init__(self, n_groups, agents_per_group):
+    def __init__(self, n_groups, agents_per_group, tiles_per_agent=32, adjust_resource_amount=False):
         # FIXME: You should not create multiple player groups with the same preset agent
-        super().__init__(n_groups, agents_per_group)
+        super().__init__(n_groups, agents_per_group, tiles_per_agent, adjust_resource_amount)
         self.PLAYER_GROUPS = [self.PLAYER_GROUP_CONFIG(agents_per_group, agents=[Agent]) for _ in range(n_groups)]
         self.AGENTS = process_agents(self.PLAYER_GROUPS)
 

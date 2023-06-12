@@ -5,6 +5,12 @@ from marlben.lib import material
 from scripted.environments.gathering import ObscuredAndExclusiveGatheringAgent
 import numpy as np
 
+"""
+A set of testcases for Colors environment.
+Each test checks that outcome with scripted policies are within given boundaries.
+It's expected that with increasing number of agents it becomes harder to find and collect resources.
+"""
+
 
 class ExclusiveGatheringScriptedConfig(ExclusiveGatheringConfig):
     def __init__(self, n_groups, agents_per_group):

@@ -24,6 +24,7 @@ def test_boss_fight_simple():
         timesteps -= 1
         done = done or len(env.realm.entity_group_manager.npc_groups[0].entities) == 0
         done = done or sum(len(pg.entities) for pg in env.realm.entity_group_manager.player_groups) == 0
+    # Check that Boss survived when agents use default NMMO Combat policy
     assert len(env.realm.entity_group_manager.npc_groups[0].entities) > 0
 
 
@@ -39,9 +40,11 @@ def test_boss_fight_scripted():
         timesteps -= 1
         done = done or len(env.realm.entity_group_manager.npc_groups[0].entities) == 0
         done = done or sum(len(pg.entities) for pg in env.realm.entity_group_manager.player_groups) == 0
+    # Check that environment not run out of time
     assert timesteps > 0
     boss_fight_condition = len(env.realm.entity_group_manager.npc_groups[0].entities) == 0
     if not boss_fight_condition:
         boss = env.realm.entity_group_manager.npc_groups[0].entities[-1]
         boss_fight_condition = (boss.resources.health.val / boss.resources.health.max) < 0.35
+    # Check that boss either dead or severely damaged
     assert boss_fight_condition

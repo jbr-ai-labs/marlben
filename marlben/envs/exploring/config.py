@@ -2,8 +2,8 @@ from marlben.envs import GatheringConfig
 
 
 class ObscuredAndExclusiveGatheringConfig(GatheringConfig):
-    def __init__(self, n_groups, agents_per_group):
-        super().__init__(n_groups, agents_per_group)
+    def __init__(self, n_groups, agents_per_group, tiles_per_agent=32, adjust_resource_amount=False):
+        super().__init__(n_groups, agents_per_group, tiles_per_agent, adjust_resource_amount)
         self.NUM_ACCESSIBILITY_COLORS = n_groups
         self.NUM_VISIBILITY_COLORS = n_groups
         self.RESOURCE_HARVEST_RESTORE_FRACTION = 1. - 1 / self.RESOURCE_COOLDOWN

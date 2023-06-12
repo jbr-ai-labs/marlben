@@ -6,6 +6,11 @@ import numpy as np
 
 from .test_colors import _get_lifetimes_and_survivors
 
+"""
+A set of testcases for Spying environment.
+Each test checks that outcome with scripted policies are within given boundaries.
+It's expected that with increasing number of agents it becomes harder to find and collect resources.
+"""
 
 class ObscuredGatheringScriptedConfig(ObscuredGatheringConfig):
     def __init__(self, n_groups, agents_per_group):
