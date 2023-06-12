@@ -1,8 +1,8 @@
-from nmmo import Env, Agent
-from nmmo.config.base.config import Config, PlayerGroupConfig
-from nmmo.config.systems.config import Sharing
-from nmmo.core.spawn.spawn_system.position_samplers import PositionSampler
-from nmmo.io import action
+from marlben import Env, Agent
+from marlben.config.base.config import Config, PlayerGroupConfig
+from marlben.config.systems.config import Sharing
+from marlben.core.spawn.spawn_system.position_samplers import PositionSampler
+from marlben.io import action
 from .utils import build_map_generator
 
 map = [

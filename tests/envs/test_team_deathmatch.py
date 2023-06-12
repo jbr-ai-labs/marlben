@@ -1,5 +1,5 @@
-from nmmo.envs.team_deathmatch.config import TeamDeathmatchConfig
-from nmmo.envs.team_deathmatch.env import TeamDeathmatch
+from marlben.envs import TeamDeathmatchConfig
+from marlben.envs import TeamDeathmatch
 from tests.envs.utils import _test_create_with_config_class, _test_interact_with_config_class
 
 

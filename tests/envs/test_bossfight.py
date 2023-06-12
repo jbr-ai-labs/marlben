@@ -1,5 +1,5 @@
 from .utils import create_env, random_interaction
-from nmmo.envs.boss_fight.env import BossFight, BossFightConfig
+from marlben.envs.boss_fight.env import BossFight, BossFightConfig
 
 
 def test_bossfight_env_create():

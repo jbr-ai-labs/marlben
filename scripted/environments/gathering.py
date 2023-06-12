@@ -3,12 +3,12 @@ import random
 
 import numpy as np
 
-import nmmo
-from nmmo.lib import material
-from scripted import move
+import marlben
+from marlben.lib import material
+from scripted import move, attack
 from scripted.baselines import Scripted
-from nmmo.io.action import Move, Direction, East, West, South, North
-
+from marlben.io.action import Move, Direction, East, West, South, North
+from marlben import scripting
 
 class GatheringAgent(Scripted):
     name = 'GatheringAgent_'
@@ -36,15 +36,24 @@ class GatheringAgent(Scripted):
 
     def gather_actions(self):
         agent = self.ob.agent
-        Entity = nmmo.Serialized.Entity
+        Entity = marlben.Serialized.Entity
 
-        r = nmmo.scripting.Observation.attribute(agent, Entity.R)
-        c = nmmo.scripting.Observation.attribute(agent, Entity.C)
+        r = marlben.scripting.Observation.attribute(agent, Entity.R)
+        c = marlben.scripting.Observation.attribute(agent, Entity.C)
         self._manage_direction(r, c)
         direction = move.towards(self._direction)
-        self.actions[nmmo.action.Move] = {nmmo.action.Direction: direction}
+        self.actions[marlben.action.Move] = {marlben.action.Direction: direction}
         return self.actions
 
+    def attack_actions(self, npc_only=True):
+        self.scan_agents(npc_only=npc_only)
+        if self.closest is not None:
+            self.target = self.closest
+            self.targetID = self.closestID
+            self.targetDist = self.closestDist
+        self.style = marlben.action.Melee
+        self.attack()
+        return self.actions
 
     def __call__(self, obs):
         super().__call__(obs)
@@ -63,8 +72,8 @@ class GatheringBuildingAgent(GatheringAgent):
 
     def build_actions(self):
         agent = self.ob.agent
-        Entity = nmmo.Serialized.Entity
-        r = nmmo.scripting.Observation.attribute(agent, Entity.R)
+        Entity = marlben.Serialized.Entity
+        r = marlben.scripting.Observation.attribute(agent, Entity.R)
         building = self._need_building
 
         if self._building_target_num < len(self._building_targets):
@@ -81,8 +90,8 @@ class GatheringBuildingAgent(GatheringAgent):
 
         self._need_building = self._building_target_num > 0
 
-        self.actions[nmmo.action.Move] = {nmmo.action.Direction: direction}
-        self.actions[nmmo.action.Build] = {nmmo.action.BuildDecision: building}
+        self.actions[marlben.action.Move] = {marlben.action.Direction: direction}
+        self.actions[marlben.action.Build] = {marlben.action.BuildDecision: building}
 
         self._building_finished = self._building_target_num > 1
 
@@ -144,14 +153,14 @@ class ObscuredAndExclusiveGatheringAgent(Scripted):
             if self.resource_cooldowns[key] <= 0:
                 self.resource_cooldowns.pop(key)
 
-        Tile = nmmo.Serialized.Tile
+        Tile = marlben.Serialized.Tile
         for tile in self.ob.tiles:
-            coords = (round(nmmo.scripting.Observation.attribute(tile, Tile.R)),
-                      round(nmmo.scripting.Observation.attribute(tile, Tile.C)))
+            coords = (round(marlben.scripting.Observation.attribute(tile, Tile.R)),
+                      round(marlben.scripting.Observation.attribute(tile, Tile.C)))
             if coords in self.unexplored:
                 self.unexplored.discard(coords)
 
-            if nmmo.scripting.Observation.attribute(tile, Tile.Index) != material.Grass.index:
+            if marlben.scripting.Observation.attribute(tile, Tile.Index) != material.Grass.index:
                 self.unvisited.discard(coords)
 
         coords = (self.currR, self.currC)
@@ -185,8 +194,8 @@ class ObscuredAndExclusiveGatheringAgent(Scripted):
         return self.actions
 
     def _validate_movement_action(self):
-        Tile = nmmo.Serialized.Tile
-        Observation = nmmo.scripting.Observation
+        Tile = marlben.Serialized.Tile
+        Observation = marlben.scripting.Observation
         if self.actions[Move][Direction] == North and Observation.attribute(self.ob.tile(-1, 0), Tile.Index) == material.Lava.index:
             return False
         if self.actions[Move][Direction] == South and Observation.attribute(self.ob.tile(+1, 0), Tile.Index) == material.Lava.index:
@@ -219,12 +228,12 @@ class ObscuredAndExclusiveGatheringAgent(Scripted):
         self.prev_adjacent_tiles = (adjacent_tiles, (self.currR, self.currC))
 
         # If tile with resource is appeared to be private
-        Tile = nmmo.Serialized.Tile
+        Tile = marlben.Serialized.Tile
         if self.food_prev is not None and self.water_prev is not None:
             for tile_pos in self.doubtful_food_sources:
                 tile = self.ob.tile(tile_pos[0] - self.currR, tile_pos[1] - self.currC)
                 dst = abs(tile_pos[0] - self.currR) + abs(tile_pos[1] - self.currC)
-                tile_type = round(nmmo.scripting.Observation.attribute(tile, Tile.Index))
+                tile_type = round(marlben.scripting.Observation.attribute(tile, Tile.Index))
                 if tile_type in (material.Forest.index, material.BalancedForest.index) and self.food < self.food_prev and dst <= 1:
                     if tile_pos in self.known_food_sources:
                         self.known_food_sources.discard(tile_pos)
@@ -233,7 +242,7 @@ class ObscuredAndExclusiveGatheringAgent(Scripted):
             for tile_pos in self.doubtful_water_sources:
                 tile = self.ob.tile(tile_pos[0] - self.currR, tile_pos[1] - self.currC)
                 dst = abs(tile_pos[0] - self.currR) + abs(tile_pos[1] - self.currC)
-                tile_type = round(nmmo.scripting.Observation.attribute(tile, Tile.Index))
+                tile_type = round(marlben.scripting.Observation.attribute(tile, Tile.Index))
                 if tile_type in (material.Water.index, material.BalancedWater.index) and self.water < self.water_prev and dst <= 1:
                     if tile_pos in self.known_water_sources:
                         self.known_water_sources.discard(tile_pos)
@@ -244,7 +253,7 @@ class ObscuredAndExclusiveGatheringAgent(Scripted):
 
             for tile_pos in adjacent_tiles:
                 tile = self.ob.tile(tile_pos[0] - self.currR, tile_pos[1] - self.currC)
-                tile_type = round(nmmo.scripting.Observation.attribute(tile, Tile.Index))
+                tile_type = round(marlben.scripting.Observation.attribute(tile, Tile.Index))
 
                 if tile_type in (material.Water.index, material.BalancedWater.index) and self.water < self.water_prev:
                     self.doubtful_water_sources.add(tile_pos)
@@ -254,9 +263,9 @@ class ObscuredAndExclusiveGatheringAgent(Scripted):
 
         # If see not obscured resource tile with unknown privacy
         for tile in self.ob.tiles:
-            coords = (round(nmmo.scripting.Observation.attribute(tile, Tile.R)),
-                      round(nmmo.scripting.Observation.attribute(tile, Tile.C)))
-            tile_type = round(nmmo.scripting.Observation.attribute(tile, Tile.Index))
+            coords = (round(marlben.scripting.Observation.attribute(tile, Tile.R)),
+                      round(marlben.scripting.Observation.attribute(tile, Tile.C)))
+            tile_type = round(marlben.scripting.Observation.attribute(tile, Tile.Index))
             if tile_type in (material.Forest.index, material.BalancedForest.index) and coords not in self.forbidden_food_sources:
                 self.known_food_sources.add(coords)
             if tile_type in (material.Water.index, material.BalancedWater.index) and coords not in self.forbidden_water_sources:
@@ -289,3 +298,82 @@ class ObscuredAndExclusiveGatheringAgent(Scripted):
             target_source = any_target_source
         move.pathfind(self.config, self.ob, self.actions,
                       target_source[0] - self.currR, target_source[1] - self.currC)
+
+
+class GatheringPlantingAgent(GatheringAgent):
+    def __init__(self, config, idx):
+        super().__init__(config, idx)
+
+        self._planted = False
+        self._forest_pos += 1
+
+    def plant_actions(self):
+        if self._planted:
+            return self.actions
+        agent = self.ob.agent
+        Entity = marlben.Serialized.Entity
+        r = marlben.scripting.Observation.attribute(agent, Entity.R)
+        plant_decision = self._current_target == "Water" and r == self._forest_pos
+        self._planted = plant_decision
+        if self._planted:
+            self._forest_pos -= 1
+        self.actions[marlben.action.Plant] = {marlben.action.PlantDecision: plant_decision}
+        return self.actions
+    
+    def __call__(self, obs):
+        super().__call__(obs)
+        self.gather_actions()
+        return self.plant_actions()
+
+
+class SiegeAgent(GatheringBuildingAgent):
+    def __init__(self, config, idx):
+        super().__init__(config, idx)
+
+    def __call__(self, obs):
+        super().__call__(obs)
+        self.actions = self.attack_actions()
+        return self.actions
+
+
+class PveAgent(GatheringAgent):
+    def __init__(self, config, idx):
+        super().__init__(config, idx)
+
+    def __call__(self, obs):
+        super().__call__(obs)
+        self.actions = self.attack_actions()
+        return self.actions
+        
+
+class GatheringCombatAgent(GatheringAgent):
+    def __init__(self, config, idx):
+        super().__init__(config, idx)
+        self._attacks = (self.iden + 1) % 2 == 0
+        self._mid_col = 11 + int(not self._attacks)
+    
+    def fight_started(self):
+        agent = self.ob.agent
+        Entity = marlben.Serialized.Entity
+        c = marlben.scripting.Observation.attribute(agent, Entity.C)
+        return c == self._mid_col
+
+    def go_to_fight_actions(self):
+        agent = self.ob.agent
+        Entity = marlben.Serialized.Entity
+        c = marlben.scripting.Observation.attribute(agent, Entity.C)
+
+        if c != self._mid_col:
+            move_action = {Direction: East if self._attacks else West}
+            self.actions[Move] = move_action
+        return self.actions
+
+    def __call__(self, obs):
+        super().__call__(obs)
+        if not self.fight_started():
+            self.go_to_fight_actions()
+        else:
+            self.gather_actions()
+        if self._attacks:
+            self.attack_actions(npc_only=False)
+        return self.actions

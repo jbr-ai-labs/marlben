@@ -1,5 +1,5 @@
-import nmmo
-from nmmo.lib import material
+import marlben
+from marlben.lib import material
 
 
 def lInfty(start, goal):
@@ -22,9 +22,9 @@ def inSight(dr, dc, vision):
           dc <= vision)
 
 def vacant(tile):
-   Tile     = nmmo.Serialized.Tile
-   occupied = nmmo.scripting.Observation.attribute(tile, Tile.NEnts)
-   matl     = nmmo.scripting.Observation.attribute(tile, Tile.Index)
+   Tile     = marlben.Serialized.Tile
+   occupied = marlben.scripting.Observation.attribute(tile, Tile.NEnts)
+   matl     = marlben.scripting.Observation.attribute(tile, Tile.Index)
 
    lava    = material.Lava.index
    water   = material.Water.index

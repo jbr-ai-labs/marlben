@@ -1,4 +1,4 @@
-import nmmo
+import marlben
 from scripted import move
 from scripted.baselines import Scripted
 
@@ -15,12 +15,12 @@ class CorridorAgent(Scripted):
             self._direction = (0, -1)
             self._resource_pos = (10, 10) # (18, 13)
             self._mid_pos = (10, 13)
-            self._resource_to_share = nmmo.action.Water
+            self._resource_to_share = marlben.action.Water
         else:
             self._direction = (0, 1)
             self._resource_pos = (10, 17)
             self._mid_pos = (10, 14)
-            self._resource_to_share = nmmo.action.Food
+            self._resource_to_share = marlben.action.Food
 
     def _switch_direction(self, direction):
         return tuple([-1 * d for d in direction])
@@ -40,26 +40,26 @@ class CorridorAgent(Scripted):
             return None
         else:
             return {
-                nmmo.action.Resource: self._resource_to_share,
-                nmmo.action.Target: targetID,
-                nmmo.action.ResourceAmount: self._resource_amount
+                marlben.action.Resource: self._resource_to_share,
+                marlben.action.Target: targetID,
+                marlben.action.ResourceAmount: self._resource_amount
             }
 
     def __call__(self, obs):
         super().__call__(obs)
 
         agent = self.ob.agent
-        Entity = nmmo.Serialized.Entity
-        Tile = nmmo.Serialized.Tile
+        Entity = marlben.Serialized.Entity
+        Tile = marlben.Serialized.Tile
 
-        r = nmmo.scripting.Observation.attribute(agent, Entity.R)
-        c = nmmo.scripting.Observation.attribute(agent, Entity.C)
+        r = marlben.scripting.Observation.attribute(agent, Entity.R)
+        c = marlben.scripting.Observation.attribute(agent, Entity.C)
         self._manage_direction(r, c)
         direction = move.towards(self._direction)
-        self.actions[nmmo.action.Move] = {nmmo.action.Direction: direction}
+        self.actions[marlben.action.Move] = {marlben.action.Direction: direction}
         if (r, c) == self._mid_pos:
             share_action = self._share()
             if share_action is not None:
-                self.actions[nmmo.action.Share] = share_action
+                self.actions[marlben.action.Share] = share_action
 
         return self.actions

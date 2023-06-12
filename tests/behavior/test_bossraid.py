@@ -2,7 +2,7 @@ import random
 
 import numpy as np
 
-from nmmo.envs.boss_raid import BossRaid, BossRaidConfig
+from marlben.envs.raid import Raid, BossRaidConfig
 from scripted.environments.bossfight import BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent
 from scripted.baselines import Combat
 
@@ -18,7 +18,7 @@ class ScriptedBossRaidConfig(BossRaidConfig):
 def test_boss_raid_simple():
     random.seed(0)
     np.random.seed(0)
-    env = BossRaid(ScriptedBossRaidConfig(Combat, Combat, Combat))
+    env = Raid(ScriptedBossRaidConfig(Combat, Combat, Combat))
     obs = env.reset()
     timesteps = 500
     done = False
@@ -33,9 +33,9 @@ def test_boss_raid_simple():
 def test_boss_raid_scripted_tiny():
     random.seed(0)
     np.random.seed(0)
-    env = BossRaid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
-                                          n_tanks=1, n_fighters=1, n_healers=1))
-    obs = env.reset()
+    env = Raid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
+                                      n_tanks=1, n_fighters=1, n_healers=1))
+    env.reset()
     timesteps = 500
     done = False
     while not done and timesteps > 0:
@@ -54,8 +54,8 @@ def test_boss_raid_scripted_tiny():
 def test_boss_raid_scripted():
     random.seed(0)
     np.random.seed(0)
-    env = BossRaid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
-                                          n_tanks=2, n_fighters=2, n_healers=2))
+    env = Raid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
+                                      n_tanks=2, n_fighters=2, n_healers=2))
     obs = env.reset()
     timesteps = 500
     done = False
@@ -75,8 +75,8 @@ def test_boss_raid_scripted():
 def test_boss_raid_scripted_large():
     random.seed(0)
     np.random.seed(0)
-    env = BossRaid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
-                                          n_tanks=4, n_fighters=4, n_healers=4))
+    env = Raid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
+                                      n_tanks=4, n_fighters=4, n_healers=4))
     obs = env.reset()
     timesteps = 500
     done = False
@@ -117,8 +117,8 @@ def test_boss_raid_scripted_huge():
 def test_boss_raid_scripted_no_healers():
     random.seed(0)
     np.random.seed(0)
-    env = BossRaid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
-                                          n_tanks=2, n_fighters=2, n_healers=0))
+    env = Raid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
+                                      n_tanks=2, n_fighters=2, n_healers=0))
     obs = env.reset()
     timesteps = 500
     done = False
@@ -138,8 +138,8 @@ def test_boss_raid_scripted_no_healers():
 def test_boss_raid_scripted_no_fighters():
     random.seed(0)
     np.random.seed(0)
-    env = BossRaid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
-                                          n_tanks=2, n_fighters=0, n_healers=2))
+    env = Raid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
+                                      n_tanks=2, n_fighters=0, n_healers=2))
     obs = env.reset()
     timesteps = 500
     done = False
@@ -159,8 +159,8 @@ def test_boss_raid_scripted_no_fighters():
 def test_boss_raid_scripted_no_tanks():
     random.seed(0)
     np.random.seed(0)
-    env = BossRaid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
-                                          n_tanks=0, n_fighters=2, n_healers=2))
+    env = Raid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
+                                      n_tanks=0, n_fighters=2, n_healers=2))
     obs = env.reset()
     timesteps = 500
     done = False
@@ -180,8 +180,8 @@ def test_boss_raid_scripted_no_tanks():
 def test_boss_raid_scripted_fighters_only():
     random.seed(0)
     np.random.seed(0)
-    env = BossRaid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
-                                          n_tanks=0, n_fighters=2, n_healers=0))
+    env = Raid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
+                                      n_tanks=0, n_fighters=2, n_healers=0))
     obs = env.reset()
     timesteps = 500
     done = False
@@ -198,8 +198,8 @@ def test_boss_raid_scripted_fighters_only():
 def test_boss_raid_scripted_healers_only():
     random.seed(0)
     np.random.seed(0)
-    env = BossRaid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
-                                          n_tanks=0, n_fighters=0, n_healers=1))
+    env = Raid(ScriptedBossRaidConfig(BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent,
+                                      n_tanks=0, n_fighters=0, n_healers=1))
     obs = env.reset()
     timesteps = 500
     done = False

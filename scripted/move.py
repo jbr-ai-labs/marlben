@@ -1,11 +1,11 @@
 import random as rand
 from queue import PriorityQueue, Queue
 
-import nmmo
+import marlben
 import numpy as np
 
-import nmmo.lib.distance
-from nmmo.lib import material
+import marlben.lib.distance
+from marlben.lib import material
 
 from scripted import utils
 
@@ -22,44 +22,44 @@ def inSight(dr, dc, vision):
 
 
 def vacant(tile):
-    Tile = nmmo.Serialized.Tile
-    occupied = nmmo.scripting.Observation.attribute(tile, Tile.NEnts)
-    matl = nmmo.scripting.Observation.attribute(tile, Tile.Index)
+    Tile = marlben.Serialized.Tile
+    occupied = marlben.scripting.Observation.attribute(tile, Tile.NEnts)
+    matl = marlben.scripting.Observation.attribute(tile, Tile.Index)
 
     return matl in material.Habitable and not occupied
 
 
 def random(config, ob, actions):
-    direction = rand.choice(nmmo.action.Direction.edges)
-    actions[nmmo.action.Move] = {nmmo.action.Direction: direction}
+    direction = rand.choice(marlben.action.Direction.edges)
+    actions[marlben.action.Move] = {marlben.action.Direction: direction}
 
 
 def towards(direction):
     if direction == (-1, 0):
-        return nmmo.action.North
+        return marlben.action.North
     elif direction == (1, 0):
-        return nmmo.action.South
+        return marlben.action.South
     elif direction == (0, -1):
-        return nmmo.action.West
+        return marlben.action.West
     elif direction == (0, 1):
-        return nmmo.action.East
+        return marlben.action.East
     else:
-        return rand.choice(nmmo.action.Direction.edges)
+        return rand.choice(marlben.action.Direction.edges)
 
 
 def pathfind(config, ob, actions, rr, cc):
     direction = aStar(config, ob, actions, rr, cc)
     direction = towards(direction)
-    actions[nmmo.action.Move] = {nmmo.action.Direction: direction}
+    actions[marlben.action.Move] = {marlben.action.Direction: direction}
 
 
 def meander(config, ob, actions):
     agent = ob.agent
-    Entity = nmmo.Serialized.Entity
-    Tile = nmmo.Serialized.Tile
+    Entity = marlben.Serialized.Entity
+    Tile = marlben.Serialized.Tile
 
-    r = nmmo.scripting.Observation.attribute(agent, Entity.R)
-    c = nmmo.scripting.Observation.attribute(agent, Entity.C)
+    r = marlben.scripting.Observation.attribute(agent, Entity.R)
+    c = marlben.scripting.Observation.attribute(agent, Entity.C)
 
     cands = []
     if vacant(ob.tile(-1, 0)):
@@ -75,18 +75,18 @@ def meander(config, ob, actions):
 
     direction = rand.choices(cands)[0]
     direction = towards(direction)
-    actions[nmmo.action.Move] = {nmmo.action.Direction: direction}
+    actions[marlben.action.Move] = {marlben.action.Direction: direction}
 
 
 def explore(config, ob, actions, spawnR, spawnC):
     vision = config.NSTIM
     sz = config.TERRAIN_SIZE
-    Entity = nmmo.Serialized.Entity
-    Tile = nmmo.Serialized.Tile
+    Entity = marlben.Serialized.Entity
+    Tile = marlben.Serialized.Tile
 
     agent = ob.agent
-    r = nmmo.scripting.Observation.attribute(agent, Entity.R)
-    c = nmmo.scripting.Observation.attribute(agent, Entity.C)
+    r = marlben.scripting.Observation.attribute(agent, Entity.R)
+    c = marlben.scripting.Observation.attribute(agent, Entity.C)
 
     centR, centC = sz // 2, sz // 2
     vR, vC = centR - spawnR, centC - spawnC
@@ -98,13 +98,13 @@ def explore(config, ob, actions, spawnR, spawnC):
 
 
 def evade(config, ob, actions, attacker):
-    Entity = nmmo.Serialized.Entity
+    Entity = marlben.Serialized.Entity
 
-    sr = nmmo.scripting.Observation.attribute(ob.agent, Entity.R)
-    sc = nmmo.scripting.Observation.attribute(ob.agent, Entity.C)
+    sr = marlben.scripting.Observation.attribute(ob.agent, Entity.R)
+    sc = marlben.scripting.Observation.attribute(ob.agent, Entity.C)
 
-    gr = nmmo.scripting.Observation.attribute(attacker, Entity.R)
-    gc = nmmo.scripting.Observation.attribute(attacker, Entity.C)
+    gr = marlben.scripting.Observation.attribute(attacker, Entity.R)
+    gc = marlben.scripting.Observation.attribute(attacker, Entity.C)
 
     rr, cc = (2 * sr - gr, 2 * sc - gc)
 
@@ -113,12 +113,12 @@ def evade(config, ob, actions, attacker):
 
 def forageDijkstra(config, ob, actions, food_max, water_max, cutoff=100):
     vision = config.NSTIM
-    Entity = nmmo.Serialized.Entity
-    Tile = nmmo.Serialized.Tile
+    Entity = marlben.Serialized.Entity
+    Tile = marlben.Serialized.Tile
 
     agent = ob.agent
-    food = nmmo.scripting.Observation.attribute(agent, Entity.Food)
-    water = nmmo.scripting.Observation.attribute(agent, Entity.Water)
+    food = marlben.scripting.Observation.attribute(agent, Entity.Food)
+    water = marlben.scripting.Observation.attribute(agent, Entity.Water)
 
     best = -1000
     start = (0, 0)
@@ -144,8 +144,8 @@ def forageDijkstra(config, ob, actions, food_max, water_max, cutoff=100):
                 continue
 
             tile = ob.tile(*nxt)
-            matl = nmmo.scripting.Observation.attribute(tile, Tile.Index)
-            occupied = nmmo.scripting.Observation.attribute(tile, Tile.NEnts)
+            matl = marlben.scripting.Observation.attribute(tile, Tile.Index)
+            occupied = marlben.scripting.Observation.attribute(tile, Tile.NEnts)
 
             if not vacant(tile):
                 continue
@@ -161,7 +161,7 @@ def forageDijkstra(config, ob, actions, food_max, water_max, cutoff=100):
                     continue
 
                 tile = ob.tile(*pos)
-                matl = nmmo.scripting.Observation.attribute(tile, Tile.Index)
+                matl = marlben.scripting.Observation.attribute(tile, Tile.Index)
 
                 if matl == material.Water.index:
                     water = min(water + water_max // 2, water_max)
@@ -182,12 +182,12 @@ def forageDijkstra(config, ob, actions, food_max, water_max, cutoff=100):
         goal = backtrace[goal]
 
     direction = towards(goal)
-    actions[nmmo.action.Move] = {nmmo.action.Direction: direction}
+    actions[marlben.action.Move] = {marlben.action.Direction: direction}
 
 
 def aStar(config, ob, actions, rr, cc, cutoff=100):
-    Entity = nmmo.Serialized.Entity
-    Tile = nmmo.Serialized.Tile
+    Entity = marlben.Serialized.Entity
+    Tile = marlben.Serialized.Tile
     vision = config.NSTIM
 
     start = (0, 0)
@@ -203,7 +203,7 @@ def aStar(config, ob, actions, rr, cc, cutoff=100):
     cost = {start: 0}
 
     closestPos = start
-    closestHeuristic = nmmo.lib.distance.l1(start, goal)
+    closestHeuristic = marlben.lib.distance.l1(start, goal)
     closestCost = closestHeuristic
 
     while not pq.empty():
@@ -224,8 +224,8 @@ def aStar(config, ob, actions, rr, cc, cutoff=100):
                 continue
 
             tile = ob.tile(*nxt)
-            matl = nmmo.scripting.Observation.attribute(tile, Tile.Index)
-            occupied = nmmo.scripting.Observation.attribute(tile, Tile.NEnts)
+            matl = marlben.scripting.Observation.attribute(tile, Tile.Index)
+            occupied = marlben.scripting.Observation.attribute(tile, Tile.NEnts)
 
             # if not vacant(tile):
             #   continue

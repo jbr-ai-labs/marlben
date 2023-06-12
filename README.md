@@ -1,15 +1,16 @@
-# Marlben
+![logo](https://github.com/jbr-ai-labs/marlben/assets/22059171/cab386fb-3b49-4f02-b59a-49dd2de3cc9c)
 
+[![PyPI version](https://badge.fury.io/py/marlben.svg)](https://pypi.org/project/marlben/1.0.1/)
 ![marlben-tests](../../actions/workflows/python-package-conda.yml/badge.svg)
 
 Marlben is a multi-agent reinforcement learning benchmark based on the [NeuralMMO](https://github.com/NeuralMMO/environment) game engine
 
 ## Installation
-```python 3.9```  **is required!**
+https://github.com/jbr-ai-labs/marlben/wiki/Quick-Start#installation
 
+## Usage
 
-# Usage
+https://github.com/jbr-ai-labs/marlben/wiki/Quick-Start#launching-an-environment
 
-```python3.9 minimal.py```
-
-Run .exe client for rendering
+## Wiki
+https://github.com/jbr-ai-labs/marlben/wiki

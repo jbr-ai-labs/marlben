@@ -1,4 +1,4 @@
-import nmmo
+import marlben
 
 
 class RLlib:
@@ -29,7 +29,7 @@ class RLlib:
 
     @property
     def TRAIN_BATCH_SIZE(self):
-        if self._TRAIN_BATCH_SIZE is None:
+        if not hasattr(self, "_TRAIN_BATCH_SIZE") or self._TRAIN_BATCH_SIZE is None:
             self._TRAIN_BATCH_SIZE = 64 * 256 * self.NUM_WORKERS
         return self._TRAIN_BATCH_SIZE
 
@@ -47,8 +47,8 @@ class RLlib:
     RESTORE_CHECKPOINT = 1000
 
     # Policy specification
-    EVAL_AGENTS = [nmmo.Agent]
-    AGENTS = [nmmo.Agent]
+    EVAL_AGENTS = [marlben.Agent]
+    AGENTS = [marlben.Agent]
     TASKS = []
 
     # Hardware and debug
@@ -77,7 +77,7 @@ class RLlib:
     TEAM_SPIRIT = 0.0
 
 
-class Small(RLlib, nmmo.config.Small):
+class Small(RLlib, marlben.config.Small):
     '''Small scale Neural MMO training setting
 
    Features up to 64 concurrent agents and 32 concurrent NPCs,
@@ -92,7 +92,7 @@ class Small(RLlib, nmmo.config.Small):
     EVALUATION_HORIZON = 128
 
 
-class Medium(RLlib, nmmo.config.Medium):
+class Medium(RLlib, marlben.config.Medium):
     '''Medium scale Neural MMO training setting
 
    Features up to 256 concurrent agents and 128 concurrent NPCs,
@@ -107,7 +107,7 @@ class Medium(RLlib, nmmo.config.Medium):
     EVALUATION_HORIZON = 1024
 
 
-class Large(RLlib, nmmo.config.Large):
+class Large(RLlib, marlben.config.Large):
     '''Large scale Neural MMO training setting
 
    Features up to 2048 concurrent agents and 1024 concurrent NPCs,

@@ -1,7 +1,7 @@
-import nmmo
+import marlben
 import numpy as np
-from nmmo import scripting
-from nmmo.systems.ai import move, attack, utils
+from marlben import scripting
+from marlben.systems.ai import move, attack, utils
 
 
 def update(entity):
@@ -23,14 +23,14 @@ def update(entity):
 
 
 def pathfind(config, ob, actions, rr, cc):
-    actions[nmmo.action.Move] = {nmmo.action.Direction: move.pathfind(config, ob, actions, rr, cc)}
+    actions[marlben.action.Move] = {marlben.action.Direction: move.pathfind(config, ob, actions, rr, cc)}
 
 
 def explore(config, ob, actions, spawnR, spawnC):
     vision = config.NSTIM
     sz = config.TERRAIN_SIZE
-    Entity = nmmo.Serialized.Entity
-    Tile = nmmo.Serialized.Tile
+    Entity = marlben.Serialized.Entity
+    Tile = marlben.Serialized.Tile
 
     agent = ob.agent
     r = scripting.Observation.attribute(agent, Entity.R)
@@ -48,11 +48,11 @@ def explore(config, ob, actions, spawnR, spawnC):
 
 
 def meander(realm, actions, entity):
-    actions[nmmo.action.Move] = {nmmo.action.Direction: move.habitable(realm.map.tiles, entity)}
+    actions[marlben.action.Move] = {marlben.action.Direction: move.habitable(realm.map.tiles, entity)}
 
 
 def evade(realm, actions, entity):
-    actions[nmmo.action.Move] = {nmmo.action.Direction: move.antipathfind(realm.map.tiles, entity, entity.attacker)}
+    actions[marlben.action.Move] = {marlben.action.Direction: move.antipathfind(realm.map.tiles, entity, entity.attacker)}
 
 
 def hunt(realm, actions, entity):
@@ -66,7 +66,7 @@ def hunt(realm, actions, entity):
         direction = move.pathfind(realm.map.tiles, entity, entity.target)
 
     if direction is not None:
-        actions[nmmo.action.Move] = {nmmo.action.Direction: direction}
+        actions[marlben.action.Move] = {marlben.action.Direction: direction}
 
     attack(realm, actions, entity)
 
@@ -76,16 +76,16 @@ def attack(realm, actions, entity):
     if distance > entity.skills.style.attackRange(realm.config):
         return
 
-    actions[nmmo.action.Attack] = {nmmo.action.Style: entity.skills.style,
-                                   nmmo.action.Target: entity.target}
+    actions[marlben.action.Attack] = {marlben.action.Style: entity.skills.style,
+                                      marlben.action.Target: entity.target}
 
 
 def forageDP(realm, actions, entity):
     direction = utils.forageDP(realm.map.tiles, entity)
-    actions[nmmo.action.Move] = {nmmo.action.Direction: move.towards(direction)}
+    actions[marlben.action.Move] = {marlben.action.Direction: move.towards(direction)}
 
 
 # def forageDijkstra(realm, actions, entity):
 def forageDijkstra(config, ob, actions, food_max, water_max):
     direction = utils.forageDijkstra(config, ob, food_max, water_max)
-    actions[nmmo.action.Move] = {nmmo.action.Direction: move.towards(direction)}
+    actions[marlben.action.Move] = {marlben.action.Direction: move.towards(direction)}

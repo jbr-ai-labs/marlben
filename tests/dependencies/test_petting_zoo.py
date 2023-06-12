@@ -1,6 +1,5 @@
+from marlben.envs import Corridor, CorridorConfig
 from pettingzoo.test import parallel_api_test
-
-from nmmo.envs import Corridor, CorridorConfig
 from tests.envs.utils import create_env
 
 
