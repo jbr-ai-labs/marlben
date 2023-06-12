@@ -16,7 +16,9 @@ def level(skills):
     final = np.floor(base + 0.5*max(melee, ranged, mage))
     return final
 
-
+"""
+Implements attack action, where entity attacks target for a fixed amount of damage
+"""
 def attack(entity, targ, skillFn, stealing_enabled=True):
     config = entity.config
     entitySkill = skillFn(entity)
