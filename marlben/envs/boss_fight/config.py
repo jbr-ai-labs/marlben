@@ -19,8 +19,7 @@ class NpcKilledTask(Callable):
 
     def __call__(self, realm, entity):
         # Amount of NPCs died at this turn
-        self.dead_counter += len(
-            realm.entity_group_manager.npc_groups[self.npc_group_id].dead)
+        self.dead_counter += len(realm.entity_group_manager.npc_groups[self.npc_group_id].dead)
         return self.dead_counter
 
 
@@ -37,7 +36,8 @@ class BossGroupConfig(NPCGroupConfig):
     NENT = 1
     SPAWN_ATTEMPTS_PER_ENT = 10
 
-    def __init__(self, n_tanks, n_fighters, n_healers, coordinates_sampler=RangePositionSampler([7], [5])):
+    def __init__(self, n_tanks, n_fighters, n_healers,
+                 coordinates_sampler=RangePositionSampler(list(range(5, 8)), list(range(3, 8)))):
         super().__init__()
         self.SPAWN_COORDINATES_SAMPLER = coordinates_sampler
         self.SPAWN_SKILLS_SAMPLER = CustomSkillSampler(
