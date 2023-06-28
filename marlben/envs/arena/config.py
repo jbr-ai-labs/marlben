@@ -2,7 +2,7 @@ from os import path as osp
 from marlben.config import Combat
 from marlben.envs.gathering.config import GatheringConfig, GatheringConfigScripted
 
-from scripted.environments.gathering import GatheringCombatAgent
+from marlben.scripted.environments.gathering import GatheringCombatAgent
 
 
 

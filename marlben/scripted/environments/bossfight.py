@@ -1,8 +1,8 @@
 import marlben
 from marlben.io.action import *
 from marlben.lib import colors
-from scripted import move
-from scripted.baselines import Scripted
+from marlben.scripted import move
+from marlben.scripted.baselines import Scripted
 
 
 class BossFightTankAgent(Scripted):

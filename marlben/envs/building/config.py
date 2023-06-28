@@ -2,7 +2,7 @@ from os import path as osp
 
 from marlben.config import Building
 from marlben.envs import GatheringConfig, GatheringConfigScripted
-from scripted.environments.gathering import GatheringBuildingAgent
+from marlben.scripted.environments.gathering import GatheringBuildingAgent
 
 PATH_TO_CUSTOM_MAPS = osp.dirname(__file__)
 

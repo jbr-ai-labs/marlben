@@ -6,7 +6,7 @@ from marlben.config.base.config import PlayerGroupConfig, Config
 from marlben.core.map_generation.pregen_map_generator import PregeneratedMapGenerator
 from marlben.envs.gathering.utils.map_generator import GatheringMapGenerator
 from marlben.core.spawn.spawn_system.position_samplers import UniformPositionSampler
-from scripted.environments.gathering import GatheringAgent
+from marlben.scripted.environments.gathering import GatheringAgent
 import math
 
 

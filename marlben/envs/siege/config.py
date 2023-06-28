@@ -8,7 +8,7 @@ from marlben.core.spawn.spawn_system.skill_samplers import CustomSkillSampler
 from marlben.config.base.config import NPCGroupConfig, Config
 from marlben.io.action.attack import Range, Heal, Mage, Melee
 
-from scripted.environments.gathering import SiegeAgent
+from marlben.scripted.environments.gathering import SiegeAgent
 
 
 

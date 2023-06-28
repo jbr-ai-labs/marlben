@@ -1,7 +1,7 @@
 import marlben
 
-from rllib.config import scale
-from rllib.config import bases
+from . import scale
+from . import bases
 
 
 class Medium(scale.Baseline, bases.Medium, marlben.config.AllGameSystems):

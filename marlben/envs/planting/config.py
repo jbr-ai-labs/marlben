@@ -2,7 +2,7 @@ from os import path as osp
 
 from marlben.config import Planting
 from marlben.envs import GatheringConfig, GatheringConfigScripted
-from scripted.environments.gathering import GatheringPlantingAgent
+from marlben.scripted.environments.gathering import GatheringPlantingAgent
 
 
 

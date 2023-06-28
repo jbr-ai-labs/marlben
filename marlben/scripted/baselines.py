@@ -2,7 +2,7 @@ import marlben
 from marlben import scripting
 from marlben.lib import colors
 
-from scripted import move, attack
+from marlben.scripted import move, attack
 
 
 class Scripted(marlben.Agent):

@@ -1,6 +1,6 @@
 import marlben
-from scripted import move
-from scripted.baselines import Scripted
+from marlben.scripted import move
+from marlben.scripted.baselines  import Scripted
 
 
 class CorridorAgent(Scripted):

@@ -5,8 +5,8 @@ import numpy as np
 
 import marlben
 from marlben.lib import material
-from scripted import move, attack
-from scripted.baselines import Scripted
+from marlben.scripted import move, attack
+from marlben.scripted.baselines import Scripted
 from marlben.io.action import Move, Direction, East, West, South, North
 from marlben import scripting
 

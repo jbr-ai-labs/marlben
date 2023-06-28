@@ -7,7 +7,7 @@ from marlben.core.spawn.spawn_system.position_samplers import UniformPositionSam
 from marlben.core.spawn.spawn_system.skill_samplers import CustomSkillSampler
 from marlben.io.action.attack import Range, Heal, Mage
 
-from scripted.environments.gathering import PveAgent
+from marlben.scripted.environments.gathering import PveAgent
 
 
 

@@ -2,7 +2,7 @@ import marlben
 import numpy as np
 
 import marlben.lib.distance
-from scripted import utils
+from . import utils
 
 
 def closestTarget(config, ob, npc_only=False):

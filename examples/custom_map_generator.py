@@ -51,8 +51,7 @@ class CustomMapGenerator1(MapGenerator):
         val[tiles[:, :, 0] == Terrain.WATER] = np.random.rand(
         ) * (self.config.TERRAIN_WATER - self.config.TERRAIN_LAVA) + self.config.TERRAIN_LAVA
         val[tiles[:, :, 0] == Terrain.LAVA] = self.config.TERRAIN_LAVA
-
-        return val, map
+        return val, tiles
 
 
 class CustomMapGenerator2(MapGenerator):
@@ -86,16 +85,22 @@ class CustomMapGenerator2(MapGenerator):
         # Create a heights map. To improve rendering, it's better to not leave empty (see example above).
         val = np.zeros((tiles.shape[0], tiles.shape[1]))
 
-        return val, map
+        return val, tiles
 
 
 if __name__ == "__main__":
     config = BossRaidConfig()
+    config.MAP_WIDTH = 20
+    config.MAP_HEIGHT = 20
+    config.TERRAIN_CENTER = 20
     config.MAP_GENERATOR = CustomMapGenerator1
     # Create an environment
     env = Raid(config)
 
     config2 = BossRaidConfig()
+    config2.MAP_WIDTH = 20
+    config2.MAP_HEIGHT = 20
+    config2.TERRAIN_CENTER = 20
     config2.MAP_GENERATOR = CustomMapGenerator2
     # Create an environment
     env = Raid(config2)

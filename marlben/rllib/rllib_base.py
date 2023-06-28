@@ -8,7 +8,7 @@ from ray.tune import CLIReporter
 from ray.tune.integration.wandb import WandbLoggerCallback
 
 import marlben
-from rllib import rllib_wrapper as wrapper
+from marlben.rllib import rllib_wrapper as wrapper
 
 
 class ConsoleLog(CLIReporter):

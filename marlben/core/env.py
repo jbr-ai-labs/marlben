@@ -34,7 +34,6 @@ class Env(ParallelEnv):
 
         if __debug__:
             err = 'Config {} is not a config instance (did you pass the class?)'
-            print(config)
             assert isinstance(config, marlben.config.Config), err.format(config)
 
         for entity_group in config.PLAYER_GROUPS:

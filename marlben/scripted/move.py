@@ -7,7 +7,7 @@ import numpy as np
 import marlben.lib.distance
 from marlben.lib import material
 
-from scripted import utils
+from . import utils
 
 
 def adjacentPos(pos):

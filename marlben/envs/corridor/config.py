@@ -6,7 +6,7 @@ from marlben.core.agent import Agent
 from marlben.core.spawn.spawn_system.position_samplers import UniformPositionSampler
 from marlben.core.spawn.spawn_system.skill_samplers import CustomSkillSampler
 from marlben.systems.achievement import Task
-from scripted.environments.corridor import CorridorAgent
+from marlben.scripted.environments.corridor import CorridorAgent
 from marlben.core.map_generation.pregen_map_generator import PregeneratedMapGenerator
 
 from marlben.config.base.config import PlayerGroupConfig, Config

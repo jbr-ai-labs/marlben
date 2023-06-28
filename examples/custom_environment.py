@@ -65,7 +65,7 @@ class CustomNPCGroupConfig(NPCGroupConfig):
 
 
 # Note: by default most of the systems are disabled. Include them in superclass list to enable them.
-class CustomEnvConfig(Config, Combat, NPC, Progression):
+class CustomEnvConfig(Config, NPC, Progression):
 
     # System settings
     # Disable health regeneration and make damage reduction depend on defense stat only

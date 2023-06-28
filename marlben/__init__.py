@@ -16,6 +16,6 @@ from .version import __version__
 
 import os
 
-
+__rllib__ = ['rllib']
 __all__ = ['Env', 'scripting', 'agent', 'Agent', 'Serialized', 'action', 'Action', 'material',
-           'Task', 'Overlay', 'OverlayRegistry', 'envs', 'config']
+           'Task', 'Overlay', 'OverlayRegistry', 'envs', 'config', 'rllib', 'scripted']

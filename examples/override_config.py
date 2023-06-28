@@ -1,6 +1,6 @@
 from marlben.envs.raid.config import BossRaidConfig
 from marlben.envs.raid.env import Raid
-from scripted.environments.bossfight import BossFightTankAgent, BossRaidHealerAgent
+from marlben.scripted.environments.bossfight import BossFightTankAgent, BossRaidHealerAgent
 
 """
 A simple way to modify your environment config by inheriting from the base config.

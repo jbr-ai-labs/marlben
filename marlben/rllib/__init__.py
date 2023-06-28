@@ -13,6 +13,7 @@ from marlben.envs.siege.env import Siege
 from marlben.envs.team_deathmatch.env import TeamDeathmatch
 from .rllib_wrapper import RLlibEnv
 from .neural import rllib_policy
+from marlben.rllib.config import get_config
 
 env_factory = {
     'Corridor': Corridor,

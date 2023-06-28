@@ -1,6 +1,6 @@
-from rllib import rllib_wrapper
-from rllib.rllib_base import run_tune_experiment
-from rllib.config import get_config
+from marlben.rllib import rllib_wrapper
+from marlben.rllib.rllib_base import run_tune_experiment
+from marlben.rllib.config.get_config import get_config
 
 
 if __name__ == '__main__':

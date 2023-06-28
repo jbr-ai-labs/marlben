@@ -58,7 +58,7 @@ def generate_labyrinth(height, width, additional_links_min, additional_links_max
         tx, ty = (size + direction_helper[i] + np.array([x, y])) % size
         cells[tx, ty, 3 - i] = 1
 
-    map = np.zeros(height, width)
+    map = np.zeros((height, width), dtype=bool)
     for x in range(h):
         for y in range(w):
             map[4 * x:4 * (x + 1), 4 * y:4 * (y + 1)] = True

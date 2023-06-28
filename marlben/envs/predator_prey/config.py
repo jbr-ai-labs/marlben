@@ -6,7 +6,7 @@ from marlben.config.base.config import PlayerGroupConfig
 from marlben.envs.gathering.config import GatheringConfig, GatheringConfigScripted
 from marlben.io.action import Range, Mage, Melee
 
-from scripted.environments.gathering import GatheringCombatAgent
+from marlben.scripted.environments.gathering import GatheringCombatAgent
 
 
 

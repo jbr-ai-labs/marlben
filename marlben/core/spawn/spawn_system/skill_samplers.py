@@ -33,9 +33,9 @@ class CustomSkillSampler(SkillsSampler):
         if skill_sampler_config["name"] == "const":
             return ConstantSampler(skill_sampler_config["level"])
         elif skill_sampler_config["name"] == "choice":
-            return ChoiceSampler(skill_sampler_config["levels"])
+            return ChoiceSampler(skill_sampler_config["level"])
         elif skill_sampler_config["name"] == "list":
-            return ListSampler(skill_sampler_config["levels"])
+            return ListSampler(skill_sampler_config["level"])
 
     def get_next(self, pos):
         skills = SkillsBalanced(self.config)

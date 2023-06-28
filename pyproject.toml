@@ -58,6 +58,9 @@ include-package-data = true
 [tool.setuptools.packages.find]
 include = ["marlben", "marlben.*"]
 
+[tool.setuptools.package-data]
+"*" = ["*.png", "*.json"]
+
 # Linters and Test tools #######################################################
 
 [tool.black]
