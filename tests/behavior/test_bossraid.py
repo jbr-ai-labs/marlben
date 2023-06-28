@@ -3,8 +3,8 @@ import random
 import numpy as np
 
 from marlben.envs.raid import Raid, BossRaidConfig
-from scripted.environments.bossfight import BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent
-from scripted.baselines import Combat
+from marlben.scripted.environments.bossfight import BossFightTankAgent, BossRaidFighterAgent, BossRaidHealerAgent
+from marlben.scripted.baselines import Combat
 
 """
 A set of testcases for Raid environment.

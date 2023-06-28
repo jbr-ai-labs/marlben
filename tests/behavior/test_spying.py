@@ -1,7 +1,7 @@
 import random
 
 from marlben.envs.spying import GatheringObscured, ObscuredGatheringConfig
-from scripted.environments.gathering import ObscuredAndExclusiveGatheringAgent
+from marlben.scripted.environments.gathering import ObscuredAndExclusiveGatheringAgent
 import numpy as np
 
 from .test_colors import _get_lifetimes_and_survivors

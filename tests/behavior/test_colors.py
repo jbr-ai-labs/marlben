@@ -2,7 +2,7 @@ import random
 
 from marlben.envs.colors import GatheringExclusive, ExclusiveGatheringConfig
 from marlben.lib import material
-from scripted.environments.gathering import ObscuredAndExclusiveGatheringAgent
+from marlben.scripted.environments.gathering import ObscuredAndExclusiveGatheringAgent
 import numpy as np
 
 """

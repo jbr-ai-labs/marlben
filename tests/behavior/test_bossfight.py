@@ -1,8 +1,8 @@
 import random
 
 from marlben.envs.boss_fight import BossFight, BossFightConfig
-from scripted.environments.bossfight import BossFightTankAgent
-from scripted.baselines import Combat
+from marlben.scripted.environments.bossfight import BossFightTankAgent
+from marlben.scripted.baselines import Combat
 import numpy as np
 
 
