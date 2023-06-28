@@ -17,7 +17,6 @@ class RLlibEnv(marlben.Env, MultiAgentEnv):
 
     def __init__(self, config):
         self.config = config["config"]
-        print(self.config, '----------')
         super().__init__(self.config)
 
     def render(self):

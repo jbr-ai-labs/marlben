@@ -68,7 +68,8 @@ name2env = {
 for key in name2env.keys():
     register(
         id='MARLBEN-' + key + '-v1',
-        entry_point=name2env[key]
+        entry_point=name2env[key],
+        disable_env_checker=True
     )
 
 
