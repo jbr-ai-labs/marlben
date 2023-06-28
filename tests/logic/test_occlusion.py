@@ -5,6 +5,10 @@ from marlben.core.spawn.spawn_system.position_samplers import PositionSampler
 from marlben.lib.material import Water, Forest, BalancedWater, BalancedForest
 from .utils import build_map_generator
 
+"""
+A testcase for visibility system
+"""
+
 map = [
     [[1, 0, 0], [2, 0, 0], [2, 0, 0], [1, 1, 0]],
     [[2, 0, 0], [2, 0, 0], [2, 0, 0], [2, 0, 0]],
@@ -51,6 +55,7 @@ class TestCfg(Config, Resource):
 
 
 def test_occlusion():
+    # Creating an env
     env = Env(TestCfg())
     env.reset()
     obs, _, _, _ = env.step({})
@@ -60,6 +65,7 @@ def test_occlusion():
     player1 = list(env.realm.entity_group_manager.player_groups[0].entities.values())[0]
     player2 = list(env.realm.entity_group_manager.player_groups[1].entities.values())[0]
 
+    # Check that visibility colors were set correctly
     assert len(player1.visible_colors) == 2 and 0 in player1.visible_colors and 1 in player1.visible_colors
     assert len(player2.visible_colors) == 2 and 0 in player2.visible_colors and 2 in player2.visible_colors
 
@@ -68,6 +74,7 @@ def test_occlusion():
     resource_tiles = [tile for row in env.realm.map.tiles for tile in row if tile.mat in (Water, BalancedWater, Forest, BalancedForest)]
     base_coord = env.config.NSTIM
 
+    # Check that tile appearance corresponds to visibility color
     for tile in resource_tiles:
         for player in players:
             dx, dy = base_coord + tile.pos[0] - player.pos[0], base_coord + tile.pos[1] - player.pos[1]

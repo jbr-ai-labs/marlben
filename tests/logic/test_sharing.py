@@ -5,6 +5,10 @@ from marlben.core.spawn.spawn_system.position_samplers import PositionSampler
 from marlben.io import action
 from .utils import build_map_generator
 
+"""
+A testcase for sharing mechanic
+"""
+
 map = [
     [[2, 0, 0], [2, 0, 0]],
     [[2, 0, 0], [2, 0, 0]]
@@ -56,6 +60,7 @@ def test_sharing_water():
     w1 = cfg.RESOURCE_BASE_RESOURCE
     w2 = cfg.RESOURCE_BASE_RESOURCE
 
+    # Check that amount of resource is decreasing
     for _ in range(5):
         obs, _, _, _ = env.step({})
         w1 -= 1
@@ -73,6 +78,7 @@ def test_sharing_water():
     w1 -= 6
     w2 += 4
 
+    # Check that resource shared successfully
     assert player1.resources.water.val == w1
     assert player2.resources.water.val == w2
 
@@ -86,6 +92,7 @@ def test_sharing_water():
     w1 -= 1
     w2 -= 1
 
+    # Check that resource were not stolen
     assert player1.resources.water.val == w1
     assert player2.resources.water.val == w2
 
@@ -99,5 +106,6 @@ def test_sharing_water():
     w2 += (w1 - 1) - 1
     w1 = 0
 
+    # Check that agent can't give more resources than it have
     assert player1.resources.water.val == w1
     assert player2.resources.water.val == w2

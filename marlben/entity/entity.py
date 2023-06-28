@@ -109,7 +109,9 @@ class Base:
 
         return data
 
-
+"""
+Represents agent on the map with hp and resources
+"""
 class Entity:
     def __init__(self, realm, pos, iden, name, color, pop, skills):
         self.dataframe = realm.dataframe

@@ -15,7 +15,7 @@ class Env(ParallelEnv):
     """
     Environment wrapper for Marlben using the Parallel PettingZoo API
 
-   Neural MMO provides complex environments featuring structured observations/actions,
+   Marlben provides complex environments featuring structured observations/actions,
    variably sized agent populations, and long time horizons. Usage in conjunction
    with RLlib as demonstrated in the /rllib wrapper is highly recommended.
    """

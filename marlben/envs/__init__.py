@@ -45,20 +45,23 @@ name2config = {
 }
 
 name2env = {
-    'Corridor': Corridor,
+    #Easy
     'Gathering': Gathering,
-    'Arena': Arena,
+    'Colors': GatheringExclusive,
     'Pve': Pve,
-    'Deathmatch': Deathmatch,
-    'TeamDeathmatch': TeamDeathmatch,
     'BossFight': BossFight,
     'Building': GatheringBuilding,
-    'Colors': GatheringExclusive,
-    'Exploring': GatheringObscuredAndExclusive,
+    #Medium
+    'Corridor': Corridor,
+    'Planting': Planting,
     'Spying': GatheringObscured,
     'Raid': Raid,
     'Siege': Siege,
-    'Planting': Planting,
+    #Hard
+    'Arena': Arena,
+    'Deathmatch': Deathmatch,
+    'TeamDeathmatch': TeamDeathmatch,
+    'Exploring': GatheringObscuredAndExclusive,
     'PredatorPrey': PredatorPrey
 }
 

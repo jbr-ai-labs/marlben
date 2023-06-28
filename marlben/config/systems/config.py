@@ -1,3 +1,6 @@
+"""
+Enables resources for agents
+"""
 class Resource:
     """Resource Game System"""
 
@@ -26,7 +29,9 @@ class Resource:
     REGEN_HEALTH = 1.
     RESOURCE_COOLDOWN = 1
 
-
+"""
+Enables attack action
+"""
 class Combat:
     '''Combat Game System'''
 
@@ -62,7 +67,9 @@ class Combat:
     STEALING_ENABLED = True
     '''Is attack allows to steal resources'''
 
-
+"""
+Enables skill progression for agents
+"""
 class Progression:
     '''Progression Game System'''
 
@@ -82,7 +89,9 @@ class Progression:
     PROGRESSION_COMBAT_XP_SCALE = 4
     '''Multiplier on top of XP_SCALE for Combat skills'''
 
-
+"""
+Enables NPC spawns on the map
+"""
 class NPC(Combat):
     '''NPC & Equipment Game System'''
 
@@ -111,7 +120,9 @@ class NPC(Combat):
     NPC_LEVEL_SPREAD = None
     '''Level range for NPC spawns'''
 
-
+"""
+Enables sharing action for agents
+"""
 class Sharing(Resource):
     @property
     def Sharing(self):
@@ -121,13 +132,17 @@ class Sharing(Resource):
     SHARE_MIN = 10
     SHARE_MAX = 10
 
-
+"""
+Enables building action for agents
+"""
 class Building:
     @property
     def Building(self):
         return True
 
-
+"""
+Enables planting action for agents
+"""
 class Planting:
     @property
     def Planting(self):
