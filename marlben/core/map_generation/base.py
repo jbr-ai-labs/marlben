@@ -104,7 +104,7 @@ class MapGenerator:
         start = frequency
         end = min(start, start - np.log2(center) + offset)
         for idx, freq in enumerate(np.logspace(start, end, octaves, base=2)):
-            val[:, :, idx] = snoise2(
+            val[:, :, idx] = vec_noise.snoise2(
                 seed * size + freq * X, idx * size + freq * Y)
 
         # Compute L1 distance
@@ -126,7 +126,7 @@ class MapGenerator:
         expand = int(np.log2(center)) + 1
         for idx, octave in enumerate(range(expand, 1, -1)):
             freq, mag = 1 / 2 ** octave, 1 / 2 ** idx
-            noise += mag * snoise2(seed * size + freq * X, idx * size + freq * Y)
+            noise += mag * vec_noise.snoise2(seed * size + freq * X, idx * size + freq * Y)
 
         noise -= np.min(noise)
         noise = octaves * noise / np.max(noise) - 1e-12
