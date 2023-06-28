@@ -10,12 +10,12 @@ from .overlay import Overlay, OverlayRegistry
 from .lib.rating import OpenSkillRating
 from .lib import material
 from . import scripting
+from . import envs
+from . import config
 from .version import __version__
 
 import os
 
-motd = open(os.path.dirname(__file__) + '/resource/ascii.txt').read().format(__version__)
-
 
 __all__ = ['Env', 'scripting', 'agent', 'Agent', 'Serialized', 'action', 'Action', 'material',
-           'Task', 'Overlay', 'OverlayRegistry']
+           'Task', 'Overlay', 'OverlayRegistry', 'envs', 'config']

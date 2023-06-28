@@ -160,6 +160,7 @@ class Env(ParallelEnv):
 
         self.worldIdx = idx
         self.realm.reset(idx)
+        infos = None
 
         if step:
             self.obs, _, _, infos = self.step({})
