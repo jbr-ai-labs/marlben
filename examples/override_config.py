@@ -5,6 +5,16 @@ from scripted.environments.bossfight import BossFightTankAgent, BossRaidHealerAg
 """
 A simple way to modify your environment config by inheriting from the base config.
 This method is highly recommended as such inherited configs are supported by third-party libraries such as RLLib.
+
+You may use config override functional if you are not satisfied with set of built-in environments.
+
+For example, if you want to evaluate performance with different number of agents for a specific task, 
+you may need to change some of the parameters in the environment configuration.
+
+For an instance, it can be useful if an amount of an agents in the real environment is not known, i.e. 
+different number of agents in each working space.
+
+Even more, if you want to complicate a task for an agent or make it easier, you may do so by changing some of the config parameters.
 """
 
 

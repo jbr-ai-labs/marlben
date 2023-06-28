@@ -10,6 +10,10 @@ This example shows how to add a custom map generation to your environment.
 Below you can find two simple examples.
 First one shows how to create a custom map generator using predefined utils for map generation.
 Second one shows how to create a custom map generator without using additional utils.
+
+It's often useful if you know that working space for your agent have some specific topology or qualities.
+For example, you can simulate a working space with dangerous zones by adding some "Lava" tiles to your map.
+Another example is working space with resources distributed in specific manner, which can be also simulated via map generation. 
 """
 
 
