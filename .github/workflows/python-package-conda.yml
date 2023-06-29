@@ -35,5 +35,12 @@ jobs:
     - name: Test with pytest
       run: |
         conda install pytest
+    - name: Load testing
+      run: |
+        pytest -x tests/envs
+    - name: Load action logic
+      run: |
         pytest -x tests/logic
+    - name: Load simple behaviours
+      run: |
         pytest -x tests/behavior
