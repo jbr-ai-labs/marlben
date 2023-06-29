@@ -16,6 +16,13 @@ An example of designing your own environment. Here you can find following code:
 2. Creating Player and NPC group configs
 3. Creating Environment config from scratch
 4. Creating an environment
+
+Sometimes you would like to evaluate performance on some not-common-purpose tasks, that is not included in this library.
+To do so, you would need to design your own environment using our library.
+
+As an example, if you want to test an ability of your agents to maintain specific formation while moving to designated point,
+you may do so by defining your own environment with reward function that penalize agents for breaking the formation while
+rewards them for getting closer to the target.
 """
 
 
