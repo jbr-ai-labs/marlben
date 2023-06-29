@@ -38,9 +38,9 @@ jobs:
     - name: Load testing
       run: |
         pytest -x tests/envs
-    - name: Load action logic
+    - name: Test env logic
       run: |
         pytest -x tests/logic
-    - name: Load simple behaviours
+    - name: Test simple behaviours
       run: |
         pytest -x tests/behavior
