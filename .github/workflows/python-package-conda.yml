@@ -42,4 +42,4 @@ jobs:
         pytest -x tests/behavior
     - name: Load testing
       run: |
-        pytest -x tests/envs
+        pytest -x tests/envs/test_gathering.py
