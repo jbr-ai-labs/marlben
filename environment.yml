@@ -8,7 +8,7 @@ dependencies:
        - torch==1.13.1
        - ray[rllib]~=2.5.0
        - vec_noise~=1.1.4
-       - numpy~=1.24.3
+       - numpy~=1.22.3
        - tqdm~=4.61.1
        - scipy~=1.8.0
        - gymnasium~=0.26.3
@@ -19,3 +19,4 @@ dependencies:
        - wandb~=0.15.4
        - openskill~=4.0.0
        - matplotlib>=3.0
+       - setuptools~=57.0.0
