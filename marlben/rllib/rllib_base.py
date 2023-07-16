@@ -5,7 +5,7 @@ import ray
 import torch
 from ray import tune
 from ray.tune import CLIReporter
-from ray.tune.integration.wandb import WandbLoggerCallback
+from ray.air.integrations.wandb import WandbLoggerCallback
 
 import marlben
 from marlben.rllib import rllib_wrapper as wrapper
@@ -41,7 +41,7 @@ def setup_wandb(callbacks):
     if os.path.exists(wandb_api_key):
         callbacks.append(WandbLoggerCallback(project='marlben', api_key_file='wandb_api_key', log_config=False))
     else:
-        print('Running without WanDB. Create a file baselines/wandb_api_key and paste your API key to enable')
+        print('Running without WanDB. Create a file wandb_api_key in the project`s root folder and paste your API key to enable')
 
 
 def get_restore(config, algorithm, config_name):

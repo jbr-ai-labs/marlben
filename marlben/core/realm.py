@@ -34,7 +34,6 @@ class Realm:
       Args:
          idx: Map index to load
       '''
-        print('----reset----')
         self.map.reset(self, idx)
         self.entity_group_manager.reset()
         self.tick = 0
