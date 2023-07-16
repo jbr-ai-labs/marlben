@@ -1,6 +1,6 @@
 from marlben.envs import ArenaConfig
 from marlben.envs import Arena
-from tests.envs.utils import _test_create_with_config_class, _test_interact_with_config_class
+from .utils import _test_create_with_config_class, _test_interact_with_config_class
 
 """
 A load testcase. Checks creating an environment with different parameters and random interactions.
